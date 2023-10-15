@@ -19,7 +19,7 @@ export default {
   /**
    * That long string from mlab
    */
-  databaseURL: process.env.MONGODB_URI || 'mongodb://vs1088.dei.isep.ipp.pt:27017/bulletproof',
+  databaseURL: process.env.MONGODB_URI || 'mongodb://mongoadmin:adf7bbeb124241cbbf34a97a@vs1088.dei.isep.ipp.pt:27017/admin?authMechanism=DEFAULT',
 
   /**
    * Your secret sauce
@@ -61,7 +61,7 @@ export default {
   services: {
     role: {
       name: 'RoleService',
-      path: '../services/roleService',
+      path: '../services/ServiceImpl/roleService',
     },
   },
 };

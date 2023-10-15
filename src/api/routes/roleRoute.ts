@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
 
 import { Container } from 'typedi';
-import IRoleController from '../../controllers/IControllers/IRoleController'; 
+import IRoleController from '../../controllers/IControllers/IRoleController';
 
-import config from "../../../config";
+import config from '../../../config';
 
 const route = Router();
 

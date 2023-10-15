@@ -10,7 +10,7 @@ export default async ({ expressApp }) => {
   Logger.info('✌️ DB loaded and connected!');
 
   const userSchema = {
-    // compare with the approach followed in repos and services
+    // compare with the approach followed in repos and servicesasdasdasd
     name: 'userSchema',
     schema: '../persistence/schemas/userSchema',
   };
