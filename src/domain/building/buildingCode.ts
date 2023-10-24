@@ -20,15 +20,17 @@ export class BuildingCode extends ValueObject<BuildingCodeProps> {
     }
  
 
-    private static validateCode(code:string) {
-        var regex:RegExp = new RegExp("^(?!.*  )[a-zA-Z0-9 ]{1,5}$");
-        if(code == null){
-            return Result.fail<BuildingCode>("Code can't be empty");
-        } 
-        if(!regex.test(code)){
-            return Result.fail<BuildingCode>("Invalid Code");
-        };
+    private static validateCode(code: string): Result<string> {
+        const regex: RegExp = new RegExp("^(?!.*  )[a-zA-Z0-9 ]{1,5}");
+        if (code == null) {
+            return Result.fail<string>("Code can't be empty");
+        }
+        if (!regex.test(code)) {
+            return Result.fail<string>("Invalid Code");
+        }
+        return Result.ok<string>(code);
     }
+    
 
     public static create(code:string):Result<BuildingCode> {
         const validate = this.validateCode(code);

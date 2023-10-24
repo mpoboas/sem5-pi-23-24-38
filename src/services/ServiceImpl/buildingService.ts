@@ -34,7 +34,8 @@ export default class BuildingService implements IBuildingService {
             const buildingOrError = await Building.create(buildingDTO);
 
             if (buildingOrError.isFailure) {
-                return Result.fail<IBuildingDTO>(buildingOrError.errorValue());
+                const errorMessage = buildingOrError.errorValue();
+                return Result.fail<IBuildingDTO>(errorMessage);
             }
 
             const buildingResult = buildingOrError.getValue();
@@ -43,8 +44,8 @@ export default class BuildingService implements IBuildingService {
 
             const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
             return Result.ok<IBuildingDTO>(buildingDTOResult);
-        } catch (e) {
-            throw e;
+        } catch (error) {
+            throw new Error(`Error creating building: ${error.message}`);
         }
     }
 
