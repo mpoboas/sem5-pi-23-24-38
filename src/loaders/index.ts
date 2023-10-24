@@ -4,6 +4,8 @@ import mongooseLoader from './mongoose';
 import Logger from './logger';
 
 import config from '../../config';
+import buildingSchema from '../persistence/schemas/buildingSchema';
+import BuildingService from '../services/ServiceImpl/buildingService';
 
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
@@ -21,6 +23,12 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/roleSchema',
   };
 
+  const buildingSchema = {
+    // compare with the approach followed in repos and services
+    name: 'buildingSchema',
+    schema: '../persistence/schemas/buildingSchema',
+  };
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path
@@ -29,6 +37,16 @@ export default async ({ expressApp }) => {
   const roleRepo = {
     name: config.repos.role.name,
     path: config.repos.role.path
+  }
+
+  const buildingController = {
+    name: config.controllers.building.name,
+    path: config.controllers.building.path
+  }
+
+  const buildingRepo = {
+    name: config.repos.building.name,
+    path: config.repos.building.path
   }
 
   const userRepo = {
@@ -41,21 +59,30 @@ export default async ({ expressApp }) => {
     path: config.services.role.path
   }
 
+  const buildingService = {
+    name: config.services.building.name,
+    path: config.services.building.path
+  }
+
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
       userSchema,
-      roleSchema
+      roleSchema,
+      buildingSchema
     ],
     controllers: [
-      roleController
+      roleController,
+      buildingController
     ],
     repos: [
       roleRepo,
-      userRepo
+      userRepo,
+      buildingRepo
     ],
     services: [
-      roleService
+      roleService,
+      buildingService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
