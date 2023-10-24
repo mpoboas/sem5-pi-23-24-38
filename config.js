@@ -45,6 +45,10 @@ export default {
       name: 'RoleController',
       path: '../controllers/roleController',
     },
+    robotType: { // duplicated role changed to robotType
+      name: 'RobotTypeController',
+      path: '../controllers/robotTypeController',
+    },
     building: {
       name: 'BuildingController',
       path: '../controllers/buildingController',
@@ -55,6 +59,10 @@ export default {
     role: {
       name: 'RoleRepo',
       path: '../repos/roleRepo',
+    },
+    robotType: { // duplicated role changed to robotType
+      name: 'RobotTypeRepo',
+      path: '../repos/robotTypeRepo',
     },
     building: {
       name: 'BuildingRepo',
@@ -70,6 +78,10 @@ export default {
     role: {
       name: 'RoleService',
       path: '../services/ServiceImpl/roleService',
+    },
+    robotType: { // duplicated role changed to robotType
+      name: 'RobotTypeService',
+      path: '../services/ServiceImpl/robotTypeService',
     },
     building: {
       name: 'BuildingService',

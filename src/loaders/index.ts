@@ -4,8 +4,7 @@ import mongooseLoader from './mongoose';
 import Logger from './logger';
 
 import config from '../../config';
-import buildingSchema from '../persistence/schemas/buildingSchema';
-import BuildingService from '../services/ServiceImpl/buildingService';
+
 
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
@@ -29,6 +28,12 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/buildingSchema',
   };
 
+  const robotTypeSchema = {
+    // compare with the approach followed in repos and services
+    name: 'robotTypeSchema',
+    schema: '../persistence/schemas/robotTypeSchema',
+  };
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path
@@ -37,6 +42,16 @@ export default async ({ expressApp }) => {
   const roleRepo = {
     name: config.repos.role.name,
     path: config.repos.role.path
+  }
+
+  const robotTypeController = {
+    name: config.controllers.robotType.name,
+    path: config.controllers.robotType.path
+  }
+
+  const robotTypeRepo = {
+    name: config.repos.robotType.name,
+    path: config.repos.robotType.path
   }
 
   const buildingController = {
@@ -59,6 +74,11 @@ export default async ({ expressApp }) => {
     path: config.services.role.path
   }
 
+  const robotTypeService = {
+    name: config.services.robotType.name,
+    path: config.services.robotType.path
+  }
+
   const buildingService = {
     name: config.services.building.name,
     path: config.services.building.path
@@ -69,19 +89,23 @@ export default async ({ expressApp }) => {
     schemas: [
       userSchema,
       roleSchema,
-      buildingSchema
+      buildingSchema,
+      robotTypeSchema
     ],
     controllers: [
       roleController,
+      robotTypeController,
       buildingController
     ],
     repos: [
       roleRepo,
       userRepo,
-      buildingRepo
+      buildingRepo,
+      robotTypeRepo
     ],
     services: [
       roleService,
+      robotTypeService,
       buildingService
     ]
   });
