@@ -39,7 +39,7 @@ export class Building extends AggregateRoot<BuildingProps>{
     }
 
     get width(): number {   
-        return this.props.length;
+        return this.props.width;
     }
     
     set width(value: number){
@@ -85,8 +85,8 @@ export class Building extends AggregateRoot<BuildingProps>{
                   code: bCode.getValue().code, 
                   letter: bLetter.getValue().letter, 
                   description: bDescription.getValue().description, 
-                  width: buildingDTO.width, 
-                  length:buildingDTO.length
+                  length:buildingDTO.length,
+                  width: buildingDTO.width
               }, id);
               return Result.ok<Building>(building);   
           }
