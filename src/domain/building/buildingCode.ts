@@ -21,7 +21,7 @@ export class BuildingCode extends ValueObject<BuildingCodeProps> {
  
 
     private static validateCode(code: string): Result<string> {
-        const regex: RegExp = new RegExp("^(?!.*  )[a-zA-Z0-9 ]{1,5}");
+        const regex: RegExp = /^[A-Za-z0-9]\d{4}$/;
         if (code == null) {
             return Result.fail<string>("Code can't be empty");
         }

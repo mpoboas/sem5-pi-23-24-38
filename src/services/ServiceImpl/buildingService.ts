@@ -76,11 +76,8 @@ export default class BuildingService implements IBuildingService {
             const buildings = await this.buildingRepo.getAllBuildings();
 
             return buildings.map((building) => {
-                return {
-                    id: building.id,
-                    letter: building.letter,
-                    description: building.description,
-                };
+                const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+                return buildingDTOResult;
             });
         } catch (error) {
             throw new Error(`Error fetching buildings: ${error.message}`);

@@ -67,17 +67,16 @@ export default class BuildingRepo implements IBuildingRepo {
 
     public async getAllBuildings(): Promise<Building[]> {
         try {
-            // Use Mongoose to fetch all building documents from the database
-            const buildings = await this.buildingSchema.find().exec();
+            const buildingDocuments = await this.buildingSchema.find().exec();
 
-            if (!buildings) {
-                // Handle the case where no buildings are found, e.g., return an empty array
+            if (!buildingDocuments) {
                 return [];
             }
 
+            const buildings = buildingDocuments.map((buildingDocument) => BuildingMap.toDomain(buildingDocument));
+
             return buildings;
         } catch (error) {
-            // Handle any database-related errors here
             throw new Error(`Error fetching buildings: ${error.message}`);
         }
     }
