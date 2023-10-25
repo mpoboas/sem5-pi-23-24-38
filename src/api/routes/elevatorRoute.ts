@@ -23,4 +23,15 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.createElevator(req, res, next) );
 
+    route.put('',
+        celebrate({
+            body: Joi.object({
+                id: Joi.string().required(),
+                x: Joi.number().required(),
+                y: Joi.number().required(),
+                buildingId: Joi.string().required()            
+            })
+        }),
+        (req, res, next) => ctrl.updateElevator(req, res, next) );
+
 };
