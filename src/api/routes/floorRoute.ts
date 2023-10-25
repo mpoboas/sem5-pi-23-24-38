@@ -24,4 +24,16 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.createFloor(req, res, next) );
 
+    route.put('',
+        celebrate({
+            body: Joi.object({
+                id: Joi.string().required(),
+                floorNumber: Joi.number().required(),
+                length: Joi.number().required(),
+                width: Joi.number().required(),
+                description: Joi.string().required()
+            })
+        }),
+        (req, res, next) => ctrl.updateFloor(req, res, next) );
+
 };
