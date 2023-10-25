@@ -73,21 +73,16 @@ export default class BuildingService implements IBuildingService {
 
     public async getAllBuildings(): Promise<IBuildingDTO[]> {
         try {
-            // Use the buildingRepo to fetch all building data
             const buildings = await this.buildingRepo.getAllBuildings();
 
-            // Map the retrieved building data to DTO objects if needed
             return buildings.map((building) => {
                 return {
-                    // Map the properties as needed, e.g., building.name, building.description, etc.
                     id: building.id,
-                    name: building.name,
+                    letter: building.letter,
                     description: building.description,
-                    // Include other properties
                 };
             });
         } catch (error) {
-            // Handle any errors that occur during the retrieval
             throw new Error(`Error fetching buildings: ${error.message}`);
         }
     }
