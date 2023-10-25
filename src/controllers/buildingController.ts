@@ -41,4 +41,14 @@ export default class BuildingController implements IBuildingController /* TODO: 
             return next(e);
         }
     }
+
+    public async listAllBuildings(req: Request, res: Response, next: NextFunction) {
+        try {
+            const buildings = await this.buildingServiceInstance.getAllBuildings();
+            return res.json(buildings).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
 }

@@ -37,4 +37,6 @@ export default (app: Router) => {
             })
         }),
         (req, res, next) => ctrl.updateBuilding(req, res, next) );
+
+    route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next) );
 };
