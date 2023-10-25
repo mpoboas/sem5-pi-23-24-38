@@ -12,6 +12,7 @@ import { IRobotTypePersistence } from '../dataschema/IRobotTypePersistence';
 export default class RobotTypeRepo implements IRobotTypeRepo {
     private models: any;
 
+
     constructor(@Inject('robotTypeSchema') private robotTypeSchema: Model<IRobotTypePersistence & Document>) {}
 
     private createBaseQuery(): any {
@@ -43,6 +44,7 @@ export default class RobotTypeRepo implements IRobotTypeRepo {
                 return RobotTypeMap.toDomain(robotTypeCreated);
             } else {
                 robotTypeDocument.name = robotType.name;
+                robotTypeDocument.tasks = robotType.tasks;
                 await robotTypeDocument.save();
 
                 return robotType;

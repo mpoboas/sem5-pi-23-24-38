@@ -5,9 +5,11 @@ import { Result } from '../../core/logic/Result';
 import { RobotTypeId } from './robotTypeId';
 
 import IRobotTypeDTO from '../../dto/IRobotTypeDTO';
+import { get } from 'lodash';
 
 interface RobotTypeProps {
     name: string;
+    tasks?: string[];
 }
 
 export class RobotType extends AggregateRoot<RobotTypeProps> {
@@ -23,20 +25,31 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         return this.props.name;
     }
 
+   
     set name(value: string) {
         this.props.name = value;
+    } 
+    
+    get tasks(): string[] {
+        return this.props.tasks;
     }
+
+    set tasks(value: string[]) {
+        this.props.tasks = value;
+    }
+
     private constructor(props: RobotTypeProps, id?: UniqueEntityID) {
         super(props, id);
     }
 
     public static create(robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
         const name = robotTypeDTO.name;
+        const tasks = robotTypeDTO.tasks;
 
         if (!!name === false || name.length === 0) {
             return Result.fail<RobotType>('Must provide a robot type name');
         } else {
-            const robotType = new RobotType({ name: name }, id);
+            const robotType = new RobotType({ name, tasks }, id);
             return Result.ok<RobotType>(robotType);
         }
     }
