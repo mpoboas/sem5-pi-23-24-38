@@ -6,6 +6,7 @@ import { RobotTypeId } from './robotTypeId';
 
 import IRobotTypeDTO from '../../dto/IRobotTypeDTO';
 import { get } from 'lodash';
+import { Guard } from '../../core/logic/Guard';
 
 interface RobotTypeProps {
     name: string;
@@ -42,7 +43,7 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         super(props, id);
     }
 
-    public static create(robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
+    /*public static create(robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
         const name = robotTypeDTO.name;
         const tasks = robotTypeDTO.tasks;
 
@@ -52,5 +53,26 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
             const robotType = new RobotType({ name, tasks }, id);
             return Result.ok<RobotType>(robotType);
         }
-    }
+    }*/
+    
+    public static create (props: RobotTypeProps, id?: UniqueEntityID): Result<RobotType> {
+
+        const guardedProps = [
+          { argument: props.name, argumentName: 'name' },
+          { argument: props.tasks, argumentName: 'tasks' }
+        ];
+    
+        const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
+    
+        if (!guardResult.succeeded) {
+          return Result.fail<RobotType>(guardResult.message)
+        } else {
+          const robotType = new RobotType({
+            ...props
+          }, id);
+    
+          return Result.ok<RobotType>(robotType);
+        }
+      }
+
 }
