@@ -98,7 +98,6 @@ export class Building extends AggregateRoot<BuildingProps>{
                   width: buildingDTO.width,
                   floors: buildingDTO.floors,
               }, id);
-              console.log("\n\nbuilding.ts",building);
               return Result.ok<Building>(building);   
           }
     }

@@ -88,7 +88,11 @@ export default class BuildingService implements IBuildingService {
                 building.width = buildingDTO.width;
                 building.description = BuildingDescription.create(buildingDTO.description).getValue().description;
                 building.code = BuildingCode.create(buildingDTO.code).getValue().code;
-                
+
+                // if floorIds = 0 send empty list to remove existing floors
+                if (floorIds.length === 0) {
+                    building.floors = [];
+                }
                 
                 if (floorIds != null) {
                     const validFloorIds = await this.validateFloorIds(floorIds);
