@@ -57,4 +57,20 @@ export default class ElevatorRepo implements IElevatorRepo {
     public async findByDomainId(elevatorId: string): Promise<any> {
         return {id: elevatorId, x: 0, y: 0};
     }
+
+    public async getAllElevators(): Promise<Elevator[]> {
+      try{
+          const elevatorDocuments = await this.elevatorSchema.find().exec();
+
+          if (!elevatorDocuments) {
+            return [];
+          }
+
+          const elevators = elevatorDocuments.map((elevatorDocument) => ElevatorMap.toDomain(elevatorDocument));
+
+          return elevators;
+      } catch (error) {
+        throw new Error(`Error fetching elevator: ${error.message}`);
+      }
+    }
 } 

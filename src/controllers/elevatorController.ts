@@ -41,5 +41,15 @@ export default class ElevatorController implements IElevatorController /* TODO: 
         } catch (e) {
             return next(e);
         }
-    	}
+    }
+
+    public async listAllElevators(req: Request, res: Response, next: NextFunction) {
+        try {
+            const elevators = await this.elevatorServiceInstance.getAllElevators();
+            return res.json(elevators).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
 }

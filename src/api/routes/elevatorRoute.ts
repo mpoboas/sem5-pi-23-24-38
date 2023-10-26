@@ -34,4 +34,5 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.updateElevator(req, res, next) );
 
+    route.get('', (req, res, next) => ctrl.listAllElevators(req, res, next) );
 };
