@@ -31,7 +31,7 @@ export class FloorMap extends Mapper<Floor> {
 
   public static toPersistence(floor: Floor): any {
     return {
-        id: floor.id.toString(),
+        domainId: floor.id.toString(),
         floorNumber: floor.floorNumber,
         description: floor.description,
         length: floor.length,

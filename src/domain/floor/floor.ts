@@ -55,7 +55,7 @@ export class Floor extends AggregateRoot<FloorProps> {
         super(props, id);
     }
 
-    public static create(floorDTO: IFloorDTO, id?: UniqueEntityID): Result<Floor>{
+    /*public static create(floorDTO: IFloorDTO, id?: UniqueEntityID): Result<Floor>{
         const fNumber = floorDTO.floorNumber;
         const fDescription = FloorDescription.create(floorDTO.description);
         const fLength = floorDTO.length;
@@ -74,6 +74,28 @@ export class Floor extends AggregateRoot<FloorProps> {
         } else {
             const floor = new Floor({floorNumber: fNumber, description: fDescription.getValue().description, length: fLength, width: fWidth}, id);
             return Result.ok<Floor>(floor);
-        }
-    }  
+        }*/
+
+        public static create (props: FloorProps, id?: UniqueEntityID): Result<Floor> {
+
+            const guardedProps = [
+              { argument: props.floorNumber, argumentName: 'floorNumber' },
+              { argument: props.description, argumentName: 'description' },
+              { argument: props.length, argumentName: 'length' },
+              { argument: props.width, argumentName: 'width'}
+            ];
+        
+            const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
+        
+            if (!guardResult.succeeded) {
+              return Result.fail<Floor>(guardResult.message)
+            } else {
+              const building = new Floor({
+                ...props
+              }, id);
+        
+              return Result.ok<Floor>(building);
+            }
+          }
+      
 }

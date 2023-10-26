@@ -47,7 +47,7 @@ export default class FloorService implements IFloorService {
             const floorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;
             return Result.ok<IFloorDTO>(floorDTOResult);
         } catch (error) {
-            throw new Error(`Error creating building: ${error.message}`);
+            throw new Error(`Error creating floor: ${error.message}`);
         }
     }
 
@@ -56,7 +56,7 @@ export default class FloorService implements IFloorService {
             const floor = await this.floorRepo.findByDomainId(floorDTO.id);
 
             if (floor === null) {
-                return Result.fail<IFloorDTO>('Building not found');
+                return Result.fail<IFloorDTO>('Floor not found');
             } else {
                 floor.floorNumber = floorDTO.floorNumber;
                 floor.description = FloorDescription.create(floorDTO.description).getValue().description;
