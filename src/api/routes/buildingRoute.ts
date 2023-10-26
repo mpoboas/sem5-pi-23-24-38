@@ -20,7 +20,8 @@ export default (app: Router) => {
                 length: Joi.number().required(),
                 width: Joi.number().required(),
                 description: Joi.string(),
-                code: Joi.string().required()  
+                code: Joi.string().required(),
+                floors: Joi.array().items(Joi.string()).required()
             })
         }),
         (req, res, next) => ctrl.createBuilding(req, res, next) );
@@ -33,7 +34,8 @@ export default (app: Router) => {
                 length: Joi.number().required(),
                 width: Joi.number().required(),
                 description: Joi.string(),
-                code: Joi.string().required()           
+                code: Joi.string().required(),
+                floors: Joi.array().items(Joi.string()).required()
             })
         }),
         (req, res, next) => ctrl.updateBuilding(req, res, next) );

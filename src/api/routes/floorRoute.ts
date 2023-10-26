@@ -19,7 +19,8 @@ export default (app: Router) => {
                 floorNumber: Joi.number().required(),
                 length: Joi.number().required(),
                 width: Joi.number().required(),
-                description: Joi.string().required()
+                description: Joi.string().required(),
+                buildingId: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.createFloor(req, res, next) );
@@ -31,7 +32,8 @@ export default (app: Router) => {
                 floorNumber: Joi.number().required(),
                 length: Joi.number().required(),
                 width: Joi.number().required(),
-                description: Joi.string().required()
+                description: Joi.string().required(),
+                buildingId: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.updateFloor(req, res, next) );

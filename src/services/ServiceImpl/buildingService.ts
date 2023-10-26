@@ -9,10 +9,13 @@ import { BuildingMap } from '../../mappers/BuildingMap';
 import { BuildingLetter } from '../../domain/building/buildingLetter';
 import { BuildingDescription } from '../../domain/building/buildingDescription';
 import { BuildingCode } from '../../domain/building/buildingCode';
+import IFloorRepo from '../IRepos/IFloorRepo';
+import { Floor } from '../../domain/floor/floor';
 
 @Service()
 export default class BuildingService implements IBuildingService {
-    constructor(@Inject(config.repos.building.name) private buildingRepo: IBuildingRepo) {}
+    constructor(@Inject(config.repos.building.name) private buildingRepo: IBuildingRepo,
+                @Inject(config.repos.floor.name) private floorRepo: IFloorRepo) {}
 
     public async getBuilding(buildingId: string): Promise<Result<IBuildingDTO>> {
         try {
@@ -29,48 +32,88 @@ export default class BuildingService implements IBuildingService {
         }
     }
 
-    public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
+    
+    /**
+     * Creates a new building with the given data and associates it with the provided floor IDs.
+     * @param buildingDTO The data for the building to be created.
+     * @param floorIds The IDs of the floors to associate with the building.
+     * @returns A Promise that resolves to a Result containing either the created building's data or an error message.
+     */
+    public async createBuilding(buildingDTO: IBuildingDTO, floorIds: string[]): Promise<Result<IBuildingDTO>> {
         try {
             const buildingOrError = await Building.create(buildingDTO);
-
+    
             if (buildingOrError.isFailure) {
                 const errorMessage = buildingOrError.errorValue();
                 return Result.fail<IBuildingDTO>(errorMessage);
             }
-
+    
             const buildingResult = buildingOrError.getValue();
-
+            
+            // Associate floors with the building
+            if (floorIds != null) {
+                const validFloorIds = await this.validateFloorIds(floorIds);
+                
+                if (validFloorIds.length > 0) {
+                    buildingResult.floors = validFloorIds;
+                }
+            }
             await this.buildingRepo.save(buildingResult);
-
+    
             const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
             return Result.ok<IBuildingDTO>(buildingDTOResult);
         } catch (error) {
             throw new Error(`Error creating building: ${error.message}`);
         }
     }
-
-    public async updateBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
+    
+    /**
+     * Updates a building and its associated floors.
+     * @param buildingDTO - The building data transfer object to update.
+     * @param floorIds - An array of floor IDs to associate with the building.
+     * @returns A promise that resolves to a Result object containing the updated building data transfer object.
+     * If the building is not found, the promise resolves to a failed Result object with an error message.
+     * If an error occurs during the update, the promise is rejected with the error.
+     */
+    public async updateBuilding(buildingDTO: IBuildingDTO, floorIds: string[]): Promise<Result<IBuildingDTO>> {
         try {
             const building = await this.buildingRepo.findByDomainId(buildingDTO.id);
-
+    
             if (building === null) {
                 return Result.fail<IBuildingDTO>('Building not found');
             } else {
+                // Update building properties as before
                 building.letter = BuildingLetter.create(buildingDTO.letter).getValue().letter;
                 building.length = buildingDTO.length;
                 building.width = buildingDTO.width;
                 building.description = BuildingDescription.create(buildingDTO.description).getValue().description;
                 building.code = BuildingCode.create(buildingDTO.code).getValue().code;
+                
+                
+                if (floorIds != null) {
+                    const validFloorIds = await this.validateFloorIds(floorIds);
+                    if (validFloorIds.length > 0) {
+                        building.floors = validFloorIds;
+                    }
+                }
+                
+                // Save the building and associated floors
                 await this.buildingRepo.save(building);
-
+    
                 const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
                 return Result.ok<IBuildingDTO>(buildingDTOResult);
             }
-        } catch (e) {
-            throw e;
+        } catch (error) {
+            throw new Error(`Error updating building: ${error.message}`);
         }
     }
+    
 
+    /**
+     * Retrieves all buildings from the database and returns them as an array of building DTOs.
+     * @returns {Promise<IBuildingDTO[]>} A promise that resolves to an array of building DTOs.
+     * @throws {Error} If there was an error fetching the buildings from the database.
+     */
     public async getAllBuildings(): Promise<IBuildingDTO[]> {
         try {
             const buildings = await this.buildingRepo.getAllBuildings();
@@ -83,4 +126,30 @@ export default class BuildingService implements IBuildingService {
             throw new Error(`Error fetching buildings: ${error.message}`);
         }
     }
+
+    /**
+     * Validates and filters an array of floor IDs.
+     * @param floorIds - An array of floor IDs to be validated and filtered.
+     * @returns An array of valid floor IDs.
+     */
+    public async validateFloorIds(floorIds: string[]): Promise<string[]> {
+        const validFloorIds: string[] = [];
+
+        for (const floorId of floorIds) {
+            try {
+                // Check if the floorId is valid/exists
+                const isValid = await this.floorRepo.findByDomainId(floorId);
+
+                if (isValid != null) {
+                    validFloorIds.push(floorId);
+                } else {
+                    throw new Error(`${floorId} is not a valid floor ID.`);
+                }
+            } catch (error) {
+                throw new Error(`Error validating floor ID: ${error.message}`);
+            }
+        }
+        return validFloorIds;
+    }
+
 }

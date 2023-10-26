@@ -2,9 +2,10 @@ import { Result } from '../../core/logic/Result';
 import IBuildingDTO from '../../dto/IBuildingDTO';
 
 export default interface IBuildingService {
-  createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>>;
-  updateBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>>;
+  createBuilding(buildingDTO: IBuildingDTO, floors: string[]): Promise<Result<IBuildingDTO>>;
+  updateBuilding(buildingDTO: IBuildingDTO, floors: string[]): Promise<Result<IBuildingDTO>>;
   getAllBuildings(): Promise<IBuildingDTO[]>;
+  validateFloorIds(floorIds: string[]): Promise<string[]>;
 
   getBuilding(buildingId: string): Promise<Result<IBuildingDTO>>;
 }

@@ -7,6 +7,7 @@ import IBuildingDTO from '../dto/IBuildingDTO';
 import { Building } from '../domain/building/building';
 
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
+import { floor } from 'lodash';
 
 export class BuildingMap extends Mapper<Building> {
   public static toDTO(building: Building): IBuildingDTO {
@@ -16,7 +17,8 @@ export class BuildingMap extends Mapper<Building> {
       length: building.length,
       width: building.width,
       description: building.description,
-      code: building.code
+      code: building.code,
+      floors: building.floors
     } as IBuildingDTO;
   }
 
@@ -35,7 +37,8 @@ export class BuildingMap extends Mapper<Building> {
       length: building.length,
       width: building.width,
       description: building.description,
-      code: building.code
+      code: building.code,
+      floors: building.floors
     };
   }
 }

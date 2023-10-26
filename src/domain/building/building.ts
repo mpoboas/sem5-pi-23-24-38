@@ -15,6 +15,7 @@ interface BuildingProps{
     width: number;
     description?: string;
     code: string;
+    floors: string[];
 }
 
 export class Building extends AggregateRoot<BuildingProps>{
@@ -62,6 +63,14 @@ export class Building extends AggregateRoot<BuildingProps>{
         this.props.code = value;
     }
 
+    get floors(): string[] {
+        return this.props.floors;
+      }
+    
+    set floors(value: string[]) {
+        this.props.floors = value;
+    }
+
     private constructor(props: BuildingProps, id?: UniqueEntityID){
         super(props, id);
     }
@@ -86,8 +95,10 @@ export class Building extends AggregateRoot<BuildingProps>{
                   letter: bLetter.getValue().letter, 
                   description: bDescription.getValue().description, 
                   length:buildingDTO.length,
-                  width: buildingDTO.width
+                  width: buildingDTO.width,
+                  floors: buildingDTO.floors,
               }, id);
+              console.log("\n\nbuilding.ts",building);
               return Result.ok<Building>(building);   
           }
     }

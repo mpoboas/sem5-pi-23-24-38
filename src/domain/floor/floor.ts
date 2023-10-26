@@ -11,6 +11,7 @@ interface FloorProps {
     description?: string;
     length: number;
     width: number;
+    buildingId: string
 }
 
 export class Floor extends AggregateRoot<FloorProps> {
@@ -51,6 +52,14 @@ export class Floor extends AggregateRoot<FloorProps> {
         this.props.width = value;
     }   
 
+    get buildingId(): string {
+        return this.props.buildingId;
+      }
+    
+    set buildingId(value: string) {
+        this.props.buildingId = value;
+    }
+
     private constructor(props: FloorProps, id?: UniqueEntityID){
         super(props, id);
     }
@@ -60,19 +69,21 @@ export class Floor extends AggregateRoot<FloorProps> {
         const fDescription = FloorDescription.create(floorDTO.description);
         const fLength = floorDTO.length;
         const fWidth = floorDTO.width;
+        const fBuildingId = floorDTO.buildingId;
   
         const guardedProps =[
             {argument: fNumber, argumentName: 'floorNumber'},
             {argument: fDescription, argumentName: 'description'},
             {argument: fLength, argumentName: 'length'},
-            {argument: fWidth, argumentName: 'width'}
+            {argument: fWidth, argumentName: 'width'},
+            {argument: fBuildingId, argumentName: 'buildingId'},
         ];
 
         const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
         if(!guardResult.succeeded){
             return Result.fail<Floor>(guardResult.message);
         } else {
-            const floor = new Floor({floorNumber: fNumber, description: fDescription.getValue().description, length: fLength, width: fWidth}, id);
+            const floor = new Floor({floorNumber: fNumber, description: fDescription.getValue().description, length: fLength, width: fWidth, buildingId: fBuildingId}, id);
             return Result.ok<Floor>(floor);
         }*/
 

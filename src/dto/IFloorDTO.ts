@@ -6,4 +6,5 @@ export default interface IFloorDTO {
     description?: string;
     length: number;
     width: number;
+    buildingId: string;
   }

@@ -47,6 +47,7 @@ export default class BuildingRepo implements IBuildingRepo {
                 buildingDocument.width = building.width;
                 buildingDocument.description = building.description;
                 buildingDocument.code = building.code;
+                buildingDocument.floors = building.floors;
                 await buildingDocument.save();
 
                 return building;

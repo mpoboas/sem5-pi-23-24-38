@@ -14,14 +14,18 @@ export default class BuildingController implements IBuildingController /* TODO: 
 
     public async createBuilding(req: Request, res: Response, next: NextFunction) {
         try {
-            const buildingOrError = (await this.buildingServiceInstance.createBuilding(req.body as IBuildingDTO)) as Result<IBuildingDTO>;
+            const buildingDTO = req.body as IBuildingDTO;
+            const floorIds = req.body.floors as string[];
+            
+            const buildingOrError = await this.buildingServiceInstance.createBuilding(buildingDTO, floorIds);
 
             if (buildingOrError.isFailure) {
                 return res.status(402).send();
             }
 
-            const buildingDTO = buildingOrError.getValue();
-            return res.json(buildingDTO).status(201);
+            const createdBuildingDTO = buildingOrError.getValue(); // Rename the variable
+
+            return res.json(createdBuildingDTO).status(201); // Rename the variable
         } catch (e) {
             return next(e);
         }
@@ -29,14 +33,18 @@ export default class BuildingController implements IBuildingController /* TODO: 
 
     public async updateBuilding(req: Request, res: Response, next: NextFunction) {
         try {
-            const buildingOrError = (await this.buildingServiceInstance.updateBuilding(req.body as IBuildingDTO)) as Result<IBuildingDTO>;
+            const buildingDTO = req.body as IBuildingDTO;
+            const floorIds = req.body.floors as string[]; // Add this line to extract floorIds
+            
+            const buildingOrError = await this.buildingServiceInstance.updateBuilding(buildingDTO, floorIds);
 
             if (buildingOrError.isFailure) {
                 return res.status(404).send();
             }
 
-            const buildingDTO = buildingOrError.getValue();
-            return res.status(201).json(buildingDTO);
+            const updatedBuildingDTO = buildingOrError.getValue(); // Rename the variable
+
+            return res.status(201).json(updatedBuildingDTO); // Rename the variable
         } catch (e) {
             return next(e);
         }

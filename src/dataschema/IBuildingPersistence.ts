@@ -11,4 +11,5 @@ export interface IBuildingPersistence{
     width: number;
     description: string;
     code: string;
+    floors: string[];
 }
