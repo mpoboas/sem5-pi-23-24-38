@@ -56,6 +56,10 @@ export default {
     floor: {
       name: 'FloorController',
       path: '../controllers/floorController',
+    },
+    elevator: {
+      name: 'ElevatorController',
+      path: '../controllers/elevatorController',
     }
   },
 
@@ -79,6 +83,10 @@ export default {
     floor: {
       name: 'FloorRepo',
       path: '../repos/floorRepo',
+    },
+    elevator: {
+      name: 'ElevatorRepo',
+      path: '../repos/elevatorRepo',
     }
   },
 
@@ -98,6 +106,10 @@ export default {
     floor: {
       name: 'FloorService',
       path: '../services/ServiceImpl/floorService',
+    },
+    elevator: {
+      name: 'ElevatorService',
+      path: '../services/ServiceImpl/elevatorService',
     }
   },
 };
