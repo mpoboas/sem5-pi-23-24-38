@@ -90,11 +90,11 @@ export class Floor extends AggregateRoot<FloorProps> {
             if (!guardResult.succeeded) {
               return Result.fail<Floor>(guardResult.message)
             } else {
-              const building = new Floor({
+              const floor = new Floor({
                 ...props
               }, id);
         
-              return Result.ok<Floor>(building);
+              return Result.ok<Floor>(floor);
             }
           }
       
