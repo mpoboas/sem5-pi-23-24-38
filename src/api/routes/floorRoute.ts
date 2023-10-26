@@ -11,7 +11,7 @@ const route = Router();
 export default (app: Router) => {
     app.use('/floors', route);
 
-    const ctrl = Container.get(config.controllers.building.name) as IFloorController;
+    const ctrl = Container.get(config.controllers.floor.name) as IFloorController;
 
     route.post('',
         celebrate({
