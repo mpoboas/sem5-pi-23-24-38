@@ -9,8 +9,9 @@ import { get } from 'lodash';
 import { Guard } from '../../core/logic/Guard';
 
 interface RobotTypeProps {
-    name: string;
     tasks?: string[];
+    brand: string;
+    model: string;
 }
 
 export class RobotType extends AggregateRoot<RobotTypeProps> {
@@ -22,15 +23,6 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         return new RobotTypeId(this.robotTypeId.toValue());
     }
 
-    get name(): string {
-        return this.props.name;
-    }
-
-   
-    set name(value: string) {
-        this.props.name = value;
-    } 
-    
     get tasks(): string[] {
         return this.props.tasks;
     }
@@ -39,27 +31,32 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         this.props.tasks = value;
     }
 
+    get brand(): string {
+        return this.props.brand;
+    }
+
+    set brand(value: string) {
+        this.props.brand = value;
+    }
+
+    get model(): string {
+        return this.props.model;
+    }
+
+    set model(value: string) {
+        this.props.model = value;
+    }
+
     private constructor(props: RobotTypeProps, id?: UniqueEntityID) {
         super(props, id);
     }
 
-    /*public static create(robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
-        const name = robotTypeDTO.name;
-        const tasks = robotTypeDTO.tasks;
-
-        if (!!name === false || name.length === 0) {
-            return Result.fail<RobotType>('Must provide a robot type name');
-        } else {
-            const robotType = new RobotType({ name, tasks }, id);
-            return Result.ok<RobotType>(robotType);
-        }
-    }*/
-    
     public static create (props: RobotTypeProps, id?: UniqueEntityID): Result<RobotType> {
 
         const guardedProps = [
-          { argument: props.name, argumentName: 'name' },
-          { argument: props.tasks, argumentName: 'tasks' }
+          { argument: props.tasks, argumentName: 'tasks' },
+          { argument: props.brand, argumentName: 'brand' },
+          { argument: props.model, argumentName: 'model' }
         ];
     
         const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

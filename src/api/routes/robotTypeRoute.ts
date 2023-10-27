@@ -16,7 +16,8 @@ export default (app: Router) => {
     route.post('',
         celebrate({
             body: Joi.object({
-                name: Joi.string().required(),
+                brand: Joi.string().required(),
+                model: Joi.string().required(),
                 tasks: Joi.array().items(Joi.string())
             })
         }),
@@ -26,7 +27,8 @@ export default (app: Router) => {
         celebrate({
             body: Joi.object({
                 id: Joi.string().required(),
-                name: Joi.string().required(),
+                brand: Joi.string().required(),
+                model: Joi.string().required(),
                 tasks: Joi.array().items(Joi.string())
             }),
         }),

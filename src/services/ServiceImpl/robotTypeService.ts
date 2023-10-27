@@ -26,6 +26,20 @@ export default class RobotTypeService implements IRobotTypeService {
         }
     }
 
+    public async verifyRobotTypeExists(robotTypeId: string): Promise<Result<boolean>> {
+        try {
+            const robotType = await this.robotTypeRepo.findByDomainId(robotTypeId);
+
+            if (robotType === null) {
+                return Result.fail<boolean>(false);
+            } else {
+                return Result.ok<boolean>(true);
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
     public async createRobotType(robotTypeDTO: IRobotTypeDTO): Promise<Result<IRobotTypeDTO>> {
         try {
             const robotTypeOrError = await RobotType.create(robotTypeDTO);
@@ -52,7 +66,8 @@ export default class RobotTypeService implements IRobotTypeService {
             if (robotType === null) {
                 return Result.fail<IRobotTypeDTO>('Robot type not found');
             } else {
-                robotType.name = robotTypeDTO.name;
+                robotType.brand = robotTypeDTO.brand;
+                robotType.model = robotTypeDTO.model;
                 robotType.tasks = robotTypeDTO.tasks;
                 await this.robotTypeRepo.save(robotType);
 

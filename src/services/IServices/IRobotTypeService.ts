@@ -4,6 +4,7 @@ import IRobotTypeDTO from '../../dto/IRobotTypeDTO';
 export default interface IRobotTypeService {
     createRobotType(robotTypeDTO: IRobotTypeDTO): Promise<Result<IRobotTypeDTO>>;
     updateRobotType(robotTypeDTO: IRobotTypeDTO): Promise<Result<IRobotTypeDTO>>;
-
+    verifyRobotTypeExists(robotTypeId: string): Promise<Result<boolean>>;
     getRobotType(robotTypeId: string): Promise<Result<IRobotTypeDTO>>;
 }
+

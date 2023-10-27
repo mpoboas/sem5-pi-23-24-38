@@ -1,6 +1,6 @@
-
 export interface IRobotTypePersistence {
-    domainId: string;
-    name: string;
-    tasks?: string[];
-  }
+  domainId: string;
+  brand: string;
+  model: string;
+  tasks?: string[];
+}

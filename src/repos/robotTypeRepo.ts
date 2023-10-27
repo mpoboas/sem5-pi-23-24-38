@@ -43,10 +43,12 @@ export default class RobotTypeRepo implements IRobotTypeRepo {
 
                 return RobotTypeMap.toDomain(robotTypeCreated);
             } else {
-                robotTypeDocument.name = robotType.name;
+                robotTypeDocument.brand = robotType.brand;
+                robotTypeDocument.model = robotType.model;
                 robotTypeDocument.tasks = robotType.tasks;
                 await robotTypeDocument.save();
 
+                
                 return robotType;
             }
         } catch (err) {
