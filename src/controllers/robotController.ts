@@ -40,4 +40,13 @@ export default class RobotController implements IRobotController /* TODO: extend
             return next(e);
         }
     }
+
+    public async listAllRobots(req: Request, res: Response, next: NextFunction){
+        try {
+            const robots = await this.robotServiceInstance.getAllRobots();
+            return res.json(robots).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
 }

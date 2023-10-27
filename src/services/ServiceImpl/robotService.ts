@@ -70,5 +70,18 @@ export default class RobotService implements IRobotService {
             throw e;
         }
     }
+
+    public async getAllRobots(): Promise<IRobotDTO[]> {
+        try {
+            const robots = await this.robotRepo.getAllRobots();
+
+            return robots.map((robot) => {
+                const robotDTOResult = RobotMap.toDTO(robot) as IRobotDTO;
+                return robotDTOResult;
+            });
+        } catch (error) {
+            throw new Error(`Error fetching buildings: ${error.message}`);
+        }    
+    }
 }
 
