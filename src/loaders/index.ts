@@ -46,6 +46,12 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/elevatorSchema',
   };
 
+  const classroomSchema = {
+    // compare with the approach followed in repos and services
+    name: 'classroomSchema',
+    schema: '../persistence/schemas/classroomSchema',
+  };
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path
@@ -100,6 +106,16 @@ export default async ({ expressApp }) => {
     name: config.repos.elevator.name,
     path: config.repos.elevator.path
   };
+
+  const classroomController = {
+    name: config.controllers.classroom.name,
+    path: config.controllers.classroom.path
+  };
+
+  const classroomRepo = {
+    name: config.repos.classroom.name,
+    path: config.repos.classroom.path
+  };
   
   const roleService = {
     name: config.services.role.name,
@@ -124,6 +140,11 @@ export default async ({ expressApp }) => {
   const elevatorService = {
     name: config.services.elevator.name,
     path: config.services.elevator.path
+  };
+
+  const classroomService = {
+    name: config.services.classroom.name,
+    path: config.services.classroom.path
   };
 
   const robotSchema = {
@@ -156,7 +177,8 @@ export default async ({ expressApp }) => {
       robotTypeSchema,
       floorSchema,
       elevatorSchema,
-      robotSchema
+      robotSchema,
+      classroomSchema
     ],
     controllers: [
       roleController,
@@ -164,7 +186,8 @@ export default async ({ expressApp }) => {
       buildingController,
       floorController,
       elevatorController,
-      robotController
+      robotController,
+      classroomController
     ],
     repos: [
       roleRepo,
@@ -173,7 +196,8 @@ export default async ({ expressApp }) => {
       robotTypeRepo,
       floorRepo,
       elevatorRepo,
-      robotRepo
+      robotRepo,
+      classroomRepo
     ],
     services: [
       roleService,
@@ -181,7 +205,8 @@ export default async ({ expressApp }) => {
       buildingService,
       floorService,
       elevatorService,
-      robotService
+      robotService,
+      classroomService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
