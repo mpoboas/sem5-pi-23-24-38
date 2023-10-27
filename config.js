@@ -45,7 +45,7 @@ export default {
       name: 'RoleController',
       path: '../controllers/roleController',
     },
-    robotType: { // duplicated role changed to robotType
+    robotType: {
       name: 'RobotTypeController',
       path: '../controllers/robotTypeController',
     },
@@ -60,7 +60,11 @@ export default {
     elevator: {
       name: 'ElevatorController',
       path: '../controllers/elevatorController',
-    }
+    },
+    robot: {
+      name: 'RobotController',
+      path: '../controllers/robotController',
+    },
   },
 
   repos: {
@@ -68,7 +72,7 @@ export default {
       name: 'RoleRepo',
       path: '../repos/roleRepo',
     },
-    robotType: { // duplicated role changed to robotType
+    robotType: {
       name: 'RobotTypeRepo',
       path: '../repos/robotTypeRepo',
     },
@@ -87,7 +91,11 @@ export default {
     elevator: {
       name: 'ElevatorRepo',
       path: '../repos/elevatorRepo',
-    }
+    },
+    robot: {
+      name: 'RobotRepo',
+      path: '../repos/robotRepo',
+    },
   },
 
   services: {
@@ -95,7 +103,7 @@ export default {
       name: 'RoleService',
       path: '../services/ServiceImpl/roleService',
     },
-    robotType: { // duplicated role changed to robotType
+    robotType: {
       name: 'RobotTypeService',
       path: '../services/ServiceImpl/robotTypeService',
     },
@@ -110,6 +118,10 @@ export default {
     elevator: {
       name: 'ElevatorService',
       path: '../services/ServiceImpl/elevatorService',
-    }
+    },
+    robot: {
+      name: 'RobotService',
+      path: '../services/ServiceImpl/robotService',
+    },
   },
 };

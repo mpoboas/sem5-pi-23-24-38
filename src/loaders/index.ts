@@ -126,6 +126,26 @@ export default async ({ expressApp }) => {
     path: config.services.elevator.path
   };
 
+  const robotSchema = {
+    // compare with the approach followed in repos and services
+    name: 'robotSchema',
+    schema: '../persistence/schemas/robotSchema',
+  };
+
+  const robotController = {
+    name: config.controllers.robot.name,
+    path: config.controllers.robot.path
+  }
+
+  const robotRepo = {
+    name: config.repos.robot.name,
+    path: config.repos.robot.path
+  }
+
+  const robotService = {
+    name: config.services.robot.name,
+    path: config.services.robot.path
+  }
 
   await dependencyInjectorLoader({
     mongoConnection,
@@ -135,14 +155,16 @@ export default async ({ expressApp }) => {
       buildingSchema,
       robotTypeSchema,
       floorSchema,
-      elevatorSchema
+      elevatorSchema,
+      robotSchema
     ],
     controllers: [
       roleController,
       robotTypeController,
       buildingController,
       floorController,
-      elevatorController
+      elevatorController,
+      robotController
     ],
     repos: [
       roleRepo,
@@ -150,14 +172,16 @@ export default async ({ expressApp }) => {
       buildingRepo,
       robotTypeRepo,
       floorRepo,
-      elevatorRepo
+      elevatorRepo,
+      robotRepo
     ],
     services: [
       roleService,
       robotTypeService,
       buildingService,
       floorService,
-      elevatorService
+      elevatorService,
+      robotService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
