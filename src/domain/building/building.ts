@@ -44,7 +44,7 @@ export class Building extends AggregateRoot<BuildingProps>{
     }
     
     set width(value: number){
-        this.props.length = value;
+        this.props.width = value;
     }
 
     get description(): string {
