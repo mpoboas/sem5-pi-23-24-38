@@ -11,7 +11,7 @@ export class BuildingDescription extends ValueObject<BuildingDescriptionProps>{
         return this.props.description;
     }
 
-    set x (value: string) {
+    set description (value: string) {
         this.props.description = value;
     }
 

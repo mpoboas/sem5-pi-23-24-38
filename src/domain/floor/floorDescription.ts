@@ -11,7 +11,7 @@ export class FloorDescription extends ValueObject<FloorDescriptionProps>{
         return this.props.description;
     }
 
-    set x (value: string) {
+    set description (value: string) {
         this.props.description = value;
     }
 
