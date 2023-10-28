@@ -33,4 +33,18 @@ export default (app: Router) => {
             }),
         }),
         (req, res, next) => ctrl.updateTunnel(req, res, next) );
+
+    route.patch('/:id',
+        celebrate({
+                params: Joi.object({
+                    id: Joi.string().required()
+                }),
+                body: Joi.object({
+                    description: Joi.string(),
+                    floor1Id: Joi.string(),
+                    floor2Id: Joi.string()
+                }),
+            }),
+        (req, res, next) => ctrl.patchTunnel(req, res, next) );
+    
 };

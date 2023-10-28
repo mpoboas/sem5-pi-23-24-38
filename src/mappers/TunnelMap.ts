@@ -9,6 +9,7 @@ import { Tunnel } from '../domain/tunnel/tunnel';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import { Container } from 'typedi';
 import FloorRepo from '../repos/floorRepo';
+import { Floor } from '../domain/floor/floor';
 
 export class TunnelMap extends Mapper<Tunnel> {
     public static toDTO(tunnel: Tunnel): ITunnelDTO {
@@ -38,6 +39,15 @@ export class TunnelMap extends Mapper<Tunnel> {
             new UniqueEntityID(tunnelDTO.domainId));
         return tunnelOrError.isSuccess ? tunnelOrError.getValue() : null;
 
+    }
+    
+    public static async getFloor(floorId: string): Promise<Floor> {
+        const floorRepo = Container.get(FloorRepo);
+        const floor = await floorRepo.findByDomainId(floorId);
+        if (!floor) {
+            throw new ReferenceError("Floor not found");
+        }
+        return floor;
     }
 
     public static toPersistence(tunnel: Tunnel): any {

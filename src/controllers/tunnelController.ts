@@ -7,6 +7,8 @@ import ITunnelService from '../services/IServices/ITunnelService';
 import ITunnelDTO from '../dto/ITunnelDTO';
 
 import { Result } from '../core/logic/Result';
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
 
 @Service()
 export default class TunnelController implements ITunnelController /* TODO: extends ../core/infra/BaseController */ {
@@ -41,4 +43,21 @@ export default class TunnelController implements ITunnelController /* TODO: exte
             return next(e);
         }
     }
+    public async patchTunnel(req: Request, res: Response, next: NextFunction) {
+        try{
+            const tunnelId = req.params.id;
+            const tunnelUpdate: ITunnelDTO = req.body;
+
+            const existingTunnel = await this.tunnelServiceInstance.getTunnel(tunnelId);
+            if (!existingTunnel) {
+                return res.status(404).send();
+            }
+            const updatedTunnel = await this.tunnelServiceInstance.patchTunnel(tunnelId, tunnelUpdate);
+    
+            return res.status(200).json(updatedTunnel);
+        }catch(e){
+            return next(e);
+        }
+    }
+
 }

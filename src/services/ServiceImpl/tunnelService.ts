@@ -59,11 +59,20 @@ export default class TunnelService implements ITunnelService {
     public async updateTunnel(tunnelDTO: ITunnelDTO): Promise<Result<ITunnelDTO>> {
         try {
             const tunnel = await this.tunnelRepo.findByDomainId(tunnelDTO.id);
+            
 
             if (tunnel === null) {
                 return Result.fail<ITunnelDTO>('Tunnel not found');
             } else {
+                const floor1Exists = await this.floorService.verifyFloorExists(tunnelDTO.floor1Id);
+                const floor2Exists = await this.floorService.verifyFloorExists(tunnelDTO.floor2Id);
+            
+                if(!floor1Exists || !floor2Exists){
+                    return Result.fail<ITunnelDTO>('Floor not found');
+                }
                 tunnel.description = tunnelDTO.description;
+                tunnel.floor1 = await TunnelMap.getFloor(tunnelDTO.floor1Id);
+                tunnel.floor2 = await TunnelMap.getFloor(tunnelDTO.floor2Id);
                 await this.tunnelRepo.save(tunnel);
 
                 const tunnelDTOResult = TunnelMap.toDTO(tunnel) as ITunnelDTO;
@@ -72,5 +81,40 @@ export default class TunnelService implements ITunnelService {
         } catch (e) {
             throw e;
         }
+    }
+
+    public async patchTunnel(tunnelId: string, tunnelDTO: ITunnelDTO): Promise<Result<ITunnelDTO>> {
+        try {
+            const tunnel = await this.tunnelRepo.findByDomainId(tunnelId);
+
+            if (tunnel === null) {
+                return Result.fail<ITunnelDTO>('Tunnel not found');
+            } else {
+                if (tunnelDTO.description) {
+                    tunnel.description = tunnelDTO.description;
+                }
+                if (tunnelDTO.floor1Id) {
+                    const floor1Exists = await this.floorService.verifyFloorExists(tunnelDTO.floor1Id);
+                    if(!floor1Exists){
+                        return Result.fail<ITunnelDTO>('Floor not found');
+                    }
+                    tunnel.floor1 = await TunnelMap.getFloor(tunnelDTO.floor1Id);
+                }
+                if (tunnelDTO.floor2Id) {
+                    const floor2Exists = await this.floorService.verifyFloorExists(tunnelDTO.floor2Id);
+                    if(!floor2Exists){
+                        return Result.fail<ITunnelDTO>('Floor not found');
+                    }
+                    tunnel.floor2 = await TunnelMap.getFloor(tunnelDTO.floor2Id);
+                }
+                await this.tunnelRepo.save(tunnel);
+
+                const tunnelDTOResult = TunnelMap.toDTO(tunnel) as ITunnelDTO;
+                return Result.ok<ITunnelDTO>(tunnelDTOResult);
+            }
+        } catch (e) {
+            throw e;
+        }
+        
     }
 }
