@@ -71,6 +71,38 @@ export default class RobotService implements IRobotService {
         }
     }
 
+    public async patchRobot(robotId: string, robotUpdate: IRobotDTO): Promise<Result<IRobotDTO>> {
+        try {
+            const robot = await this.robotRepo.findByDomainId(robotId);
+
+            if (!robot) {
+                return Result.fail<IRobotDTO>('Robot not found');
+            } 
+
+            if (robotUpdate.nickname != null) {
+                robot.nickname = robotUpdate.nickname;
+            }
+            if (robotUpdate.description != null) {
+                robot.description = robotUpdate.description;
+            }
+            if (robotUpdate.serialNr != null) {
+                robot.serialNr = robotUpdate.serialNr;
+            }
+            if (robotUpdate.isActive != null) {
+                robot.isActive = robotUpdate.isActive;
+            }
+            /*if (robotUpdate.robotTypeId) {
+                robot.robotType = robotUpdate.robotTypeId;
+            }*/
+            await this.robotRepo.save(robot);
+
+            const robotDTOResult = RobotMap.toDTO(robot) as IRobotDTO;
+            return Result.ok<IRobotDTO>(robotDTOResult);
+        } catch (error) {
+            throw new Error(`Error patching robot: ${error.message}`);
+        }
+    }
+
     public async getAllRobots(): Promise<IRobotDTO[]> {
         try {
             const robots = await this.robotRepo.getAllRobots();

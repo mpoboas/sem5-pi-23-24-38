@@ -114,26 +114,24 @@ export default class BuildingService implements IBuildingService {
     public async patchBuilding(buildingId: string, buildingUpdate: IBuildingDTO): Promise<Result<IBuildingDTO>> {
         try {
             const building = await this.buildingRepo.findByDomainId(buildingId);
-            console.log("SERVICE!");
-            console.log(building);
     
             if (!building) {
                 return Result.fail<IBuildingDTO>('Building not found');
             }
     
-            if (buildingUpdate.letter) {
+            if (buildingUpdate.letter != null) {
                 building.letter = BuildingLetter.create(buildingUpdate.letter).getValue().letter;
             }
-            if (buildingUpdate.length) {
+            if (buildingUpdate.length != null) {
                 building.length = buildingUpdate.length;
             }
-            if (buildingUpdate.width) {
+            if (buildingUpdate.width != null) {
                 building.width = buildingUpdate.width;
             }
-            if (buildingUpdate.description) {
+            if (buildingUpdate.description != null) {
                 building.description = BuildingDescription.create(buildingUpdate.description).getValue().description;
             }
-            if (buildingUpdate.code) {
+            if (buildingUpdate.code != null) {
                 building.code = BuildingCode.create(buildingUpdate.code).getValue().code;
             }
     

@@ -41,6 +41,23 @@ export default class RobotController implements IRobotController /* TODO: extend
         }
     }
 
+    public async patchRobot(req: Request, res: Response, next: NextFunction) {
+        try {
+            const robotId = req.params.id;
+            const robotUpdate: IRobotDTO = req.body;
+
+            const existingRobot = await this.robotServiceInstance.getRobot(robotId);
+            if (!existingRobot) {
+                return res.status(404).send();
+            }
+            const updatedRobot = await this.robotServiceInstance.patchRobot(robotId, robotUpdate);
+    
+            return res.status(200).json(updatedRobot);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
     public async listAllRobots(req: Request, res: Response, next: NextFunction){
         try {
             const robots = await this.robotServiceInstance.getAllRobots();
