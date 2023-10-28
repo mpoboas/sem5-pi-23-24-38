@@ -69,6 +69,10 @@ export default {
       name: 'ClassroomController',
       path: '../controllers/classroomController',
     },
+    tunnel: {
+      name: 'TunnelController',
+      path: '../controllers/tunnelController',
+    },
   },
 
   repos: {
@@ -104,6 +108,10 @@ export default {
       name: 'ClassroomRepo',
       path: '../repos/classroomRepo',
     },
+    tunnel: {
+      name: 'TunnelRepo',
+      path: '../repos/tunnelRepo',
+    },
   },
 
   services: {
@@ -134,6 +142,10 @@ export default {
     classroom: {
       name: 'ClassroomService',
       path: '../services/ServiceImpl/classroomService',
+    },
+    tunnel: {
+      name: 'TunnelService',
+      path: '../services/ServiceImpl/tunnelService',
     },
   },
 };

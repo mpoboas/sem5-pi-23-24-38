@@ -6,6 +6,7 @@ import Logger from './logger';
 import config from '../../config';
 
 
+
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
   Logger.info('✌️ DB loaded and connected!');
@@ -14,6 +15,12 @@ export default async ({ expressApp }) => {
     // compare with the approach followed in repos and servicesasdasdasd
     name: 'userSchema',
     schema: '../persistence/schemas/userSchema',
+  };
+
+  const tunnelSchema = {
+    // compare with the approach followed in repos and services
+    name: 'tunnelSchema',
+    schema: '../persistence/schemas/tunnelSchema',
   };
 
   const roleSchema = {
@@ -60,6 +67,16 @@ export default async ({ expressApp }) => {
   const roleRepo = {
     name: config.repos.role.name,
     path: config.repos.role.path
+  }
+
+  const tunnelController = {
+    name: config.controllers.tunnel.name,
+    path: config.controllers.tunnel.path
+  }
+
+  const tunnelRepo = {
+    name: config.repos.tunnel.name,
+    path: config.repos.tunnel.path
   }
 
   const robotTypeController = {
@@ -122,6 +139,11 @@ export default async ({ expressApp }) => {
     path: config.services.role.path
   }
 
+  const tunnelService = {
+    name: config.services.tunnel.name,
+    path: config.services.tunnel.path
+  }
+
   const robotTypeService = {
     name: config.services.robotType.name,
     path: config.services.robotType.path
@@ -178,7 +200,8 @@ export default async ({ expressApp }) => {
       floorSchema,
       elevatorSchema,
       robotSchema,
-      classroomSchema
+      classroomSchema,
+      tunnelSchema
     ],
     controllers: [
       roleController,
@@ -187,7 +210,8 @@ export default async ({ expressApp }) => {
       floorController,
       elevatorController,
       robotController,
-      classroomController
+      classroomController,
+      tunnelController
     ],
     repos: [
       roleRepo,
@@ -197,7 +221,8 @@ export default async ({ expressApp }) => {
       floorRepo,
       elevatorRepo,
       robotRepo,
-      classroomRepo
+      classroomRepo,
+      tunnelRepo
     ],
     services: [
       roleService,
@@ -206,7 +231,8 @@ export default async ({ expressApp }) => {
       floorService,
       elevatorService,
       robotService,
-      classroomService
+      classroomService,
+      tunnelService
     ]
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

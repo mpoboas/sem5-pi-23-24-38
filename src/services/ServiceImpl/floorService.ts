@@ -71,4 +71,20 @@ export default class FloorService implements IFloorService {
             throw e;
         }
     }
+
+    public async verifyFloorExists(floorId: string): Promise<Result<boolean>> {
+        try {
+            const floor = await this.floorRepo.findByDomainId(floorId);
+
+            if (floor === null) {
+                return Result.fail<boolean>(false);
+            } else {
+                return Result.ok<boolean>(true);
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
+
 }

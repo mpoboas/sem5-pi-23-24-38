@@ -30,7 +30,7 @@ export default class RobotService implements IRobotService {
 
     public async createRobot(robotDTO: IRobotDTO): Promise<Result<IRobotDTO>> {
         try {
-            const robotTypeExists = await this.robotTypeService.verifyRobotTypeExists(robotDTO.robotTypeId);
+            const robotTypeExists = this.robotTypeService.verifyRobotTypeExists(robotDTO.robotTypeId);
             if(!robotTypeExists){
                 return Result.fail<IRobotDTO>('robotype not found');
             }

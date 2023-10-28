@@ -8,6 +8,7 @@ import floor from './routes/floorRoute';
 import elevator from './routes/elevatorRoute';
 import robot from './routes/robotRoute';
 import classroom from './routes/classroomRoute';
+import tunnel from './routes/tunnelRoute';
 
 export default () => {
 	const app = Router();
@@ -21,6 +22,7 @@ export default () => {
 	floor(app);
 	elevator(app);
 	classroom(app);
+	tunnel(app);
 	
 	return app
 }
