@@ -65,6 +65,10 @@ export default {
       name: 'RobotController',
       path: '../controllers/robotController',
     },
+    classroom: {
+      name: 'ClassroomController',
+      path: '../controllers/classroomController',
+    },
   },
 
   repos: {
@@ -96,6 +100,10 @@ export default {
       name: 'RobotRepo',
       path: '../repos/robotRepo',
     },
+    classroom: {
+      name: 'ClassroomRepo',
+      path: '../repos/classroomRepo',
+    },
   },
 
   services: {
@@ -122,6 +130,10 @@ export default {
     robot: {
       name: 'RobotService',
       path: '../services/ServiceImpl/robotService',
+    },
+    classroom: {
+      name: 'ClassroomService',
+      path: '../services/ServiceImpl/classroomService',
     },
   },
 };
