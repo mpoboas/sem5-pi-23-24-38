@@ -101,7 +101,6 @@ export default class BuildingService implements IBuildingService {
                     }
                 }
                 
-                // Save the building and associated floors
                 await this.buildingRepo.save(building);
     
                 const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
@@ -109,6 +108,47 @@ export default class BuildingService implements IBuildingService {
             }
         } catch (error) {
             throw new Error(`Error updating building: ${error.message}`);
+        }
+    }
+    
+    public async patchBuilding(buildingId: string, buildingUpdate: IBuildingDTO): Promise<Result<IBuildingDTO>> {
+        try {
+            const building = await this.buildingRepo.findByDomainId(buildingId);
+            console.log("SERVICE!");
+            console.log(building);
+    
+            if (!building) {
+                return Result.fail<IBuildingDTO>('Building not found');
+            }
+    
+            if (buildingUpdate.letter) {
+                building.letter = BuildingLetter.create(buildingUpdate.letter).getValue().letter;
+            }
+            if (buildingUpdate.length) {
+                building.length = buildingUpdate.length;
+            }
+            if (buildingUpdate.width) {
+                building.width = buildingUpdate.width;
+            }
+            if (buildingUpdate.description) {
+                building.description = BuildingDescription.create(buildingUpdate.description).getValue().description;
+            }
+            if (buildingUpdate.code) {
+                building.code = BuildingCode.create(buildingUpdate.code).getValue().code;
+            }
+    
+            if (buildingUpdate.floors != null) {
+                const validFloorIds = await this.validateFloorIds(buildingUpdate.floors);
+    
+                building.floors = validFloorIds;
+            }
+    
+            await this.buildingRepo.save(building);
+    
+            const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+            return Result.ok<IBuildingDTO>(buildingDTOResult);
+        } catch (error) {
+            throw new Error(`Error patching building: ${error.message}`);
         }
     }
     

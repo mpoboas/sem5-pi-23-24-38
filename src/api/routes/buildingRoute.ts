@@ -40,5 +40,22 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.updateBuilding(req, res, next) );
 
+    
+    route.patch('/:id',
+        celebrate({
+            params: Joi.object({
+                id: Joi.string().required(),
+            }),
+            body: Joi.object({
+                letter: Joi.string(),
+                length: Joi.number(),
+                width: Joi.number(),
+                description: Joi.string(),
+                code: Joi.string(),
+                floors: Joi.array().items(Joi.string()),
+            }),
+        }),
+        (req, res, next) => ctrl.patchBuilding(req, res, next) );
+
     route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next) );
 };
