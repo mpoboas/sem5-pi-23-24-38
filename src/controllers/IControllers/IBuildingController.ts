@@ -5,4 +5,5 @@ export default interface IBuildingController  {
   updateBuilding(req: Request, res: Response, next: NextFunction);
   patchBuilding(req: Request, res: Response, next: NextFunction);
   listAllBuildings(req: Request, res: Response, next: NextFunction);
+  findBuildingByMinMaxFloors(req: Request, res: Response, next: NextFunction);
 }

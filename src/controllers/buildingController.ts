@@ -77,4 +77,34 @@ export default class BuildingController implements IBuildingController /* TODO: 
         }
     }
 
+    public async findBuildingByMinMaxFloors(req: Request, res: Response, next: NextFunction) {
+        try {
+          const range = req.params.range;
+          const splitrange = range.split('-');
+          console.log(splitrange);
+          const minFloors = Number(splitrange[0]);
+          console.log(minFloors);
+          const maxFloors = Number(splitrange[1]);
+          console.log(maxFloors);
+    
+          if(minFloors > maxFloors) {
+            console.log("minFloors must be less than maxFloors");
+            //400 -bad request (due to client error)
+            return res.status(400).json("minFloors must be less than maxFloors");
+          }
+    
+          const buildings = await this.buildingServiceInstance.findBuildingByMinMaxFloors(minFloors, maxFloors);
+    
+          if (buildings.isFailure) {
+            //500- The server has encountered a situation it does not know how to handle
+            return res.status(500).json(buildings.error);
+          }
+    
+          return res.json(buildings.getValue()).status(200);
+        } catch (e) {
+          console.log('Error in BuildingController.findByMinMaxFloors(): ', e);
+          return next(e);
+        }
+      }
+
 }

@@ -9,4 +9,5 @@ export default interface IBuildingService {
   validateFloorIds(floorIds: string[]): Promise<string[]>;
 
   getBuilding(buildingId: string): Promise<Result<IBuildingDTO>>;
+  findBuildingByMinMaxFloors(min: number, max: number): Promise<Result<Array<IBuildingDTO>>>;
 }
