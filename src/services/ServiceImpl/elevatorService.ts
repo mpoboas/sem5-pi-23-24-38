@@ -8,10 +8,26 @@ import { Result } from "../../core/logic/Result";
 import IElevatorDTO from "../../dto/IElevatorDTO";
 import { Elevator } from "../../domain/elevator/elevator";
 import { ElevatorMap } from "../../mappers/ElevatorMap";
+import { Coordinates } from "../../domain/coordinates";
 
 @Service()
 export default class ElevatorService implements IElevatorService {
     constructor(@Inject(config.repos.elevator.name) private elevatorRepo: IElevatorRepo, @Inject(config.repos.building.name) private buildingRepo: IBuildingRepo) {}
+    
+    public async getElevator(elevatorId: string): Promise<Result<IElevatorDTO>> {
+        try {
+            const elevator = await this.elevatorRepo.findByDomainId(elevatorId);
+
+            if (elevator === null) {
+                return Result.fail<IElevatorDTO>('Elevator not found');
+            } else {
+                const elevatorDTOResult = ElevatorMap.toDTO(elevator) as IElevatorDTO;
+                return Result.ok<IElevatorDTO>(elevatorDTOResult);
+            }
+        } catch (e) {
+            throw e;
+        }    
+    }
 
     public async createElevator(elevatorDTO: IElevatorDTO): Promise<Result<IElevatorDTO>> {        
         try {
@@ -66,6 +82,35 @@ export default class ElevatorService implements IElevatorService {
         } catch (e) {
             throw e;
         }
+    }
+
+    public async patchElevator(elevatorId: string, elevatorUpdate: IElevatorDTO): Promise<Result<IElevatorDTO>> {
+        try {
+            const elevator = await this.elevatorRepo.findByDomainId(elevatorId);
+
+            if (!elevator) {
+                return Result.fail<IElevatorDTO>('Elevator not found');
+            }
+    
+            if (elevatorUpdate.x != null) {
+                elevator.x = elevatorUpdate.x;
+            }
+
+            if (elevatorUpdate.y != null) {
+                elevator.y = elevatorUpdate.y;
+            }
+
+            if (elevatorUpdate.buildingId != null) {
+                elevator.buildingId = elevatorUpdate.buildingId;
+            }
+
+            await this.elevatorRepo.save(elevator);
+    
+            const elevatorDTOResult = ElevatorMap.toDTO(elevator) as IElevatorDTO;
+            return Result.ok<IElevatorDTO>(elevatorDTOResult);
+        } catch (error) {
+            throw new Error(`Error patching elevator: ${error.message}`);
+        }    
     }
 
     public async getAllElevators(): Promise<IElevatorDTO[]> {

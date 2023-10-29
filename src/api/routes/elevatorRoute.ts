@@ -34,5 +34,18 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.updateElevator(req, res, next) );
 
+    route.patch('/:id',
+        celebrate({
+            params: Joi.object({
+                id: Joi.string().required(),
+            }),
+            body: Joi.object({
+                x: Joi.number(),
+                y: Joi.number(),
+                buildingId: Joi.string()
+            }),
+        }),
+        (req, res, next) => ctrl.patchElevator(req, res, next) );
+
     route.get('', (req, res, next) => ctrl.listAllElevators(req, res, next) );
 };

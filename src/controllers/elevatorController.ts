@@ -43,6 +43,24 @@ export default class ElevatorController implements IElevatorController /* TODO: 
         }
     }
 
+    public async patchElevator(req: Request, res: Response, next: NextFunction) {
+        try {
+            const elevatorId = req.params.id;
+            const elevatorUpdate: IElevatorDTO = req.body;
+
+            //check if building exists
+            const existingElevator = await this.elevatorServiceInstance.getElevator(elevatorId);
+            if (!existingElevator) {
+                return res.status(404).send();
+            }
+            const updatedElevator = await this.elevatorServiceInstance.patchElevator(elevatorId, elevatorUpdate);
+
+            return res.status(200).json(updatedElevator);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
     public async listAllElevators(req: Request, res: Response, next: NextFunction) {
         try {
             const elevators = await this.elevatorServiceInstance.getAllElevators();
