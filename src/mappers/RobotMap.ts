@@ -56,4 +56,13 @@ export class RobotMap extends Mapper<Robot> {
             robotTypeId: robot.robotType.id.toValue(),
         };
     }
+
+    public static async getRobotType(robotTypeId: string): Promise<RobotType> {
+        const robotTypeRepo = Container.get(RobotTypeRepo);
+        const robotType = await robotTypeRepo.findByDomainId(robotTypeId);
+        if (!robotType) {
+            throw new ReferenceError("Robot Type not found");
+        }
+        return robotType;
+    }
 }

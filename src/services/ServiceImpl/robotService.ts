@@ -56,11 +56,15 @@ export default class RobotService implements IRobotService {
             if (robot === null) {
                 return Result.fail<IRobotDTO>('Robot type not found');
             } else {
+                const robotTypeExists = this.robotTypeService.verifyRobotTypeExists(robotDTO.robotTypeId);
+                if(!robotTypeExists){
+                    return Result.fail<IRobotDTO>('robotype not found');
+                }
+
                 robot.nickname = robotDTO.nickname;
                 robot.description = robotDTO.description;
                 robot.serialNr = robotDTO.serialNr;
-                
-                //srobot.robotType = robotDTO.robotTypeId;
+                robot.robotType = await RobotMap.getRobotType(robotDTO.robotTypeId);
                 await this.robotRepo.save(robot);
 
                 const robotDTOResult = RobotMap.toDTO(robot) as IRobotDTO;
