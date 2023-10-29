@@ -5,6 +5,8 @@ import config from '../../config';
 import IBuildingController from './IControllers/IBuildingController';
 import IBuildingService from '../services/IServices/IBuildingService';
 import IBuildingDTO from '../dto/IBuildingDTO';
+import FloorDTO from '../dto/IFloorDTO';
+import ClassroomDTO from '../dto/IClassroomDTO';
 
 import { Result } from '../core/logic/Result';
 
@@ -67,6 +69,50 @@ export default class BuildingController implements IBuildingController /* TODO: 
             return next(e);
         }
     }
+
+    /*public async loadFloors(req: Request, res: Response, next: NextFunction) {
+        const { floors } = req.body;
+        const buildingId = req.params.id;
+        const buildingDTO = await this.buildingServiceInstance.getBuilding(buildingId);
+        console.log('\x1b[31m%s\x1b[0m', '\nBuildingID: ' + buildingId);
+        console.log('\x1b[31m%s\x1b[0m', '\nThe floors: ' + floors);
+        let result = null;
+        let createdFloorsIds: string[] = [];
+    
+        // Use Promise.all to await all the async operations
+        const floorDTOs: FloorDTO[] = await Promise.all(floors.map(async (floor: any) => {
+            const { id, floorNumber, description, length, width, classrooms } = floor;
+            console.log('\x1b[31m%s\x1b[0m', '\nCurrent floor: ' + id);
+    
+            const classroomDTOs: ClassroomDTO[] = await Promise.all(classrooms.map(async (classroom: any) => {
+                const { id, name, description, category, length, width } = classroom;
+                console.log('\x1b[32m%s\x1b[0m', '\nCurrent classroom: ' + id);
+    
+                // Create a ClassroomDTO here or return the necessary data.
+                const classroomDTO: ClassroomDTO = {
+                    id,
+                    name,
+                    description,
+                    category,
+                    length,
+                    width,
+                };
+                return classroomDTO;
+            }));
+            
+            result = await this.buildingServiceInstance.loadFloors(buildingId, floor, classroomDTOs);
+            console.log('\x1b[32m%s\x1b[0m', '\nResult: ' + result);
+            createdFloorsIds.push(result.getValue().id);
+        }));
+    
+        const buildingOrError = await this.buildingServiceInstance.updateBuilding(buildingDTO, createdFloorsIds);
+    
+        if (buildingOrError.isSuccess) {
+            res.status(200).json({ message: 'Floors loaded successfully' });
+        } else {
+            res.status(400).json({ error: buildingOrError.error });
+        }
+    }*/
     
     public async listAllBuildings(req: Request, res: Response, next: NextFunction) {
         try {

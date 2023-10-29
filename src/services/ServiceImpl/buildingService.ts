@@ -9,7 +9,12 @@ import { BuildingMap } from '../../mappers/BuildingMap';
 import { BuildingLetter } from '../../domain/building/buildingLetter';
 import { BuildingDescription } from '../../domain/building/buildingDescription';
 import { BuildingCode } from '../../domain/building/buildingCode';
+import IClassroomDTO from '../../dto/IClassroomDTO';
+import { Classroom } from '../../domain/classroom/classroom';
 import IFloorRepo from '../IRepos/IFloorRepo';
+import IFloorService from '../IServices/IFloorService';
+import IClassroomRepo from '../IRepos/IClassroomRepo';
+import IClassroomService from '../IServices/IClassroomService';
 import { Floor } from '../../domain/floor/floor';
 import IFloorDTO from '../../dto/IFloorDTO';
 import { FloorMap } from '../../mappers/FloorMap';
@@ -34,7 +39,6 @@ export default class BuildingService implements IBuildingService {
         }
     }
 
-    
     /**
      * Creates a new building with the given data and associates it with the provided floor IDs.
      * @param buildingDTO The data for the building to be created.
@@ -152,6 +156,53 @@ export default class BuildingService implements IBuildingService {
         }
     }
     
+    /*public async loadFloors(buildingId: string, floor: IFloorDTO, classrooms: IClassroomDTO[]): Promise<Result<IFloorDTO>> {
+        try {
+            const building = await this.buildingRepo.findByDomainId(buildingId);
+            console.log('\x1b[33m%s\x1b[0m', "Found the building: ", building.id);
+            if (!building) {
+              return Result.fail<IFloorDTO>('Building not found');
+            }
+
+            for (const classroom of classrooms) {
+                console.log('\x1b[33m%s\x1b[0m', classroom);
+            }
+      
+            // Create classrooms
+            const createdClassrooms: IClassroomDTO[] = [];
+            let classroomResult = null as Result<IClassroomDTO>;
+            for (const classroomDTO of classrooms) {
+                console.log('\x1b[33m%s\x1b[0m', "Now going to create/update classroom: ", classroomDTO.id);
+                if(classroomDTO.id){
+                    console.log('\x1b[33m%s\x1b[0m', "Classroom already exists, now updating...");
+                    classroomResult = await this.classroomService.updateClassroom(classroomDTO);
+                } 
+                console.log('\x1b[33m%s\x1b[0m', "Classroom doesn't exist, now creating...");
+                classroomResult = await this.classroomService.createClassroom(classroomDTO);
+                
+            }
+            if (classroomResult.isFailure) {
+                console.log('\x1b[33m%s\x1b[0m', "Error creating classroom: ", classroomResult.error);
+                return Result.fail<IFloorDTO>(classroomResult.error);
+            }
+            console.log('\x1b[33m%s\x1b[0m', "Created classroom: ", classroomResult.getValue().id);
+            createdClassrooms.push(classroomResult.getValue());
+            
+      
+            // Create floor with associated classrooms
+            const floorClassroomIds = createdClassrooms.map((classroom) => classroom.id.toString());
+            const floorResult = await this.floorService.createFloor(floor, floorClassroomIds);
+            if (floorResult.isFailure) {
+              return Result.fail<IFloorDTO>(floorResult.error);
+            }
+            const createdFloor = floorResult.getValue();
+      
+            return Result.ok<IFloorDTO>(createdFloor);
+          } catch (error) {
+            throw new Error(`Error loading floors and classrooms: ${error.message}`);
+          }
+    }*/
+
 
     /**
      * Retrieves all buildings from the database and returns them as an array of building DTOs.

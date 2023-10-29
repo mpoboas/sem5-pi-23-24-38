@@ -26,6 +26,16 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.createBuilding(req, res, next) );
 
+    route.post('/upload/:id',
+        celebrate({
+            params: Joi.object({
+                id: Joi.string().required(),
+            }),
+            body: Joi.object().required(),
+        }),
+        (req, res, next) => ctrl.loadFloors(req, res, next)
+    );
+    
     route.put('',
         celebrate({
             body: Joi.object({
