@@ -61,4 +61,17 @@ export default class TunnelRepo implements ITunnelRepo {
             return TunnelMap.toDomain(tunnelRecord);
         } else return null;
     }
+    public async getAllTunnels(): Promise<Tunnel[]> {
+        try{
+            const tunnelRecords = await this.tunnelSchema.find().exec();
+            if(!tunnelRecords){
+                return [];
+            }
+            const tunnels = tunnelRecords.map((tunnel) => TunnelMap.toDomain(tunnel));
+            const tunnels2 = await Promise.all(tunnels);
+            return tunnels2;
+        }catch(e){
+            throw e;
+        }
+    }
 }

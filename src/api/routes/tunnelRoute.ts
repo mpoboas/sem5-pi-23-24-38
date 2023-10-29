@@ -46,5 +46,7 @@ export default (app: Router) => {
                 }),
             }),
         (req, res, next) => ctrl.patchTunnel(req, res, next) );
-    
+
+    route.get('',(req, res, next) => ctrl.listAllTunnels(req, res, next));
+    route.get('/:ids',(req,res,next)=> ctrl.listTunnels2B(req, res, next));
 };

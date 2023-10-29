@@ -7,6 +7,9 @@ import ITunnelService from '../IServices/ITunnelService';
 import { Result } from '../../core/logic/Result';
 import { TunnelMap } from '../../mappers/TunnelMap';
 import IFloorService from '../IServices/IFloorService';
+import { forEach } from 'lodash';
+import { FloorMap } from '../../mappers/FloorMap';
+import IFloorDTO from '../../dto/IFloorDTO';
 
 @Service()
 export default class TunnelService implements ITunnelService {
@@ -117,4 +120,74 @@ export default class TunnelService implements ITunnelService {
         }
         
     }
+    public async getAllTunnelsFloors(): Promise<IFloorDTO[]> {
+        try{
+            console.log("bomdia");
+            const tunnels = await this.tunnelRepo.getAllTunnels();
+            console.log(tunnels);
+            
+
+            const floor = tunnels.map( async (tunnel) => {
+                const Floor = await TunnelMap.getFloor(tunnel.floor1.id.toString())
+                return Floor}); 
+                
+            const floorv2 = tunnels.map( async (tunnel) => {
+                const Floor = await TunnelMap.getFloor(tunnel.floor2.id.toString())
+                return Floor}); 
+                    
+                
+            let floor2 = await Promise.all(floor);
+            const floor2v = await Promise.all(floorv2);
+            
+            
+            floor2v.forEach((floor) => { 
+                var a =false;
+                
+                floor2.forEach ((floorGang) => {
+                    if(floor.id.equals(floorGang.id)){
+                        a=true;
+                    }
+                });
+
+                if(!a){
+                    floor2.push(floor);
+                }
+                
+                
+            });
+            
+            console.log(floor2);
+            const floorDTOs = await Promise.all(floor2.map(FloorMap.toDTO));
+        
+            //const tunnelDTOs = await Promise.all(tunnels.map(TunnelMap.toDTO));
+            console.log(floorDTOs)
+            return floorDTOs;
+                
+        
+        }catch(e){
+            throw e;
+        }
+    }
+
+    public async getTunnels2B(id1 : string,id2: string): Promise<ITunnelDTO[]> {
+        try{
+
+            const tunnels = await this.tunnelRepo.getAllTunnels();
+            
+            const tunnels2 = tunnels.filter((tunnel) => {tunnel.floor1.id.toString() == id1 && tunnel.floor2.id.toString() == id2});
+
+
+
+            const tunnelDTOs = await Promise.all(tunnels2.map(TunnelMap.toDTO));
+            return tunnelDTOs;
+        }catch(e){
+            throw e;
+        }
+    }
+
+
+
+
+
+
 }
