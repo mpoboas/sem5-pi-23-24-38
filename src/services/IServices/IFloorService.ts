@@ -6,4 +6,5 @@ export default interface IFloorService {
   updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>>;
   verifyFloorExists(floorId: string): Promise<Result<boolean>>;
   getFloor(floorId: string): Promise<Result<IFloorDTO>>;
+  findFloorsByBuildingId(buildingCode: string): Result<IFloorDTO[]> | Promise<IFloorDTO[]>;
 }

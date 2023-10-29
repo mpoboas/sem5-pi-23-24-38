@@ -40,4 +40,14 @@ export default class FloorController implements IFloorController /* TODO: extend
             return next(e);
         }
     }
+
+    public async listAllFloors(req: Request, res: Response, next: NextFunction) {
+        try {
+            const floorOrError = await this.floorServiceInstance.findFloorsByBuildingId(req.params.buildingId) as Result<IFloorDTO[]>;
+            const floorsList = floorOrError.getValue();
+            return res.json(floorsList).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
 }

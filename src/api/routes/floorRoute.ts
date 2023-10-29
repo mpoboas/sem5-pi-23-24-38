@@ -38,4 +38,6 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.updateFloor(req, res, next) );
 
+        route.get('/:buildingId', (req, res, next) =>  ctrl.listAllFloors(req, res, next));
+
 };
