@@ -81,11 +81,8 @@ export default class BuildingController implements IBuildingController /* TODO: 
         try {
           const range = req.params.range;
           const splitrange = range.split('-');
-          console.log(splitrange);
           const minFloors = Number(splitrange[0]);
-          console.log(minFloors);
           const maxFloors = Number(splitrange[1]);
-          console.log(maxFloors);
     
           if(minFloors > maxFloors) {
             console.log("minFloors must be less than maxFloors");
