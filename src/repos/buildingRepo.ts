@@ -7,6 +7,8 @@ import { BuildingMap } from '../mappers/BuildingMap';
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IBuildingPersistence } from '../dataschema/IBuildingPersistence';
 import { BuildingId } from '../domain/building/buildingID';
+import IBuildingDTO from '../dto/IBuildingDTO';
+import { size } from 'lodash';
 
 @Service()
 export default class BuildingRepo implements IBuildingRepo {
@@ -81,4 +83,27 @@ export default class BuildingRepo implements IBuildingRepo {
             throw new Error(`Error fetching buildings: ${error.message}`);
         }
     }
+
+    public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<IBuildingDTO[]> {
+        try {
+            const query = {
+                floors: { $gte: minFloors, $lte: maxFloors }
+            };
+            const buildingDocuments = await this.buildingSchema.find(query as FilterQuery<IBuildingPersistence & Document>).exec();
+            const buildingArray: IBuildingDTO[] = [];
+
+            if (buildingDocuments == null) {
+                return [];
+            } else {
+                for (let i = 0; i < buildingDocuments.length; i++) {
+                    buildingArray[i] = BuildingMap.toDTO(BuildingMap.toDomain(buildingDocuments[i]));
+                }
+                return buildingArray;
+            }
+        } catch (error) {
+            console.log('Error in buildingRepo.findBuldingByMinMaxFloors(): ', error);
+            throw error;
+        }
+    }
+      
 }
