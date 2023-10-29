@@ -1,0 +1,11 @@
+@startuml
+participant "RobDroneGo UI" as UI
+participant "RobDroneGo" as API
+
+activate UI
+activate API
+UI -> API : 1 : .post(/x)
+API -> API : 1.1 : creates x object and the\n DTO saves it to the database
+API --> UI : 2 : response status
+
+@enduml

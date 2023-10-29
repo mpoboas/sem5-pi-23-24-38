@@ -1,0 +1,49 @@
+@startuml
+
+autonumber
+participant "RobDroneGo UI" as UI
+participant "RobDroneGo" as API
+participant ":xController" as XC
+participant ":xService" as XS
+participant ":xRepository" as XR
+participant ":xMapper" as XM
+participant ":xDTO" as DTO
+participant "domain:x" as X
+participant ":xSchema" as XSchema
+
+
+activate UI
+activate API
+UI -> API : .get(/x)
+API -> XC : getAll(req, res, next)
+activate XC
+XC -> XS : xs = getAll()
+activate XS
+XS -> XR : xs = getAll()
+activate XR
+XR -> XSchema : xRecord = find(query)
+activate XSchema
+XSchema --> XR : all x's
+deactivate XSchema
+loop
+XR -> XM : xArray = toDTO(xCreated)
+activate XM
+XM -> DTO
+activate DTO
+XM <-- DTO
+deactivate DTO
+XM -->XR
+deactivate XM
+
+end
+
+XR --> XS : xArray
+deactivate XR
+XS --> XC : xArray
+deactivate XS
+XC --> API : xArray and status 200
+deactivate XC
+API --> UI : xArray and status 200
+
+
+@enduml

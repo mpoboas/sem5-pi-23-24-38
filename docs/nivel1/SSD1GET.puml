@@ -1,0 +1,12 @@
+@startuml
+actor "Y" as OE
+
+activate OE
+OE -> ":UI" : 1 : requests all x's
+activate ":UI"
+":UI" --> OE : 1.1 : return JSON with x's
+deactivate ":UI"
+
+
+
+@enduml

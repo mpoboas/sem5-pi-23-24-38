@@ -1,0 +1,61 @@
+@startuml
+
+autonumber
+participant "RobDroneGo UI" as UI
+participant "RobDroneGo" as API
+participant ":xController" as XC
+participant ":xService" as XS
+participant ":xRepository" as XR
+participant ":xMapper" as XM
+participant ":xDTO" as DTO
+participant "domain:x" as X
+participant ":xSchema" as XSchema
+
+
+activate UI
+activate API
+UI -> API : .post(/x)
+API -> XC : createx(req, res, next)
+activate XC
+XC -> XS : xOrError = createx(req.Xody as xDTO)
+activate XS
+XS -> X : xOrError = create(xDTO)
+activate X
+X --> XS : x
+deactivate X
+XS -> XR : x = save(x)
+activate XR
+XR -> XM : rawx = toPersistence(x)
+activate XM
+XM --> XR : x form to save
+deactivate XM
+XR -> XSchema : xCreated = create(raw_x)
+activate XSchema
+XSchema --> XR : x saved
+deactivate XSchema
+deactivate XM
+XR -> XM : x = toDomain(xCreated)
+activate XM
+XM -> X : create(xCreated)
+activate X
+X --> XM : x
+deactivate X
+XM --> XR : x form to return
+deactivate XM
+XR --> XS : x
+deactivate XR
+XS -> XM : xDTOResult = toDTO(x)
+activate XM
+XM -> DTO : xDTO = toDTO(x)
+activate DTO
+DTO --> XM : xDTO
+deactivate DTO
+XM --> XS : xDTO
+deactivate XM
+XS --> XC : xDTO
+deactivate XS
+XC --> API : xDTO and status 201
+deactivate XC
+API --> UI : xDTO and status 201
+
+@enduml

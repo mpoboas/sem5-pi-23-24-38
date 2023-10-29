@@ -1,0 +1,16 @@
+@startuml
+actor "Y" as OE
+
+activate OE
+OE -> ":UI" : 1 : starts edition process
+activate ":UI"
+":UI" --> OE : 1.1 : requests data of x
+deactivate ":UI"
+OE -> ":UI" : 2 : inserts the data of x
+activate ":UI"
+":UI" --> OE : 2.1 : Shows data of the x
+
+
+deactivate ":UI"
+
+@enduml
