@@ -2,9 +2,9 @@ import { Building } from "../domain/building/building";
 
 export default interface IFloorDTO {
     id: string;
-    floorNumber: number;
+    floorNumber: string;
     description?: string;
     length: number;
     width: number;
-    buildingId: string;
-  }
+    classrooms: string[];
+}

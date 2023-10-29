@@ -7,11 +7,11 @@ import IFloorDTO from "../../dto/IFloorDTO";
 import { Guard } from "../../core/logic/Guard";
 
 interface FloorProps {
-    floorNumber: number;
+    floorNumber: string;
     description?: string;
     length: number;
     width: number;
-    buildingId: string
+    classrooms: string[];
 }
 
 export class Floor extends AggregateRoot<FloorProps> {
@@ -20,11 +20,11 @@ export class Floor extends AggregateRoot<FloorProps> {
     }
 
 
-    get floorNumber(): number{
+    get floorNumber(): string{
         return this.props.floorNumber;
     }
 
-    set floorNumber(value: number){
+    set floorNumber(value: string){
         this.props.floorNumber = value;
     }
 
@@ -52,12 +52,12 @@ export class Floor extends AggregateRoot<FloorProps> {
         this.props.width = value;
     }   
 
-    get buildingId(): string {
-        return this.props.buildingId;
+    get classrooms(): string[] {
+        return this.props.classrooms;
       }
     
-    set buildingId(value: string) {
-        this.props.buildingId = value;
+    set classrooms(value: string[]) {
+        this.props.classrooms = value;
     }
 
     private constructor(props: FloorProps, id?: UniqueEntityID){

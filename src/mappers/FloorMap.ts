@@ -11,11 +11,11 @@ export class FloorMap extends Mapper<Floor> {
   public static toDTO(floor : Floor): IFloorDTO {
     return {
       id: floor.id.toString(),
-      floorNumber: floor.floorNumber,
+      floorNumber: floor.floorNumber.toString(),
       description: floor.description.toString(),
       length: floor.length,
       width: floor.width,
-      buildingId: floor.buildingId.toString(),
+      classrooms: floor.classrooms,
     } as IFloorDTO;
   }
 
@@ -37,7 +37,7 @@ export class FloorMap extends Mapper<Floor> {
         description: floor.description,
         length: floor.length,
         width: floor.width,
-        buildingId: floor.buildingId.toString(),
+        classrooms: floor.classrooms,
     };
   }
 }

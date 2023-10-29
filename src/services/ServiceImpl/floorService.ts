@@ -7,12 +7,14 @@ import IFloorService from '../IServices/IFloorService';
 import { Result } from '../../core/logic/Result';
 import { FloorMap } from '../../mappers/FloorMap';
 import { FloorDescription } from '../../domain/floor/floorDescription';
+import IClassroomRepo from '../IRepos/IClassroomRepo';
 
 
 
 @Service()
 export default class FloorService implements IFloorService {
-    constructor(@Inject(config.repos.floor.name) private floorRepo: IFloorRepo) {}
+    constructor(@Inject(config.repos.floor.name) private floorRepo: IFloorRepo,
+                @Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo) {}
    
     public async getFloor(floorId: string): Promise<Result<IFloorDTO>> {
         try {
@@ -29,7 +31,7 @@ export default class FloorService implements IFloorService {
         } 
     }
 
-    public async createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
+    public async createFloor(floorDTO: IFloorDTO, classroomIds: string[]): Promise<Result<IFloorDTO>> {
         try {
 
             
@@ -42,6 +44,14 @@ export default class FloorService implements IFloorService {
 
             const floorResult = floorOrError.getValue();
 
+            if (classroomIds != null) {
+                const validClassroomIds = await this.validateClassroomIds(classroomIds);
+                
+                if (validClassroomIds.length > 0) {
+                    floorResult.classrooms = validClassroomIds;
+                }
+            }
+
             await this.floorRepo.save(floorResult);
 
             const floorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;
@@ -51,7 +61,7 @@ export default class FloorService implements IFloorService {
         }
     }
 
-    public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
+    public async updateFloor(floorDTO: IFloorDTO, classroomIds: string[]): Promise<Result<IFloorDTO>> {
         try {
             const floor = await this.floorRepo.findByDomainId(floorDTO.id);
 
@@ -62,6 +72,18 @@ export default class FloorService implements IFloorService {
                 floor.description = FloorDescription.create(floorDTO.description).getValue().description;
                 floor.length = floorDTO.length;
                 floor.width = floorDTO.width;
+
+                if (classroomIds.length === 0) {
+                    floor.classrooms = [];
+                }
+                
+                if (classroomIds != null) {
+                    const validClassroomIds = await this.validateClassroomIds(classroomIds);
+                    if (validClassroomIds.length > 0) {
+                        floor.classrooms = validClassroomIds;
+                    }
+                }
+
                 await this.floorRepo.save(floor);
 
                 const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
@@ -70,6 +92,61 @@ export default class FloorService implements IFloorService {
         } catch (e) {
             throw e;
         }
+    }
+
+    public async patchFloor(floorId: string, floorUpdate: IFloorDTO): Promise<Result<IFloorDTO>> {
+        try {
+            const floor = await this.floorRepo.findByDomainId(floorId);
+    
+            if (!floor) {
+                return Result.fail<IFloorDTO>('Floor not found');
+            }
+            
+            if (floorUpdate.floorNumber != null) {
+                floor.floorNumber = floorUpdate.floorNumber;
+            }
+            if (floorUpdate.description != null) {
+                floor.description = FloorDescription.create(floorUpdate.description).getValue().description;
+            }    
+            if (floorUpdate.length != null) {
+                floor.length = floorUpdate.length;
+            }
+            if (floorUpdate.width != null) {
+                floor.width = floorUpdate.width;
+            }
+            if (floorUpdate.classrooms != null) {
+                const validFloorIds = await this.validateClassroomIds(floorUpdate.classrooms);
+    
+                floor.classrooms = validFloorIds;
+            }
+    
+            await this.floorRepo.save(floor);
+    
+            const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
+            return Result.ok<IFloorDTO>(floorDTOResult);
+        } catch (error) {
+            throw new Error(`Error patching floor: ${error.message}`);
+        }
+    }
+    
+    public async validateClassroomIds(classroomIds: string[]): Promise<string[]> {
+        const validClassroomIds: string[] = [];
+
+        for (const classroomId of classroomIds) {
+            try {
+                // Check if the classroomId is valid/exists
+                const isValid = await this.classroomRepo.findByDomainId(classroomId);
+
+                if (isValid != null) {
+                    validClassroomIds.push(classroomId);
+                } else {
+                    throw new Error(`${classroomId} is not a valid classroom ID.`);
+                }
+            } catch (error) {
+                throw new Error(`Error validating classroom ID: ${error.message}`);
+            }
+        }
+        return validClassroomIds;
     }
 
     public async verifyFloorExists(floorId: string): Promise<Result<boolean>> {

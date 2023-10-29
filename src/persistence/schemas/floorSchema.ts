@@ -4,11 +4,11 @@ import mongoose from 'mongoose';
 const FloorSchema = new mongoose.Schema(
   {
     domainId: {type: String, unique: true},
-    floorNumber: {type: Number},
+    floorNumber: {type: String},
     description: {type: String},
     length: {type: Number},
     width: {type: Number},
-    buildingId: {type: String}
+    classrooms: [{ type: String }]
   },
   {
     timestamps: true

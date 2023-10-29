@@ -13,14 +13,17 @@ export default class FloorController implements IFloorController /* TODO: extend
 
     public async createFloor(req: Request, res: Response, next: NextFunction) {
         try {
-            const floorOrError = (await this.floorServiceInstance.createFloor(req.body as IFloorDTO)) as Result<IFloorDTO>;
+            const floorDTO = req.body as IFloorDTO;
+            const classroomIds = req.body.classrooms as string[];
+
+            const floorOrError = (await this.floorServiceInstance.createFloor(floorDTO, classroomIds)) as Result<IFloorDTO>;
 
             if (floorOrError.isFailure) {
                 return res.status(402).send();
             }
 
-            const floorDTO = floorOrError.getValue();
-            return res.json(floorDTO).status(201);
+            const createdFloorDTO = floorOrError.getValue();
+            return res.json(createdFloorDTO).status(201);
         } catch (e) {
             return next(e);
         }
@@ -28,14 +31,35 @@ export default class FloorController implements IFloorController /* TODO: extend
 
     public async updateFloor(req: Request, res: Response, next: NextFunction) {
         try {
-            const floorOrError = (await this.floorServiceInstance.updateFloor(req.body as IFloorDTO)) as Result<IFloorDTO>;
+            const floorDTO = req.body as IFloorDTO;
+            const classroomIds = req.body.classrooms as string[];
+
+            const floorOrError = (await this.floorServiceInstance.updateFloor(floorDTO, classroomIds)) as Result<IFloorDTO>;
 
             if (floorOrError.isFailure) {
                 return res.status(404).send();
             }
 
-            const floorDTO = floorOrError.getValue();
-            return res.status(201).json(floorDTO);
+            const createdFloorDTO = floorOrError.getValue();
+            return res.status(201).json(createdFloorDTO);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
+    public async patchFloor(req: Request, res: Response, next: NextFunction) {
+        try {
+            const floorId = req.params.id;
+            const floorUpdate: IFloorDTO = req.body;
+    
+            //check if building exists
+            const existingFloor = await this.floorServiceInstance.getFloor(floorId);
+            if (!existingFloor) {
+                return res.status(404).send();
+            }
+            const updatedFloor = await this.floorServiceInstance.patchFloor(floorId, floorUpdate);
+    
+            return res.status(200).json(updatedFloor);
         } catch (e) {
             return next(e);
         }
