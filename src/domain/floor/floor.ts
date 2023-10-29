@@ -98,6 +98,10 @@ export class Floor extends AggregateRoot<FloorProps> {
         
             const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
         
+            if(props.length < 0 || props.width < 0){
+            return Result.fail<Floor>('Invalid arguments: floorNumber, description, length, width');
+            }
+
             if (!guardResult.succeeded) {
               return Result.fail<Floor>(guardResult.message)
             } else {
