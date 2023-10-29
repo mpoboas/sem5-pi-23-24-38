@@ -22,8 +22,12 @@ import { FloorMap } from '../../mappers/FloorMap';
 @Service()
 export default class BuildingService implements IBuildingService {
     constructor(@Inject(config.repos.building.name) private buildingRepo: IBuildingRepo,
-                @Inject(config.repos.floor.name) private floorRepo: IFloorRepo) {}
+                @Inject(config.repos.floor.name) private floorRepo: IFloorRepo,
+                @Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo,
+                private floorService: IFloorService,
+                private classroomService: IClassroomService) {}
 
+    
     public async getBuilding(buildingId: string): Promise<Result<IBuildingDTO>> {
         try {
             const building = await this.buildingRepo.findByDomainId(buildingId);
