@@ -11,6 +11,8 @@ import { BuildingDescription } from '../../domain/building/buildingDescription';
 import { BuildingCode } from '../../domain/building/buildingCode';
 import IFloorRepo from '../IRepos/IFloorRepo';
 import { Floor } from '../../domain/floor/floor';
+import IFloorDTO from '../../dto/IFloorDTO';
+import { FloorMap } from '../../mappers/FloorMap';
 
 @Service()
 export default class BuildingService implements IBuildingService {
@@ -217,4 +219,30 @@ export default class BuildingService implements IBuildingService {
         }
       }
 
+
+      public async getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>> {
+        const floors: IFloorDTO[] = [];
+        try {
+            // lista com os id dos floors
+            const building = await this.buildingRepo.findByDomainId(buildingId);
+            const floorsIdList = building.floors;
+            if(floorsIdList === null) {
+                return Result.fail<IFloorDTO[]>("No floors found");
+            }
+            
+            for (let i=0; i< floorsIdList.length; i++) {
+                const floor = await this.floorRepo.findByDomainId(floorsIdList[i]);
+                console.log("floor before 'toDTO'", floor);
+                floors[i] = await (FloorMap.toDTO(floor) ) as IFloorDTO;
+            }
+
+            for(const floor of floors) {
+                console.log("floor after 'toDTO'", floor);
+            }
+
+            return Result.ok<IFloorDTO[]>(floors);
+        } catch (error) {
+            throw new Error(`Error listing floors: ${error.message}`);
+        }
+    }
 }

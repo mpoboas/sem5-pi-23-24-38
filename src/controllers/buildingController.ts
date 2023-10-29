@@ -107,4 +107,19 @@ export default class BuildingController implements IBuildingController /* TODO: 
         }
       }
 
+      public async listAllFloors(req: Request, res: Response, next: NextFunction) {
+        try {
+            const buildingId = req.params.id;
+            const floors = await this.buildingServiceInstance.getAllFloors(buildingId);
+            if (floors.isFailure) {
+                //500- The server has encountered a situation it does not know how to handle
+                return res.status(500).json(floors.error);
+              }
+            return res.json(floors.getValue()).status(200);
+        } catch (e) {
+            console.log('Error in BuildingController.listAllFloors(): ', e);
+          return next(e);
+        }
+    }
+
 }
