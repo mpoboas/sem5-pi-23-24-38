@@ -95,9 +95,9 @@ export default class RobotService implements IRobotService {
             if (robotUpdate.isActive != null) {
                 robot.isActive = robotUpdate.isActive;
             }
-            /*if (robotUpdate.robotTypeId) {
-                robot.robotType = robotUpdate.robotTypeId;
-            }*/
+            if (robotUpdate.robotTypeId) {
+                robot.robotType = await RobotMap.getRobotType(robotUpdate.robotTypeId);
+            }
             await this.robotRepo.save(robot);
 
             const robotDTOResult = RobotMap.toDTO(robot) as IRobotDTO;

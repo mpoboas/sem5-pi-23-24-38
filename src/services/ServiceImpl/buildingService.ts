@@ -52,7 +52,7 @@ export default class BuildingService implements IBuildingService {
             
             // Associate floors with the building
             if (floorIds != null) {
-                const validFloorIds = await this.validateFloorIds(floorIds);
+                const validFloorIds = await this.validateFloorIds(buildingDTO.id, floorIds);
                 
                 if (validFloorIds.length > 0) {
                     buildingResult.floors = validFloorIds;
@@ -95,7 +95,7 @@ export default class BuildingService implements IBuildingService {
                 }
                 
                 if (floorIds != null) {
-                    const validFloorIds = await this.validateFloorIds(floorIds);
+                    const validFloorIds = await this.validateFloorIds(buildingDTO.id, floorIds);
                     if (validFloorIds.length > 0) {
                         building.floors = validFloorIds;
                     }
@@ -136,7 +136,7 @@ export default class BuildingService implements IBuildingService {
             }
     
             if (buildingUpdate.floors != null) {
-                const validFloorIds = await this.validateFloorIds(buildingUpdate.floors);
+                const validFloorIds = await this.validateFloorIds(building.id.toString(), buildingUpdate.floors);
     
                 building.floors = validFloorIds;
             }
@@ -170,17 +170,25 @@ export default class BuildingService implements IBuildingService {
     }
 
     /**
-     * Validates and filters an array of floor IDs.
-     * @param floorIds - An array of floor IDs to be validated and filtered.
+     * Validates an array of floor IDs.
+     * @param floorIds - An array of floor IDs to be validated.
      * @returns An array of valid floor IDs.
      */
-    public async validateFloorIds(floorIds: string[]): Promise<string[]> {
+    public async validateFloorIds(buildingId: string, floorIds: string[]): Promise<string[]> {
         const validFloorIds: string[] = [];
 
         for (const floorId of floorIds) {
             try {
-                // Check if the floorId is valid/exists
+                // check if the floorId is valid/exists
                 const isValid = await this.floorRepo.findByDomainId(floorId);
+                
+                // check if floorId is already associated with another building
+                for (const floorId of floorIds) {
+                    const isAssociated = await this.buildingRepo.isFloorAssociated(buildingId, floorId);
+                    if (isAssociated) {
+                      throw new Error(`Floor ${floorId} is already associated with another building!`);
+                    }
+                }
 
                 if (isValid != null) {
                     validFloorIds.push(floorId);
@@ -196,21 +204,17 @@ export default class BuildingService implements IBuildingService {
 
     public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<Result<IBuildingDTO[]>> {
         try{
-
           const buildings = await this.buildingRepo.findBuildingByMinMaxFloors(minFloors, maxFloors);
         
-          console.log('buildings: ', buildings);
-          
         if (buildings.length == 0) {
           return Result.fail<IBuildingDTO[]>("No buildings found");
         }
         return Result.ok<IBuildingDTO[]>(buildings);
       
     
-      } catch (error) {
-        console.log('Error in buildingService.findBuldingByMinMaxFloors(): ', error);
-        throw error;
-      }
+        } catch (error) {
+            throw error;
+        }
       }
 
 }

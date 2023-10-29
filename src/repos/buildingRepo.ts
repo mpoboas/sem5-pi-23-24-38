@@ -13,8 +13,11 @@ import { size } from 'lodash';
 @Service()
 export default class BuildingRepo implements IBuildingRepo {
     private models: any;
+    private model: Model<IBuildingPersistence & Document>;
 
-    constructor(@Inject('buildingSchema') private buildingSchema: Model<IBuildingPersistence & Document>) {}
+    constructor(@Inject('buildingSchema') private buildingSchema: Model<IBuildingPersistence & Document>) {
+        this.model = buildingSchema;
+    }
 
     private createBaseQuery(): any {
         return {
@@ -58,6 +61,21 @@ export default class BuildingRepo implements IBuildingRepo {
             throw err;
         }
     }
+
+    
+    /**
+     * Checks if a floor is associated with a building.
+     * @param floorId - The ID of the floor to check.
+     * @returns A Promise that resolves to a boolean indicating whether the floor is associated with a building.
+     */
+    public async isFloorAssociated(buildingId: string, floorId: string): Promise<boolean> {
+        const building = await this.model.findOne({ floors: floorId });
+        if (!building) {
+            return false;
+        }
+        return building.domainId.toString() !== buildingId;; // allow the floor to be associated with the building if it is the same building
+      }
+      
 
     public async findByDomainId(buildingId: BuildingId | string): Promise<Building> {
         const query = { domainId: buildingId };
