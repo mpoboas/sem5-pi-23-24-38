@@ -52,7 +52,6 @@ export default class BuildingRepo implements IBuildingRepo {
                 buildingDocument.width = building.width;
                 buildingDocument.description = building.description;
                 buildingDocument.code = building.code;
-                buildingDocument.floors = building.floors;
                 await buildingDocument.save();
 
                 return building;
@@ -64,6 +63,7 @@ export default class BuildingRepo implements IBuildingRepo {
 
     
     /**
+     * TODO: This is now deprecated!!!
      * Checks if a floor is associated with a building.
      * @param floorId - The ID of the floor to check.
      * @returns A Promise that resolves to a boolean indicating whether the floor is associated with a building.
@@ -119,7 +119,6 @@ export default class BuildingRepo implements IBuildingRepo {
                 return buildingArray;
             }
         } catch (error) {
-            console.log('Error in buildingRepo.findBuldingByMinMaxFloors(): ', error);
             throw error;
         }
     }

@@ -18,7 +18,6 @@ export class BuildingMap extends Mapper<Building> {
       width: building.width,
       description: building.description,
       code: building.code,
-      floors: building.floors
     } as IBuildingDTO;
   }
 
@@ -38,7 +37,6 @@ export class BuildingMap extends Mapper<Building> {
       width: building.width,
       description: building.description,
       code: building.code,
-      floors: building.floors
     };
   }
 }

@@ -17,9 +17,8 @@ export default class BuildingController implements IBuildingController /* TODO: 
     public async createBuilding(req: Request, res: Response, next: NextFunction) {
         try {
             const buildingDTO = req.body as IBuildingDTO;
-            const floorIds = req.body.floors as string[];
             
-            const buildingOrError = await this.buildingServiceInstance.createBuilding(buildingDTO, floorIds);
+            const buildingOrError = await this.buildingServiceInstance.createBuilding(buildingDTO);
 
             if (buildingOrError.isFailure) {
                 return res.status(402).send();
@@ -36,9 +35,8 @@ export default class BuildingController implements IBuildingController /* TODO: 
     public async updateBuilding(req: Request, res: Response, next: NextFunction) {
         try {
             const buildingDTO = req.body as IBuildingDTO;
-            const floorIds = req.body.floors as string[]; // Add this line to extract floorIds
             
-            const buildingOrError = await this.buildingServiceInstance.updateBuilding(buildingDTO, floorIds);
+            const buildingOrError = await this.buildingServiceInstance.updateBuilding(buildingDTO);
 
             if (buildingOrError.isFailure) {
                 return res.status(404).send();
@@ -150,7 +148,7 @@ export default class BuildingController implements IBuildingController /* TODO: 
         }
       }
 
-      public async listAllFloors(req: Request, res: Response, next: NextFunction) {
+    /*public async listAllFloors(req: Request, res: Response, next: NextFunction) {
         try {
             const buildingId = req.params.id;
             const floors = await this.buildingServiceInstance.getAllFloors(buildingId);
@@ -163,6 +161,6 @@ export default class BuildingController implements IBuildingController /* TODO: 
             console.log('Error in BuildingController.listAllFloors(): ', e);
           return next(e);
         }
-    }
+    }*/
 
 }

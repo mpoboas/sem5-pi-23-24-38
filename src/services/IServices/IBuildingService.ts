@@ -4,8 +4,8 @@ import IClassroomDTO from '../../dto/IClassroomDTO';
 import IFloorDTO from '../../dto/IFloorDTO';
 
 export default interface IBuildingService {
-  createBuilding(buildingDTO: IBuildingDTO, floors: string[]): Promise<Result<IBuildingDTO>>;
-  updateBuilding(buildingDTO: IBuildingDTO, floors: string[]): Promise<Result<IBuildingDTO>>;
+  createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>>;
+  updateBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>>;
   patchBuilding(buildingId: string, buildingUpdate: IBuildingDTO): Promise<Result<IBuildingDTO>>;
   //loadFloors(buildingId: string, floor: IFloorDTO, classrooms: IClassroomDTO[]): Promise<Result<IFloorDTO>>;
   getAllBuildings(): Promise<IBuildingDTO[]>;
@@ -13,5 +13,5 @@ export default interface IBuildingService {
 
   getBuilding(buildingId: string): Promise<Result<IBuildingDTO>>;
   findBuildingByMinMaxFloors(min: number, max: number): Promise<Result<Array<IBuildingDTO>>>;
-  getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>>;
+  //getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>>;
 }

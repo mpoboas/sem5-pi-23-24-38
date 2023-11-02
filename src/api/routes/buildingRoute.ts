@@ -20,13 +20,12 @@ export default (app: Router) => {
                 length: Joi.number().required(),
                 width: Joi.number().required(),
                 description: Joi.string(),
-                code: Joi.string().required(),
-                floors: Joi.array().items(Joi.string()).required()
+                code: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.createBuilding(req, res, next) );
 
-    route.post('/upload/:id',
+    /*route.post('/upload/:id',
         celebrate({
             params: Joi.object({
                 id: Joi.string().required(),
@@ -34,7 +33,7 @@ export default (app: Router) => {
             body: Joi.object().required(),
         }),
         (req, res, next) => ctrl.loadFloors(req, res, next)
-    );
+    );*/
     
     route.put('',
         celebrate({
@@ -45,7 +44,6 @@ export default (app: Router) => {
                 width: Joi.number().required(),
                 description: Joi.string(),
                 code: Joi.string().required(),
-                floors: Joi.array().items(Joi.string()).required()
             })
         }),
         (req, res, next) => ctrl.updateBuilding(req, res, next) );
@@ -62,7 +60,6 @@ export default (app: Router) => {
                 width: Joi.number(),
                 description: Joi.string(),
                 code: Joi.string(),
-                floors: Joi.array().items(Joi.string()),
             }),
         }),
         (req, res, next) => ctrl.patchBuilding(req, res, next) );

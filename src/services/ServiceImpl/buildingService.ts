@@ -49,7 +49,7 @@ export default class BuildingService implements IBuildingService {
      * @param floorIds The IDs of the floors to associate with the building.
      * @returns A Promise that resolves to a Result containing either the created building's data or an error message.
      */
-    public async createBuilding(buildingDTO: IBuildingDTO, floorIds: string[]): Promise<Result<IBuildingDTO>> {
+    public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
         try {
             const buildingOrError = await Building.create(buildingDTO);
     
@@ -60,14 +60,6 @@ export default class BuildingService implements IBuildingService {
     
             const buildingResult = buildingOrError.getValue();
             
-            // Associate floors with the building
-            if (floorIds != null) {
-                const validFloorIds = await this.validateFloorIds(buildingDTO.id, floorIds);
-                
-                if (validFloorIds.length > 0) {
-                    buildingResult.floors = validFloorIds;
-                }
-            }
             await this.buildingRepo.save(buildingResult);
     
             const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
@@ -85,7 +77,7 @@ export default class BuildingService implements IBuildingService {
      * If the building is not found, the promise resolves to a failed Result object with an error message.
      * If an error occurs during the update, the promise is rejected with the error.
      */
-    public async updateBuilding(buildingDTO: IBuildingDTO, floorIds: string[]): Promise<Result<IBuildingDTO>> {
+    public async updateBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
         try {
             const building = await this.buildingRepo.findByDomainId(buildingDTO.id);
     
@@ -99,18 +91,6 @@ export default class BuildingService implements IBuildingService {
                 building.description = BuildingDescription.create(buildingDTO.description).getValue().description;
                 building.code = BuildingCode.create(buildingDTO.code).getValue().code;
 
-                // if floorIds = 0 send empty list to remove existing floors
-                if (floorIds.length === 0) {
-                    building.floors = [];
-                }
-                
-                if (floorIds != null) {
-                    const validFloorIds = await this.validateFloorIds(buildingDTO.id, floorIds);
-                    if (validFloorIds.length > 0) {
-                        building.floors = validFloorIds;
-                    }
-                }
-                
                 await this.buildingRepo.save(building);
     
                 const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
@@ -143,12 +123,6 @@ export default class BuildingService implements IBuildingService {
             }
             if (buildingUpdate.code != null) {
                 building.code = BuildingCode.create(buildingUpdate.code).getValue().code;
-            }
-    
-            if (buildingUpdate.floors != null) {
-                const validFloorIds = await this.validateFloorIds(building.id.toString(), buildingUpdate.floors);
-    
-                building.floors = validFloorIds;
             }
     
             await this.buildingRepo.save(building);
@@ -275,7 +249,7 @@ export default class BuildingService implements IBuildingService {
       }
 
 
-      public async getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>> {
+      /*public async getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>> {
         const floors: IFloorDTO[] = [];
         try {
             // lista com os id dos floors
@@ -299,5 +273,5 @@ export default class BuildingService implements IBuildingService {
         } catch (error) {
             throw new Error(`Error listing floors: ${error.message}`);
         }
-    }
+    }*/
 }
