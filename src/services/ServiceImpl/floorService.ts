@@ -8,13 +8,13 @@ import { Result } from '../../core/logic/Result';
 import { FloorMap } from '../../mappers/FloorMap';
 import { FloorDescription } from '../../domain/floor/floorDescription';
 import IClassroomRepo from '../IRepos/IClassroomRepo';
-
-
+import IBuildingRepo from '../IRepos/IBuildingRepo';
 
 @Service()
 export default class FloorService implements IFloorService {
     constructor(@Inject(config.repos.floor.name) private floorRepo: IFloorRepo,
-                @Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo) {}
+                @Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo,
+                @Inject(config.repos.building.name) private buildingRepo: IBuildingRepo) {}
    
     public async getFloor(floorId: string): Promise<Result<IFloorDTO>> {
         try {
@@ -31,9 +31,17 @@ export default class FloorService implements IFloorService {
         } 
     }
 
-    public async createFloor(floorDTO: IFloorDTO, classroomIds: string[]): Promise<Result<IFloorDTO>> {
+    public async createFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
         try {
-
+            const buildingId = floorDTO.buildingId;
+            if (buildingId == null) {
+                throw new Error('Building ID is required');
+            } 
+            const building = await this.buildingRepo.findByDomainId(buildingId);
+            if (building == null) {
+                throw new Error('Building not found');
+            }
+            console.log("buildingId found: " + buildingId);
             
             const floorOrError = await Floor.create(floorDTO);
 
@@ -44,14 +52,6 @@ export default class FloorService implements IFloorService {
 
             const floorResult = floorOrError.getValue();
 
-            if (classroomIds != null) {
-                const validClassroomIds = await this.validateClassroomIds(classroomIds);
-                
-                if (validClassroomIds.length > 0) {
-                    floorResult.classrooms = validClassroomIds;
-                }
-            }
-
             await this.floorRepo.save(floorResult);
 
             const floorDTOResult = FloorMap.toDTO(floorResult) as IFloorDTO;
@@ -61,7 +61,7 @@ export default class FloorService implements IFloorService {
         }
     }
 
-    public async updateFloor(floorDTO: IFloorDTO, classroomIds: string[]): Promise<Result<IFloorDTO>> {
+    public async updateFloor(floorDTO: IFloorDTO): Promise<Result<IFloorDTO>> {
         try {
             const floor = await this.floorRepo.findByDomainId(floorDTO.id);
 
@@ -72,16 +72,11 @@ export default class FloorService implements IFloorService {
                 floor.description = FloorDescription.create(floorDTO.description).getValue().description;
                 floor.length = floorDTO.length;
                 floor.width = floorDTO.width;
-
-                if (classroomIds.length === 0) {
-                    floor.classrooms = [];
-                }
-                
-                if (classroomIds != null) {
-                    const validClassroomIds = await this.validateClassroomIds(classroomIds);
-                    if (validClassroomIds.length > 0) {
-                        floor.classrooms = validClassroomIds;
-                    }
+                const building = await this.buildingRepo.findByDomainId(floorDTO.buildingId);
+                if (building == null) {
+                    throw new Error('Building not found');
+                } else {
+                floor.buildingId = floorDTO.buildingId;
                 }
 
                 await this.floorRepo.save(floor);
@@ -114,10 +109,13 @@ export default class FloorService implements IFloorService {
             if (floorUpdate.width != null) {
                 floor.width = floorUpdate.width;
             }
-            if (floorUpdate.classrooms != null) {
-                const validFloorIds = await this.validateClassroomIds(floorUpdate.classrooms);
-    
-                floor.classrooms = validFloorIds;
+            if (floorUpdate.buildingId != null) {
+                const building = await this.buildingRepo.findByDomainId(floorUpdate.buildingId);
+                if (building == null) {
+                    throw new Error('Building not found');
+                } else {
+                floor.buildingId = floorUpdate.buildingId;
+                }
             }
     
             await this.floorRepo.save(floor);

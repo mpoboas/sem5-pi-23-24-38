@@ -68,5 +68,5 @@ export default (app: Router) => {
 
     route.get('/floorRange/:range', (req, res, next) => ctrl.findBuildingByMinMaxFloors(req, res, next));
 
-    route.get('/:id', (req, res, next) =>  ctrl.listAllFloors(req, res, next));
+    //route.get('/:id', (req, res, next) =>  ctrl.listAllFloors(req, res, next));
 };

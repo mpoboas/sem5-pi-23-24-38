@@ -11,7 +11,7 @@ interface FloorProps {
     description?: string;
     length: number;
     width: number;
-    classrooms: string[];
+    buildingId: string;
 }
 
 export class Floor extends AggregateRoot<FloorProps> {
@@ -52,12 +52,12 @@ export class Floor extends AggregateRoot<FloorProps> {
         this.props.width = value;
     }   
 
-    get classrooms(): string[] {
-        return this.props.classrooms;
-      }
-    
-    set classrooms(value: string[]) {
-        this.props.classrooms = value;
+    get buildingId(): string{
+        return this.props.buildingId;
+    }
+
+    set buildingId(value: string){
+        this.props.buildingId = value;
     }
 
     private constructor(props: FloorProps, id?: UniqueEntityID){
@@ -87,30 +87,31 @@ export class Floor extends AggregateRoot<FloorProps> {
             return Result.ok<Floor>(floor);
         }*/
 
-        public static create (props: FloorProps, id?: UniqueEntityID): Result<Floor> {
+    public static create (props: FloorProps, id?: UniqueEntityID): Result<Floor> {
 
-            const guardedProps = [
-              { argument: props.floorNumber, argumentName: 'floorNumber' },
-              { argument: props.description, argumentName: 'description' },
-              { argument: props.length, argumentName: 'length' },
-              { argument: props.width, argumentName: 'width'}
-            ];
-        
-            const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
-        
-            if(props.length < 0 || props.width < 0){
-            return Result.fail<Floor>('Invalid arguments: floorNumber, description, length, width');
-            }
+        const guardedProps = [
+            { argument: props.floorNumber, argumentName: 'floorNumber' },
+            { argument: props.description, argumentName: 'description' },
+            { argument: props.length, argumentName: 'length' },
+            { argument: props.width, argumentName: 'width'},
+            { argument: props.buildingId, argumentName: 'buildingId'}
+        ];
+    
+        const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
+    
+        if(props.length < 0 || props.width < 0){
+        return Result.fail<Floor>('Invalid arguments: floorNumber, description, length, width, buildingId');
+        }
 
-            if (!guardResult.succeeded) {
-              return Result.fail<Floor>(guardResult.message)
-            } else {
-              const floor = new Floor({
-                ...props
-              }, id);
-        
-              return Result.ok<Floor>(floor);
-            }
-          }
+        if (!guardResult.succeeded) {
+            return Result.fail<Floor>(guardResult.message)
+        } else {
+            const floor = new Floor({
+            ...props
+            }, id);
+    
+            return Result.ok<Floor>(floor);
+        }
+    }
       
 }

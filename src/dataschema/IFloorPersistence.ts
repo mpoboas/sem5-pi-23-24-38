@@ -6,5 +6,5 @@ export interface IFloorPersistence{
     description?: string;
     length: number;
     width: number;
-    classrooms: string[];
+    buildingId: string;
 }

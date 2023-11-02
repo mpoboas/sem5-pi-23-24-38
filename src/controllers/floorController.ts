@@ -14,9 +14,8 @@ export default class FloorController implements IFloorController /* TODO: extend
     public async createFloor(req: Request, res: Response, next: NextFunction) {
         try {
             const floorDTO = req.body as IFloorDTO;
-            const classroomIds = req.body.classrooms as string[];
 
-            const floorOrError = (await this.floorServiceInstance.createFloor(floorDTO, classroomIds)) as Result<IFloorDTO>;
+            const floorOrError = (await this.floorServiceInstance.createFloor(floorDTO)) as Result<IFloorDTO>;
 
             if (floorOrError.isFailure) {
                 return res.status(402).send();
@@ -32,9 +31,8 @@ export default class FloorController implements IFloorController /* TODO: extend
     public async updateFloor(req: Request, res: Response, next: NextFunction) {
         try {
             const floorDTO = req.body as IFloorDTO;
-            const classroomIds = req.body.classrooms as string[];
 
-            const floorOrError = (await this.floorServiceInstance.updateFloor(floorDTO, classroomIds)) as Result<IFloorDTO>;
+            const floorOrError = (await this.floorServiceInstance.updateFloor(floorDTO)) as Result<IFloorDTO>;
 
             if (floorOrError.isFailure) {
                 return res.status(404).send();

@@ -8,7 +8,7 @@ const FloorSchema = new mongoose.Schema(
     description: {type: String},
     length: {type: Number},
     width: {type: Number},
-    classrooms: [{ type: String }]
+    buildingId: {type: String},
   },
   {
     timestamps: true
