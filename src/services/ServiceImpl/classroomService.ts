@@ -9,13 +9,24 @@ import config from "../../../config";
 import { ClassroomName } from "../../domain/classroom/classroomName";
 import { ClassroomDescription } from "../../domain/classroom/classroomDescription";
 import { ClassroomCategory } from "../../domain/classroom/classroomCategory";
+import IFloorRepo from "../IRepos/IFloorRepo";
 
 @Service()
 export default class ClassroomService implements IClassroomService {
-    constructor(@Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo) {}
+    constructor(@Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo,
+                @Inject(config.repos.floor.name) private floorRepo: IFloorRepo) {}
 
     public async createClassroom(classroomDTO: IClassroomDTO): Promise<Result<IClassroomDTO>> {
         try {
+            const floorId = classroomDTO.floorId;
+            if (floorId == null) {
+                throw new Error('Floor ID is required');
+            }
+            const floor = await this.floorRepo.findByDomainId(classroomDTO.floorId);
+            if (floor == null) {
+                throw new Error('Floor not found');
+            }
+
             const classroomOrError = await Classroom.create(classroomDTO);
     
             if (classroomOrError.isFailure) {
@@ -41,12 +52,21 @@ export default class ClassroomService implements IClassroomService {
             if (classroom === null) {
                 return Result.fail<IClassroomDTO>('Classroom not found');
             } else {
+                const floorId = classroomDTO.floorId;
+                if (floorId == null) {
+                    throw new Error('Floor ID is required');
+                }
+                const floor = await this.floorRepo.findByDomainId(classroomDTO.floorId);
+                if (floor == null) {
+                    throw new Error('Floor not found');
+                }
                 // Update classroom properties as before
                 classroom.name = ClassroomName.create(classroomDTO.name).getValue().name;
                 classroom.description = ClassroomDescription.create(classroomDTO.description).getValue().description;
                 classroom.category = ClassroomCategory.create(classroomDTO.category).getValue().category;
                 classroom.length = classroomDTO.length;
                 classroom.width = classroomDTO.width;
+                classroom.floorId = classroomDTO.floorId;
                 
                 // Save the classroom
                 await this.classroomRepo.save(classroom);

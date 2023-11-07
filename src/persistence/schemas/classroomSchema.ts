@@ -8,7 +8,8 @@ const ClassroomSchema = new mongoose.Schema(
         description: { type: String },
         category: { type: String },
         length: { type: Number },
-        width: { type: Number }
+        width: { type: Number },
+        floorId: { type: String }
     },
     {
         timestamps: true

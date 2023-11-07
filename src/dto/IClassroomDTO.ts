@@ -5,4 +5,5 @@ export default interface IClassroomDTO {
     category: string;
     length: number;
     width: number;
+    floorId: string;
 }

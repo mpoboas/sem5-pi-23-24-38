@@ -41,7 +41,6 @@ export default class FloorService implements IFloorService {
             if (building == null) {
                 throw new Error('Building not found');
             }
-            console.log("buildingId found: " + buildingId);
             
             const floorOrError = await Floor.create(floorDTO);
 

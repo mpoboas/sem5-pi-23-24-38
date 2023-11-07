@@ -5,4 +5,5 @@ export interface IClassroomPersistence {
     category: string;
     length: number;
     width: number;
+    floorId: string;
 }

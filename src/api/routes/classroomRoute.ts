@@ -20,7 +20,8 @@ export default (app: Router) => {
                 description: Joi.string(),
                 category: Joi.string(),
                 length: Joi.number().required(),
-                width: Joi.number().required()
+                width: Joi.number().required(),
+                floorId: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.createClassroom(req, res, next) );
@@ -33,7 +34,8 @@ export default (app: Router) => {
                 description: Joi.string(),
                 category: Joi.string(),
                 length: Joi.number().required(),
-                width: Joi.number().required()
+                width: Joi.number().required(),
+                floorId: Joi.string().required()
             })
         }),
         (req, res, next) => ctrl.updateClassroom(req, res, next) );

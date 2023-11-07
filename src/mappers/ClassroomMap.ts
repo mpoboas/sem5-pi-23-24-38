@@ -14,7 +14,8 @@ export class ClassroomMap extends Mapper<Classroom>{
             description: classroom.description,
             category: classroom.category,
             length: classroom.length,
-            width: classroom.width
+            width: classroom.width,
+            floorId: classroom.floorId.toString()
         } as IClassroomDTO;
     }
 
@@ -33,7 +34,8 @@ export class ClassroomMap extends Mapper<Classroom>{
             description: classroom.description,
             category: classroom.category,
             length: classroom.length,
-            width: classroom.width
+            width: classroom.width,
+            floorId: classroom.floorId.toString()
         };
     }
 }

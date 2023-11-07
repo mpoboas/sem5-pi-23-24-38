@@ -7,6 +7,7 @@ import {ClassroomCategory} from "./classroomCategory";
 import { ClassroomName } from "./classroomName";
 import e from "express";
 import IClassroomDTO from "../../dto/IClassroomDTO";
+import { floor } from "lodash";
 
 interface ClassroomProps{
     name: string;
@@ -14,6 +15,7 @@ interface ClassroomProps{
     category: string;
     length: number;
     width: number;
+    floorId: string;
 }
 
 export class Classroom extends AggregateRoot<ClassroomProps>{
@@ -61,6 +63,14 @@ export class Classroom extends AggregateRoot<ClassroomProps>{
         this.props.width = value;
     }
 
+    get floorId(): string {
+        return this.props.floorId;
+    }
+
+    set floorId(value: string) {
+        this.props.floorId = value;
+    }
+
     private constructor (props: ClassroomProps, id?: UniqueEntityID) {
         super(props, id);
     }
@@ -70,6 +80,7 @@ export class Classroom extends AggregateRoot<ClassroomProps>{
         const cDescription = ClassroomDescription.create(classroomDTO.description);
         const cCategory = ClassroomCategory.create(classroomDTO.category);
         const cDimension = Dimension.create(classroomDTO.length, classroomDTO.width);
+        const cFloorId = classroomDTO.floorId;
 
         if(cName.isFailure){
             return Result.fail<Classroom>(cName.error.toString());
@@ -85,7 +96,8 @@ export class Classroom extends AggregateRoot<ClassroomProps>{
                 description: cDescription.getValue().description,
                 category: cCategory.getValue().category,
                 length: cDimension.getValue().length,
-                width: cDimension.getValue().width
+                width: cDimension.getValue().width,
+                floorId: cFloorId,
             }, id);
 
             return Result.ok<Classroom>(classroom);

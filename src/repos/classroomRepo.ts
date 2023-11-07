@@ -45,6 +45,7 @@ export default class ClassroomRepo implements IClassroomRepo {
                 classroomDocument.category = classroom.category;
                 classroomDocument.length = classroom.length;
                 classroomDocument.width = classroom.width;
+                classroomDocument.floorId = classroom.floorId;
                 await classroomDocument.save();
 
                 return classroom;
