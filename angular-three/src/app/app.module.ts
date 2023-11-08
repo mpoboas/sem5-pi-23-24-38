@@ -4,17 +4,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CubeComponent } from './cube/cube.component';
+import { BuildingComponent } from './building/building.component';
+
+import { BuildingService } from './building/building.service';
+import { HttpClientModule } from '@angular/common/http';
+import { GetBuildingsComponent } from './get-buildings/get-buildings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CubeComponent
+    CubeComponent,
+    BuildingComponent,
+    GetBuildingsComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [BuildingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

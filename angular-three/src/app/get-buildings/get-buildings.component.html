@@ -1,0 +1,22 @@
+<h2 style="padding: 10px;"><i class="icon_buildings" style="vertical-align: middle; height: 35px;"></i> Buildings</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Letter</th>
+        <th scope="col">Description</th>
+        <th scope="col">Code</th>
+        <th scope="col">Length</th>
+        <th scope="col">Width</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let building of buildings">
+        <th scope="row">{{ building.letter }}</th>
+        <td>{{ building.description }}</td>
+        <td>{{ building.code }}</td>
+        <td>{{ building.length }}</td>
+        <td>{{ building.width }}</td>
+    </tr>
+    </tbody>
+</table>

@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Add gap between buttons
+.button-gap button{
+    margin: 5px;
+}
+
+
+// ICONS
+.icon_robdronego {
+    content: url('assets/icons/robdronego.svg');
+    height: 20px;
+}
+
+.icon_buildings {
+    content: url('assets/icons/buildings/buildings.svg');
+    height: 20px;
+}
