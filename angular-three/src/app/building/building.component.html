@@ -8,12 +8,13 @@
 </head>
 
 <body>
-    <h2 style="padding: 10px;"><i class="icon_buildings" style="vertical-align: middle; height: 35px;"></i> Buildings</h2>
+    <h2 style="padding: 10px;"><i class="icon_buildingsB" style="vertical-align: middle; height: 35px;"></i> Buildings</h2>
 
     <div class="button-gap" style="overflow: auto; white-space: nowrap; padding: 5px;">
-        <button type="button" class="btn btn-secondary disabled" routerLink="/create-building" routerLinkActive="active">Create Building</button>
-        <button type="button" class="btn btn-secondary disabled" routerLink="/edit-building" routerLinkActive="active">Edit Building</button>
-        <button type="button" class="btn btn-secondary" routerLink="/get-buildings" routerLinkActive="active">View Buildings</button>
+        <button type="button" class="btn btn-secondary disabled" routerLink="/buildings/create-building" routerLinkActive="active">Create Building<i class="icon_postB" style="background-color: none; height: 12px; padding-left: 5px;"></i></button>
+        <button type="button" class="btn btn-secondary disabled" routerLink="/buildings/edit-building" routerLinkActive="active">Edit Building<i class="icon_putB" style="background-color: none; height: 12px; padding-left: 5px;"></i></button>
+        <button type="button" class="btn btn-secondary" routerLink="/buildings/get-buildings" routerLinkActive="active">View Buildings<i class="icon_get" style="background-color: none; height: 12px; padding-left: 5px;"></i></button>
     </div>
-    <router-outlet></router-outlet>
+    <hr/>
 </body>
+<router-outlet></router-outlet>

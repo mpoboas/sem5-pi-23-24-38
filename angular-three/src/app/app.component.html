@@ -5,15 +5,20 @@
       <!-- Icon (Replace with your icon) -->
       <!-- <img src="your-icon.png" alt="App Icon" class="app-icon"> -->
       <!-- Title -->
-      <h1 style="padding: 10px;"><i class="icon_robdronego" style="vertical-align: middle; height: 30px;"></i> RobDroneGo</h1>
+      <a routerLink="" style="text-decoration: none; color: inherit;">
+        <h1 style="padding: 10px;">
+          <i class="icon_robdronego" style="vertical-align: middle; height: 30px;"></i> RobDroneGo
+        </h1>
+      </a>
+      
     </div>
   </header>
 
   <!-- Navigation Buttons -->
   <div class="app-nav button-gap" style="padding: 5px;">
-    <button type="button" class="btn btn-primary" routerLink="/buildings" routerLinkActive="active">Buildings</button>
-    <button type="button" class="btn btn-primary disabled" routerLink="/floors" routerLinkActive="active">Floors</button>
-    <button type="button" class="btn btn-primary disabled" routerLink="/classrooms" routerLinkActive="active">Classrooms</button>
+    <button type="button" class="btn btn-primary" routerLink="/buildings" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Buildings</button>
+    <button type="button" class="btn btn-primary disabled" routerLink="/floors" routerLinkActive="active"><i class="icon_floorW" style="padding-right: 5px; height: 15px; vertical-align: middle;"></i>Floors</button>
+    <button type="button" class="btn btn-primary disabled" routerLink="/classrooms" routerLinkActive="active"><i class="icon_classroomW" style="height: 20px; padding-right: 5px; vertical-align: middle;"></i>Classrooms</button>
   </div>
 
   <!-- Main Content -->

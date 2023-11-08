@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
 // Add gap between buttons
 .button-gap button{
     margin: 5px;
@@ -12,7 +12,63 @@
     height: 20px;
 }
 
-.icon_buildings {
-    content: url('assets/icons/buildings/buildings.svg');
+// Building icons
+.icon_buildingsW {
+    content: url('assets/icons/buildings/buildings_white.svg');
+    height: 20px;
+}
+.icon_buildingsB {
+    content: url('assets/icons/buildings/buildings_black.svg');
+    height: 20px;
+}
+
+// Floor icons
+.icon_floorW {
+    content: url('assets/icons/floors/floor_white.svg');
+    height: 20px;
+}
+.icon_floorB {
+    content: url('assets/icons/floors/floor_black.svg');
+    height: 20px;
+}
+
+
+// Elevator icons
+.icon_elevator {
+    content: url('assets/icons/elevators/elevator.svg');
+    height: 20px;
+}
+
+// Classroom icons
+.icon_classroomW {
+    content: url('assets/icons/classrooms/classroom_white.svg');
+    height: 20px;
+}
+.icon_classroomB {
+    content: url('assets/icons/classrooms/classroom_black.svg');
+    height: 20px;
+}
+
+// Request icons
+.icon_get {
+    content: url('assets/icons/requests/get.svg');
+    height: 20px;
+}
+
+.icon_postW {
+    content: url('assets/icons/requests/post_white.svg');
+    height: 20px;
+}
+.icon_postB {
+    content: url('assets/icons/requests/post_black.svg');
+    height: 20px;
+}
+
+.icon_putW {
+    content: url('assets/icons/requests/put_white.svg');
+    height: 20px;
+}
+.icon_putB {
+    content: url('assets/icons/requests/put_black.svg');
     height: 20px;
 }
