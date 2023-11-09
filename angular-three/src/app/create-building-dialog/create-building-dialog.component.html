@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Create Building</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <input matInput placeholder="Letter" formControlName="letter">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input matInput placeholder="Description" formControlName="description">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input matInput placeholder="Width" formControlName="width">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input matInput placeholder="Length" formControlName="length">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <input matInput placeholder="Code" formControlName="code">
+    </mat-form-field>
+    <!-- Add form controls for other building properties here -->
+  </form>
+</div>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+</div>
