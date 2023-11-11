@@ -1,25 +1,31 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
+/* COMPONENTS */
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CubeComponent } from './cube/cube.component';
+/* Building components */
 import { BuildingComponent } from './building/building.component';
-
-import { BuildingService } from './building/building.service';
-import { HttpClientModule } from '@angular/common/http';
+import { CreateBuildingDialogComponent } from './create-building-dialog/create-building-dialog.component';
+import { EditBuildingDialogComponent } from './edit-building-dialog/edit-building-dialog.component';
 import { GetBuildingsComponent } from './get-buildings/get-buildings.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+/* SERVICES */
+import { BuildingService } from './building/building.service';
+
+/* MODULES */
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+/* Angular Material */
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CreateBuildingDialogComponent } from './create-building-dialog/create-building-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms';
-
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+
 
 
 @NgModule({
@@ -28,7 +34,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     CubeComponent,
     BuildingComponent,
     GetBuildingsComponent,
-    CreateBuildingDialogComponent
+    CreateBuildingDialogComponent,
+    EditBuildingDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +50,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatTableModule,
     MatInputModule,
     MatFormFieldModule,
+    MatIconModule,
   ],
   providers: [BuildingService],
   bootstrap: [AppComponent]

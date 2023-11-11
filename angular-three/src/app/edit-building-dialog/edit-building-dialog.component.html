@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Edit Building</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <mat-label>ID</mat-label>
+      <input matInput formControlName="id" readonly>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Letter</mat-label>
+      <input matInput placeholder="Ex: B, G, H" formControlName="letter">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Ex: Edifício B" formControlName="description">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Width</mat-label>
+      <input matInput placeholder="Ex: 20" formControlName="width">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Length</mat-label>
+      <input matInput placeholder="Ex: 30" formControlName="length">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Code</mat-label>
+      <input matInput placeholder="Ex: B0001" formControlName="code">
+    </mat-form-field>
+  </form>
+</div>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+</div>
