@@ -2,21 +2,25 @@
 <div mat-dialog-content>
   <form [formGroup]="form">
     <mat-form-field style="width: 100%;">
-      <input matInput placeholder="Letter" formControlName="letter">
+      <mat-label>Letter</mat-label>
+      <input matInput placeholder="Ex: B, G, H" formControlName="letter">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <input matInput placeholder="Description" formControlName="description">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Ex: Edifício B" formControlName="description">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <input matInput placeholder="Width" formControlName="width">
+      <mat-label>Width</mat-label>
+      <input matInput placeholder="Ex: 20" formControlName="width">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <input matInput placeholder="Length" formControlName="length">
+      <mat-label>Length</mat-label>
+      <input matInput placeholder="Ex: 30" formControlName="length">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <input matInput placeholder="Code" formControlName="code">
+      <mat-label>Code</mat-label>
+      <input matInput placeholder="Ex: B0001" formControlName="code">
     </mat-form-field>
-    <!-- Add form controls for other building properties here -->
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>

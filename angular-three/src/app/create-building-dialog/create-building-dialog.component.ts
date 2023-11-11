@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
+import { Location } from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BuildingService } from '../building/building.service'; // Update with the correct path
 
 export interface BuildingData {
   letter: string;
@@ -18,12 +20,14 @@ export class CreateBuildingDialogComponent {
   form: FormGroup;
 
   constructor(
-    public dialogRef: MatDialogRef<CreateBuildingDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BuildingData,
-    private fb: FormBuilder
+    public dialogRef: MatDialogRef<CreateBuildingDialogComponent>,
+    private fb: FormBuilder,
+    private buildingService: BuildingService,
+    private location: Location,
   ) {
     this.form = this.fb.group({
-      name: [data.letter, Validators.required],
+      letter: [data.letter, Validators.required],
       description: [data.description],
       length: [data.length, Validators.required],
       width: [data.width, Validators.required],
@@ -37,7 +41,19 @@ export class CreateBuildingDialogComponent {
 
   onSave(): void {
     if (this.form.valid) {
-      this.dialogRef.close(this.form.value);
+      const buildingData = this.form.value;
+      
+      // Call the createBuilding method from your BuildingService
+      this.buildingService.createBuilding(buildingData).subscribe(
+        (response: any) => {
+          console.log('Building created successfully', response);
+          this.dialogRef.close(buildingData);
+          window.location.reload();
+        },
+        (error: any) => {
+          console.error('Error creating building', error);
+        }
+      );
     }
   }
 }
