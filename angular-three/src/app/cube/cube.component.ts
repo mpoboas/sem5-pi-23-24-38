@@ -12,13 +12,13 @@ export class CubeComponent implements AfterViewInit {
   @ViewChild('myCanvas') private canvasRef!: ElementRef;
 
   //* Cube Properties
-  @Input() public rotationSpeedX: number = 0.05;
+  @Input() public rotationSpeedX: number = 0.03;
   @Input() public rotationSpeedY: number = 0.01;
   @Input() public size: number = 200;
-  @Input() public texture: string = 'assets/DEI_logo.gif';
+  @Input() public texture: string = './assets/sussy.gif';
   //* Stage Properties
   @Input() public cameraZ: number = 10;
-  @Input() public fieldOfView: number = 30;
+  @Input() public fieldOfView: number = 20;
   @Input('nearClipping') public nearClippingPane: number = 1;
   @Input('farClipping') public farClippingPane: number = 1000;
 
@@ -48,7 +48,7 @@ export class CubeComponent implements AfterViewInit {
   private createScene(): void {
     //* Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x0000ff);
+    this.scene.background = new THREE.Color(0xffffff); 
     this.scene.add(this.cube);
     //*Camera
     let aspectRatio = this.getAspectRatio();

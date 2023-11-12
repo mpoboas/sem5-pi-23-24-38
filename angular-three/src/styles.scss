@@ -107,5 +107,16 @@ $angular-three-theme: mat.define-light-theme((
     content: url('assets/icons/requests/put_black.svg');
     height: 20px;
 }
+
+// Other icons
+.icon_uploadW {
+    content: url('assets/icons/other/uploadW.svg');
+    height: 20px;
+}
+.icon_uploadB {
+    content: url('assets/icons/other/uploadB.svg');
+    height: 20px;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

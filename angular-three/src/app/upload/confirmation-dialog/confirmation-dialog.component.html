@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Confirm Buildings</h2>
+<mat-dialog-content>
+  <ul>
+    <li *ngFor="let building of data.buildings">
+      {{ building.description }} - {{ building.code }}
+    </li>
+  </ul>
+  <p>Do you want to proceed with the changes?</p>
+</mat-dialog-content>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+    <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary" mat-button (click)="onConfirm()">Confirm</button>
+</div>
+  

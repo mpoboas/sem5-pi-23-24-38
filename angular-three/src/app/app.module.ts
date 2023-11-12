@@ -25,6 +25,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import { UploadComponent } from './upload/upload.component';
+import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -35,7 +37,9 @@ import {MatIconModule} from '@angular/material/icon';
     BuildingComponent,
     GetBuildingsComponent,
     CreateBuildingDialogComponent,
-    EditBuildingDialogComponent
+    EditBuildingDialogComponent,
+    UploadComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
