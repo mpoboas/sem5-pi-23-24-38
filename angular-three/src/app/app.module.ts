@@ -8,8 +8,13 @@ import { CreateBuildingDialogComponent } from './create-building-dialog/create-b
 import { EditBuildingDialogComponent } from './edit-building-dialog/edit-building-dialog.component';
 import { GetBuildingsComponent } from './get-buildings/get-buildings.component';
 
+/*Floor components */
+import { CreateFloorComponent } from './create-floor/create-floor.component';
+import { FloorComponent } from './floor/floor.component';
+
 /* SERVICES */
 import { BuildingService } from './building/building.service';
+import { FloorService } from './floor/floor.service';
 
 /* MODULES */
 import { BrowserModule } from '@angular/platform-browser';
@@ -30,6 +35,7 @@ import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confir
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +45,9 @@ import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confir
     CreateBuildingDialogComponent,
     EditBuildingDialogComponent,
     UploadComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CreateFloorComponent,
+    FloorComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +64,7 @@ import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confir
     MatFormFieldModule,
     MatIconModule,
   ],
-  providers: [BuildingService],
+  providers: [BuildingService , FloorService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
