@@ -7,6 +7,7 @@ import { BuildingComponent } from './building/building.component';
 import { CreateBuildingDialogComponent } from './create-building-dialog/create-building-dialog.component';
 import { EditBuildingDialogComponent } from './edit-building-dialog/edit-building-dialog.component';
 import { GetBuildingsComponent } from './get-buildings/get-buildings.component';
+import { GetBuildingByMinmaxFloorsDialogComponent } from './get-building-by-minmax-floors-dialog/get-building-by-minmax-floors-dialog.component';
 
 /*Floor components */
 import { CreateFloorComponent } from './create-floor/create-floor.component';
@@ -51,7 +52,8 @@ import { GetFloorsComponent } from './get-floors/get-floors.component';
     CreateFloorComponent,
     FloorComponent,
     GetFloorsComponent,
-    CampusManagerComponent
+    CampusManagerComponent,
+    GetBuildingByMinmaxFloorsDialogComponent,
   ],
   imports: [
     BrowserModule,
