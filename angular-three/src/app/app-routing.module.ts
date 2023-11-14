@@ -9,9 +9,10 @@ const routes: Routes = [
   { path: 'cube', component: CubeComponent },
   { path: 'campus-manager', component: CampusManagerComponent },
   { path: 'campus-manager', component: CampusManagerComponent, children: [
-    { path: 'buildings', component: BuildingComponent }
+    { path: 'buildings', component: BuildingComponent },
+    {path: 'floors', component: FloorComponent}
   ]},
-  {path: 'floors', component: FloorComponent},
+  
   { path: '**', redirectTo: '' }
 ];
 
