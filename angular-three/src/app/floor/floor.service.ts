@@ -14,4 +14,12 @@ export class FloorService {
     return this.http.post(this.baseUrl, floorData);
   }
 
+  getFloors(): Observable<any> {
+    return this.http.get(this.baseUrl);
+  }
+
+  getBuildingFloors(buildingId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${buildingId}`);
+  }
+
 }

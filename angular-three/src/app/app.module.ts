@@ -33,6 +33,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { UploadComponent } from './upload/upload.component';
 import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confirmation-dialog.component';
 import { CampusManagerComponent } from './campus-manager/campus-manager.component';
+import { GetFloorsComponent } from './get-floors/get-floors.component';
 
 
 
@@ -49,6 +50,7 @@ import { CampusManagerComponent } from './campus-manager/campus-manager.componen
     ConfirmationDialogComponent,
     CreateFloorComponent,
     FloorComponent,
+    GetFloorsComponent,
     CampusManagerComponent
   ],
   imports: [
