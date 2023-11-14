@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Get a list of Building based on floors range</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    
+    <mat-form-field style="width: 100%;">
+      <mat-label>Minimum range</mat-label>
+      <input matInput placeholder="Ex: 2" formControlName="minFloor">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+        <mat-label>Maximum range</mat-label>
+        <input matInput placeholder="Ex: 4" formControlName="maxFloor">
+      </mat-form-field>
+    
+  </form>
+</div>
+<button class="btn btn-primary" mat-button="!form.valid" (click)="getBuildingsByMinMaxFloors()">Get list</button>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Building Letter</th>
+      <th scope="col">Building Description</th>
+      <th scope="col">Building Code</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let building of buildings">
+      <td>{{building.letter}}</td>
+      <td>{{building.description}}</td>
+      <td>{{building.code}}</td>
+      
+    </tr>
+  </tbody>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+</div>
+

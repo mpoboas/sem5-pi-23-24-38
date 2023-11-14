@@ -3,6 +3,7 @@ import { BuildingService } from './building.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { BuildingData, CreateBuildingDialogComponent } from '../create-building-dialog/create-building-dialog.component';
+import { GetBuildingByMinmaxFloorsDialogComponent } from '../get-building-by-minmax-floors-dialog/get-building-by-minmax-floors-dialog.component';
 
 
 @Component({
@@ -53,6 +54,19 @@ export class BuildingComponent implements OnInit {
       if (result) {
         // Handle the data returned from the dialog (e.g., save it to your service)
         console.log('Building created:', result);
+      }
+    });
+  }
+
+  openGetBuildingByMinMaxFloorsDialog(): void {
+    const dialogRef = this.dialog.open(GetBuildingByMinmaxFloorsDialogComponent, {
+      data :{range: ''}
+    });
+
+    dialogRef.afterClosed().subscribe((result: BuildingData) => {
+      if (result) {
+        // Handle the data returned from the dialog (e.g., save it to your service)
+        console.log('Building(s):', result);
       }
     });
   }
