@@ -42,8 +42,12 @@ $angular-three-theme: mat.define-light-theme((
 
 
 // ICONS
-.icon_robdronego {
+.icon_robdronegoB {
     content: url('assets/icons/robdronego.svg');
+    height: 20px;
+}
+.icon_robdronegoW {
+    content: url('assets/icons/robdronego_white.svg');
     height: 20px;
 }
 
