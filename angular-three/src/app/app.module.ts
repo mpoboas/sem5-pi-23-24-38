@@ -30,9 +30,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { UploadComponent } from './upload/upload.component';
 import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confirmation-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 import { CampusManagerComponent } from './campus-manager/campus-manager.component';
 import { GetFloorsComponent } from './get-floors/get-floors.component';
 
@@ -69,6 +71,8 @@ import { GetFloorsComponent } from './get-floors/get-floors.component';
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
+    MatSelectModule,
+    FormsModule,
   ],
   providers: [BuildingService , FloorService] ,
   bootstrap: [AppComponent]
