@@ -8,7 +8,9 @@ import { CampusManagerComponent } from './campus-manager/campus-manager.componen
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
   { path: 'campus-manager', component: CampusManagerComponent },
-  { path: 'buildings', component: BuildingComponent},
+  { path: 'campus-manager', component: CampusManagerComponent, children: [
+    { path: 'buildings', component: BuildingComponent }
+  ]},
   {path: 'floors', component: FloorComponent},
   { path: '**', redirectTo: '' }
 ];
