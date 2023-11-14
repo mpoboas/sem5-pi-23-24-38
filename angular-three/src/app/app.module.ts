@@ -32,6 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { UploadComponent } from './upload/upload.component';
 import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confirmation-dialog.component';
+import { CampusManagerComponent } from './campus-manager/campus-manager.component';
 
 
 
@@ -47,7 +48,8 @@ import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confir
     UploadComponent,
     ConfirmationDialogComponent,
     CreateFloorComponent,
-    FloorComponent
+    FloorComponent,
+    CampusManagerComponent
   ],
   imports: [
     BrowserModule,
