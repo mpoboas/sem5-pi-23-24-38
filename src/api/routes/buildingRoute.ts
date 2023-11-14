@@ -64,9 +64,13 @@ export default (app: Router) => {
         }),
         (req, res, next) => ctrl.patchBuilding(req, res, next) );
 
-    route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next) );
+        route.get('/byId/:id', (req, res, next) => ctrl.findBuildingByDomainId(req, res, next));
 
-    route.get('/floorRange/:range', (req, res, next) => ctrl.findBuildingByMinMaxFloors(req, res, next));
+        route.get('/byCode/:code', (req, res, next) => ctrl.findBuildingByCode(req, res, next))
 
-    //route.get('/:id', (req, res, next) =>  ctrl.listAllFloors(req, res, next));
-};
+        route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next) );
+
+        route.get('/floorRange/:range', (req, res, next) => ctrl.findBuildingByMinMaxFloors(req, res, next));
+
+        //route.get('/:id', (req, res, next) =>  ctrl.listAllFloors(req, res, next));
+    };

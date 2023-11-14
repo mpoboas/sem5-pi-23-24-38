@@ -43,6 +43,21 @@ export default class BuildingService implements IBuildingService {
         }
     }
 
+    public async findByCode(code: string): Promise<Result<IBuildingDTO>> {
+        try {
+            const building = await this.buildingRepo.findByCode(code);
+
+            if (building === null) {
+                return Result.fail<IBuildingDTO>('Building not found');
+            } else {
+                const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+                return Result.ok<IBuildingDTO>(buildingDTOResult);
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
     /**
      * Creates a new building with the given data and associates it with the provided floor IDs.
      * @param buildingDTO The data for the building to be created.

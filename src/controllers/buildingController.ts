@@ -121,6 +121,36 @@ export default class BuildingController implements IBuildingController /* TODO: 
         }
     }
 
+    public async findBuildingByDomainId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const domainId = req.params.id;
+            const building = await this.buildingServiceInstance.getBuilding(domainId);
+
+            if (building.isFailure) {
+                return res.status(500).json(building.error);
+            }
+
+            return res.json(building.getValue()).status(200);
+        } catch (e) {
+            return res.status(500).json(e.message);
+        }
+    }
+
+    public async findBuildingByCode(req: Request, res: Response, next: NextFunction) {
+        try {
+            const code = req.params.code;
+            const building = await this.buildingServiceInstance.findByCode(code);
+
+            if (building.isFailure) {
+                return res.status(500).json(building.error);
+            }
+
+            return res.json(building.getValue()).status(200);
+        } catch (e) {
+            return res.status(500).json(e.message);
+        }
+    }
+
     public async findBuildingByMinMaxFloors(req: Request, res: Response, next: NextFunction) {
         try {
           const range = req.params.range;
