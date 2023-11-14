@@ -65,9 +65,26 @@ export default class FloorRepo implements IFloorRepo {
         } else return null;
     }
 
-    public async findFloorsByBuildingId(buildingCode: string): Promise<Floor[]> {
+    public async getAllFloors(): Promise<Floor[]> {
         try {
-          const query = {floorBuildingCode: buildingCode} 
+            const floorDocuments = await this.floorSchema.find().exec();
+
+            if (!floorDocuments) {
+                return [];
+            }
+
+            const floors = floorDocuments.map((floorDocument) => FloorMap.toDomain(floorDocument));
+
+            return floors;
+        } catch (error) {
+            throw new Error(`Error fetching floors: ${error.message}`);
+        }
+    }
+
+    public async findFloorsByBuildingId(buildingId: string): Promise<Floor[]> {
+        try {
+          console.log("id no repo:\n", buildingId);
+          const query = {buildingId: buildingId} 
           const floorRecord = await this.floorSchema.find(query as FilterQuery<IFloorPersistence & Document>);
 
           if(floorRecord == null){

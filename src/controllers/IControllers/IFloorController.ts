@@ -5,4 +5,5 @@ export default interface IFloorController  {
   updateFloor(req: Request, res: Response, next: NextFunction);
   patchFloor(req: Request, res: Response, next: NextFunction);
   listAllFloors(req: Request, res: Response, next: NextFunction);
+  listAllFloorsInBuilding(req: Request, res: Response, next: NextFunction);
 }

@@ -21,7 +21,7 @@ export class FloorMap extends Mapper<Floor> {
 
 
 
-  public static async toDomain(floor: any | Model<IFloorPersistence & Document>): Promise<Floor> {
+  public static toDomain(floor: any | Model<IFloorPersistence & Document>): Floor {
     const floorOrError = Floor.create(floor, new UniqueEntityID(floor.domainId));
 
     floorOrError.isFailure ? console.log(floorOrError.error) : '';

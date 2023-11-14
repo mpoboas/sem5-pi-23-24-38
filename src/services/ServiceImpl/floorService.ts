@@ -126,6 +126,19 @@ export default class FloorService implements IFloorService {
         }
     }
     
+    public async getAllFloors(): Promise<IFloorDTO[]> {
+        try {
+            const floors = await this.floorRepo.getAllFloors();
+            
+            return floors.map((floor) => {
+                const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
+                return floorDTOResult;
+            });
+        } catch (error) {
+            throw new Error(`Error listing floors: ${error.message}`);
+        }
+    }
+
     public async validateClassroomIds(classroomIds: string[]): Promise<string[]> {
         const validClassroomIds: string[] = [];
 
@@ -162,11 +175,10 @@ export default class FloorService implements IFloorService {
 
     public async findFloorsByBuildingId(buildingId: string): Promise<IFloorDTO[]> {
         try {
-            console.log("entra no service");
+          console.log("id no service:\n"+buildingId);
           const floors = await this.floorRepo.findFloorsByBuildingId(buildingId);
-          console.log("entrou no repo");
+
           if (floors.length == 0) {
-            console.log("lista vazia");
             return [];
           }
 

@@ -87,27 +87,33 @@ export class Floor extends AggregateRoot<FloorProps> {
             return Result.ok<Floor>(floor);
         }*/
 
-    public static create (props: FloorProps, id?: UniqueEntityID): Result<Floor> {
+    public static create (floorDTO: IFloorDTO, id?: UniqueEntityID): Result<Floor> {
+
+        const fNumber = floorDTO.floorNumber;
+        const fDescription = FloorDescription.create(floorDTO.description);
+        const fLength = floorDTO.length;
+        const fWidth = floorDTO.width;
+        const fBuildingId = floorDTO.buildingId;
 
         const guardedProps = [
-            { argument: props.floorNumber, argumentName: 'floorNumber' },
-            { argument: props.description, argumentName: 'description' },
-            { argument: props.length, argumentName: 'length' },
-            { argument: props.width, argumentName: 'width'},
-            { argument: props.buildingId, argumentName: 'buildingId'}
+            { argument: fNumber, argumentName: 'floorNumber' },
+            { argument: fDescription, argumentName: 'description' },
+            { argument: fLength, argumentName: 'length' },
+            { argument: fWidth, argumentName: 'width'},
+            { argument: fBuildingId, argumentName: 'buildingId'}
         ];
     
         const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
-    
-        if(props.length < 0 || props.width < 0){
-        return Result.fail<Floor>('Invalid arguments: floorNumber, description, length, width, buildingId');
-        }
 
         if (!guardResult.succeeded) {
             return Result.fail<Floor>(guardResult.message)
         } else {
             const floor = new Floor({
-            ...props
+                floorNumber: fNumber,
+                description: fDescription.getValue().description,
+                length: fLength,
+                width: fWidth,
+                buildingId: fBuildingId
             }, id);
     
             return Result.ok<Floor>(floor);

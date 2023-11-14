@@ -48,6 +48,7 @@ export default class FloorController implements IFloorController /* TODO: extend
     public async patchFloor(req: Request, res: Response, next: NextFunction) {
         try {
             const floorId = req.params.id;
+            console.log("floorId no ctrl"+floorId );
             const floorUpdate: IFloorDTO = req.body;
     
             //check if building exists
@@ -65,9 +66,18 @@ export default class FloorController implements IFloorController /* TODO: extend
 
     public async listAllFloors(req: Request, res: Response, next: NextFunction) {
         try {
-            const floorOrError = await this.floorServiceInstance.findFloorsByBuildingId(req.params.buildingId) as Result<IFloorDTO[]>;
-            const floorsList = floorOrError.getValue();
-            return res.json(floorsList).status(200);
+            const floors = await this.floorServiceInstance.getAllFloors();
+            return res.json(floors).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
+
+    public async listAllFloorsInBuilding(req: Request, res: Response, next: NextFunction) {
+        try {
+            const buildingId = req.params.buildingId;
+            const floors = await this.floorServiceInstance.findFloorsByBuildingId(buildingId);
+            return res.json(floors).status(200);
         } catch (e) {
             return next(e);
         }
