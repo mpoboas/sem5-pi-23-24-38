@@ -30,13 +30,25 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { UploadComponent } from './upload/upload.component';
 import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confirmation-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 import { CampusManagerComponent } from './campus-manager/campus-manager.component';
 import { GetFloorsComponent } from './get-floors/get-floors.component';
-
-
+import { FleetManagerComponent } from './fleet-manager/fleet-manager.component';
+import { GetRobotTypeComponent } from './get-robot-type/get-robot-type.component';
+import { RobotTypeComponent } from './robot-type/robot-type.component';
+import { RobotTypeService } from './robot-type/robot-type.service';
+import { CreateRobotTypeComponent } from './create-robot-type/create-robot-type.component';
+import { RobotComponent } from './robot/robot.component';
+import { GetRobotsComponent } from './get-robots/get-robots.component';
+import { CreateRobotComponent } from './create-robot/create-robot.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { RobotService } from './robot/robot.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CreatePaoComponent } from './create-pao/create-pao.component';
 
 
 @NgModule({
@@ -54,6 +66,14 @@ import { GetFloorsComponent } from './get-floors/get-floors.component';
     GetFloorsComponent,
     CampusManagerComponent,
     GetBuildingByMinmaxFloorsDialogComponent,
+    FleetManagerComponent,
+    GetRobotTypeComponent,
+    RobotTypeComponent,
+    CreateRobotTypeComponent,
+    RobotComponent,
+    GetRobotsComponent,
+    CreateRobotComponent,
+    CreatePaoComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,8 +89,12 @@ import { GetFloorsComponent } from './get-floors/get-floors.component';
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
+    MatSelectModule,
+    FormsModule,
+    MatSlideToggleModule,
+    MatCheckboxModule,
   ],
-  providers: [BuildingService , FloorService] ,
+  providers: [BuildingService , FloorService, RobotTypeService, RobotService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

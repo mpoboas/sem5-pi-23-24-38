@@ -46,7 +46,7 @@ export class BuildingComponent implements OnInit {
 
   openCreateBuildingDialog(): void {
     const dialogRef = this.dialog.open(CreateBuildingDialogComponent, {
-      data: { name: '', description: '' },
+      data: { },
       width: '400px', // Adjust the width as needed
     });
 

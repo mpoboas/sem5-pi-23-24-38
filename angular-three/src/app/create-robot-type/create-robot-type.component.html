@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Create Building</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Brand</mat-label>
+      <input matInput placeholder="Ex: RT1" formControlName="brand">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Model</mat-label>
+      <input matInput placeholder="Ex: V1.0" formControlName="model">
+    </mat-form-field>
+   
+    <div style="margin-top: 20px;">
+      <mat-label>Permited Tasks</mat-label>
+        <div *ngFor="let task of taskOptions">
+          <mat-checkbox [formControl]="getTaskControl(task)" color="primary">{{ task }}</mat-checkbox>
+        </div>
+      </div> 
+  </form>
+</div>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+</div>

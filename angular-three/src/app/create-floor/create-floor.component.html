@@ -18,12 +18,16 @@
       <input matInput placeholder="Ex: 30" formControlName="length">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <mat-label>Building ID</mat-label>
-      <input matInput placeholder="Ex: B0001" formControlName="buildingId">
+      <mat-label>Building Code</mat-label>
+      <mat-select formControlName="buildingCode">
+        <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
+          {{ building.code }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
   <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
-  <button class="btn btn-primary" mat-button (click)="!form.valid" (click)="onSave()">Save</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
 </div>

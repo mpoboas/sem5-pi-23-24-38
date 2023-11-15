@@ -26,6 +26,14 @@ export class BuildingService {
     return this.http.get(this.baseUrl);
   }
 
+  findBuildingById(id: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/byId/${id}`);
+  }
+
+  findBuildingByCode(code: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/byCode/${code}`);
+  }
+
   findBuildingByMinMaxFloors(range: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/floorRange/${range}`);
   }

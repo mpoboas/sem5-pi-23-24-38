@@ -6,6 +6,8 @@ export default interface IBuildingController  {
   patchBuilding(req: Request, res: Response, next: NextFunction);
   //loadFloors(req: Request, res: Response, next: NextFunction);
   listAllBuildings(req: Request, res: Response, next: NextFunction);
+  findBuildingByDomainId(req: Request, res: Response, next: NextFunction);
+  findBuildingByCode(req: Request, res: Response, next: NextFunction);
   findBuildingByMinMaxFloors(req: Request, res: Response, next: NextFunction);
   //listAllFloors(req: Request, res: Response, next: NextFunction);
 }

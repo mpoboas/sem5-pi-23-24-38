@@ -21,7 +21,6 @@ export class RobotTypeMap extends Mapper<RobotType> {
 
     public static toDomain(robotType: any | Model<IRobotTypePersistence & Document>): RobotType {
         const robotTypeOrError = RobotType.create(robotType, new UniqueEntityID(robotType.domainId));
-
         
         robotTypeOrError.isFailure ? console.log(robotTypeOrError.error) : '';
 

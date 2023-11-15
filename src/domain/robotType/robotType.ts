@@ -51,7 +51,7 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         super(props, id);
     }
 
-    public static create (props: RobotTypeProps, id?: UniqueEntityID): Result<RobotType> {
+    /*public static create (props: RobotTypeProps, id?: UniqueEntityID): Result<RobotType> {
 
         const guardedProps = [
           { argument: props.tasks, argumentName: 'tasks' },
@@ -66,6 +66,34 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         } else {
           const robotType = new RobotType({
             ...props
+          }, id);
+    
+          return Result.ok<RobotType>(robotType);
+        }
+      }
+    */
+    public static create (robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
+
+        const rtBrand = robotTypeDTO.brand;
+        const rtModel = robotTypeDTO.model;
+        const rtTasks = robotTypeDTO.tasks;
+        
+
+        const guardedProps = [
+          { argument: rtTasks, argumentName: 'tasks' },
+          { argument: rtModel, argumentName: 'model' },
+          { argument: rtBrand, argumentName: 'brand' }
+        ];
+    
+        const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
+    
+        if (!guardResult.succeeded) {
+          return Result.fail<RobotType>(guardResult.message)
+        } else {
+          const robotType = new RobotType({
+            brand: rtBrand,
+            model: rtModel,
+            tasks: rtTasks
           }, id);
     
           return Result.ok<RobotType>(robotType);

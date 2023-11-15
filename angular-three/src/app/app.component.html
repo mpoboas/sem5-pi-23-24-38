@@ -1,27 +1,30 @@
 <div class="container">
-  <!-- Header Section -->
-  <header class="app-header">
-    <div class="app-title">
-      <!-- Icon (Replace with your icon) -->
-      <!-- <img src="your-icon.png" alt="App Icon" class="app-icon"> -->
-      <!-- Title -->
-      <a routerLink="" style="text-decoration: none; color: inherit;">
-        <h1 style="padding: 10px;">
-          <i class="icon_robdronego" style="vertical-align: middle; height: 30px;"></i> RobDroneGo
-        </h1>
-      </a>
-      
+  <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <i class="icon_robdronegoW" style="padding-right: 5px;"></i>
+      <a class="navbar-brand" href="#">RobDroneGo</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav me-auto">
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/campus-manager" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Campus Manager</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/fleet-manager" routerLinkActive="active"><i class="icon_floorW" style="vertical-align: middle;"></i> Fleet Manager</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </header>
-
-  <div class="button-gap">
-    <button type="button" class="btn btn-primary" routerLink="/campus-manager" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Campus Manager</button>
-    <button type="button" class="btn btn-primary disabled" routerLink="/fleet-manager" routerLinkActive="active"><i class="icon_floorW" style="padding-right: 5px; height: 15px; vertical-align: middle;"></i>Fleet Manager</button>
-  </div>
+  </nav>
 
   <!-- Main Content -->
   <main class="app-content">
     <!-- Display the content of the selected component using router-outlet -->
     <router-outlet></router-outlet>
+
   </main>
 </div>

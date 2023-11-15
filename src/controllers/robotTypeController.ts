@@ -41,5 +41,18 @@ export default class RobotTypeController implements IRobotTypeController /* TODO
             return next(e);
         }
     }
+
+    public async listAllRobotTypes(req: Request, res: Response, next: NextFunction) {
+        try {
+            const robotTypes = await this.robotTypeServiceInstance.getAllRobotTypes();
+            return res.json(robotTypes).status(200);
+        } catch (e) {
+            return next(e);
+        }
+
+    }
+
+
+
 }
 
