@@ -1,7 +1,7 @@
 import { IRobotTypePersistence } from '../../dataschema/IRobotTypePersistence';
 import mongoose from 'mongoose';
 
-const RobotTypeSchema = new mongoose.Schema(
+var RobotTypeSchema = new mongoose.Schema(
     {
         domainId: { type: String, unique: true },
         brand: { type: String },

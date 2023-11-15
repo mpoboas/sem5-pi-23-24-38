@@ -33,5 +33,7 @@ export default (app: Router) => {
             }),
         }),
         (req, res, next) => ctrl.updateRobotType(req, res, next) );
+
+    route.get('', (req, res, next) => ctrl.listAllRobotTypes(req, res, next) );
 };
 
