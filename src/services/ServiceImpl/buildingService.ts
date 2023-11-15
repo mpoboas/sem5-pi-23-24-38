@@ -205,6 +205,7 @@ export default class BuildingService implements IBuildingService {
      * @param floorIds - An array of floor IDs to be validated.
      * @returns An array of valid floor IDs.
      */
+    /** 
     public async validateFloorIds(buildingId: string, floorIds: string[]): Promise<string[]> {
         const validFloorIds: string[] = [];
 
@@ -215,7 +216,7 @@ export default class BuildingService implements IBuildingService {
                 
                 // check if floorId is already associated with another building
                 for (const floorId of floorIds) {
-                    const isAssociated = await this.buildingRepo.isFloorAssociated(buildingId, floorId);
+                    const isAssociated = await this.floorRepo.isFloorAssociated(buildingId, floorId);
                     if (isAssociated) {
                       throw new Error(`Floor ${floorId} is already associated with another building!`);
                     }
@@ -231,16 +232,20 @@ export default class BuildingService implements IBuildingService {
             }
         }
         return validFloorIds;
-    }
+    }*/
 
     public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<Result<IBuildingDTO[]>> {
         try{
           const buildings = await this.buildingRepo.findBuildingByMinMaxFloors(minFloors, maxFloors);
-        
-        if (buildings.length == 0) {
-          return Result.fail<IBuildingDTO[]>("No buildings found");
-        }
-        return Result.ok<IBuildingDTO[]>(buildings);
+
+          const buildingArray: IBuildingDTO[] = buildings.map(buildingDocument =>
+            BuildingMap.toDTO(buildingDocument));
+
+          if (buildings.length == 0) {
+             return Result.fail<IBuildingDTO[]>("No buildings found");
+            }
+
+         return Result.ok<IBuildingDTO[]>(buildingArray);
       
     
         } catch (error) {

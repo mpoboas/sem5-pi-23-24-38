@@ -6,9 +6,10 @@ import IBuildingDTO from "../../dto/IBuildingDTO";
 export default interface IBuildingRepo extends Repo<Building> {
     save(building: Building): Promise<Building>;
     findByDomainId (buildingId: BuildingId | string): Promise<Building>;
-    isFloorAssociated (buildingId: string, floorId: string): Promise<boolean>;
+    //isFloorAssociated (buildingId: string, floorId: string): Promise<boolean>;
     getAllBuildings(): Promise<Building[]>;
-    findBuildingByMinMaxFloors(min: number, max: number): Promise<IBuildingDTO[]>;
+    findBuildingByMinMaxFloors(min: number, max: number): Promise<Building[]>;
+    
     
     //findByIds (buildingsIds: BuildingId[]): Promise<Building[]>;
     //saveCollection (buildings: Building[]): Promise<Building[]>;

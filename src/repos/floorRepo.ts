@@ -1,18 +1,21 @@
 import { Service, Inject } from 'typedi';
-
+import config from '../../config';
 import IFloorRepo from '../services/IRepos/IFloorRepo';
 import { Floor } from '../domain/floor/floor';
 import {FloorMap } from '../mappers/FloorMap';
-
-import { Document, FilterQuery, Model } from 'mongoose';
+import mongoose, { Document, FilterQuery, Model } from 'mongoose';
 import { IFloorPersistence } from '../dataschema/IFloorPersistence';
 import { FloorId } from '../domain/floor/floorID';
+
+
+
+
 
 @Service()
 export default class FloorRepo implements IFloorRepo {
     private models: any;
 
-    constructor(@Inject('floorSchema') private floorSchema: Model<IFloorPersistence & Document>) {}
+    constructor(@Inject('floorSchema') private floorSchema: Model<IFloorPersistence & Document>){}
 
     private createBaseQuery(): any {
         return {
@@ -105,4 +108,6 @@ export default class FloorRepo implements IFloorRepo {
             throw new Error(`Error fetching floors: ${error.message}`);
         }
     }
+
+
 }
