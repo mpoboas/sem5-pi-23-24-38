@@ -48,7 +48,7 @@ import { CreateRobotComponent } from './create-robot/create-robot.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RobotService } from './robot/robot.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { CreatePaoComponent } from './create-pao/create-pao.component';
+
 
 
 @NgModule({
@@ -72,8 +72,7 @@ import { CreatePaoComponent } from './create-pao/create-pao.component';
     CreateRobotTypeComponent,
     RobotComponent,
     GetRobotsComponent,
-    CreateRobotComponent,
-    CreatePaoComponent,
+    CreateRobotComponent
   ],
   imports: [
     BrowserModule,

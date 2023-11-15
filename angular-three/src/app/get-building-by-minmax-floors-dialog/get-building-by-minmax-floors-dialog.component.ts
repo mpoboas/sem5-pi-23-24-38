@@ -34,16 +34,7 @@ export class GetBuildingByMinmaxFloorsDialogComponent {
     this.dialogRef.close();
   }
 
-  getBuildings() {
-    this.buildingService.getBuildings().subscribe(
-      (data: any) => {
-        this.buildings = data;
-      },
-      (error: any) => {
-        console.error('Error fetching buildings', error);
-      }
-    );
-  }
+  
 
   getBuildingsByMinMaxFloors(): void {
     console.log(this.form);
@@ -55,7 +46,7 @@ export class GetBuildingByMinmaxFloorsDialogComponent {
       this.buildingService.findBuildingByMinMaxFloors(range).subscribe(
         (response: any) => {
           this.buildings = response;
-          console.log('Search was successful:', response);
+          console.log('Search was successful:', this.buildings);
          
         },
         (error: any) => {

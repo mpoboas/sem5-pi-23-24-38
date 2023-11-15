@@ -9,13 +9,15 @@ import { IBuildingPersistence } from '../dataschema/IBuildingPersistence';
 import { BuildingId } from '../domain/building/buildingID';
 import IBuildingDTO from '../dto/IBuildingDTO';
 import { size } from 'lodash';
+import { IFloorPersistence } from '../dataschema/IFloorPersistence';
 
 @Service()
 export default class BuildingRepo implements IBuildingRepo {
     private models: any;
     private model: Model<IBuildingPersistence & Document>;
 
-    constructor(@Inject('buildingSchema') private buildingSchema: Model<IBuildingPersistence & Document>) {
+    constructor(@Inject('buildingSchema') private buildingSchema: Model<IBuildingPersistence & Document>,
+                @Inject('floorSchema') private floorSchema: Model<IFloorPersistence & Document>) {
         this.model = buildingSchema;
     }
 
@@ -113,25 +115,45 @@ export default class BuildingRepo implements IBuildingRepo {
         }
     }
 
-    public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<IBuildingDTO[]> {
+    public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<Building[]> {
         try {
-            const query = {
-                floors: { $gte: minFloors, $lte: maxFloors }
-            };
-            const buildingDocuments = await this.buildingSchema.find(query as FilterQuery<IBuildingPersistence & Document>).exec();
-            const buildingArray: IBuildingDTO[] = [];
-
-            if (buildingDocuments == null) {
-                return [];
-            } else {
-                for (let i = 0; i < buildingDocuments.length; i++) {
-                    buildingArray[i] = BuildingMap.toDTO(BuildingMap.toDomain(buildingDocuments[i]));
+            // Encontrar os IDs dos edifícios que têm a quantidade correta de andares
+            const buildingIDsInRange = await this.floorSchema.aggregate([
+              {
+                $group: {
+                  _id: '$buildingId', 
+                  totalFloors: { $sum: 1 }
                 }
-                return buildingArray;
+              },
+              {
+                $match: {
+                  totalFloors: { $gte: minFloors, $lte: maxFloors }
+                }
+              }
+            ]).exec();
+        
+            // Obter os IDs dos edifícios encontrados na etapa anterior
+            const buildingIDs = buildingIDsInRange.map(item => item._id);
+        
+            console.log("buildingIDs dos edificios dentro do range", buildingIDs);
+        
+            // Array para armazenar os resultados
+            const buildingDocuments: Building[] = [];
+        
+            // Loop sobre cada buildingId e chamar o método findByDomainId
+            for (const buildingId of buildingIDs) {
+              const result = await this.findByDomainId(buildingId);
+              if (result) {
+                buildingDocuments.push(result);
+              }
             }
-        } catch (error) {
+        
+            console.log("buildings encontrados atraves do id", buildingDocuments);
+        
+            return buildingDocuments;
+          } catch (error) {
             throw error;
-        }
+          }
     }
       
 }
