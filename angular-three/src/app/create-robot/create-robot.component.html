@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Create Robot</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Nickname</mat-label>
+      <input matInput placeholder="Ex: Albert" formControlName="nickname">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Serial number</mat-label>
+      <input matInput placeholder="Ex: 00138" formControlName="serialNr">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Ex: disseste quem?" formControlName="description">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Robot Type ID</mat-label>
+      <mat-select formControlName="robotTypeId">
+        <mat-option *ngFor="let robotType of robotTypeOptions" [value]="robotType.id">
+          {{ robotType.id }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>  
+  </form>
+</div>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+</div>
