@@ -1,19 +1,19 @@
 <h1 mat-dialog-title>Get a list of Buildings based on floors range</h1>
 <div mat-dialog-content>
   <form [formGroup]="form">
-    
-    <mat-form-field style="width: 100%;">
-      <mat-label>Minimum range</mat-label>
-      <input matInput placeholder="Ex: 2" formControlName="minFloor">
-    </mat-form-field>
-    <mat-form-field style="width: 100%;">
-        <mat-label>Maximum range</mat-label>
-        <input matInput placeholder="Ex: 4" formControlName="maxFloor">
-      </mat-form-field>
-    
-  </form>
-</div>
-<button class="btn btn-primary" mat-button="!form.valid" (click)="getBuildingsByMinMaxFloors()" style="margin-left: 26px;">Get list</button>
+    <div mat-dialog-content>
+      <form [formGroup]="form" style="flex-direction: row;">
+        <mat-form-field style="width: auto; padding-right: 5px;">
+          <mat-label>Minimum range</mat-label>
+          <input matInput placeholder="Ex: 2" formControlName="minFloor">
+        </mat-form-field>
+        <mat-form-field style="width: auto; padding-right: 5px;">
+            <mat-label>Maximum range</mat-label>
+            <input matInput placeholder="Ex: 4" formControlName="maxFloor">
+        </mat-form-field>
+        <button class="btn btn-primary" mat-button="!form.valid" (click)="getBuildingsByMinMaxFloors()">Get list</button>
+      </form>
+    </div>
 <table class="table table-striped">
   <thead>
     <tr>

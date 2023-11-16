@@ -1,19 +1,20 @@
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+    <div class="container">
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto">    
             <li class="nav-item">
-                <a class="nav-link"  routerLink="/campus-manager/buildings" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Buildings</a>
+                <a class="nav-link"  routerLink="/campus-manager/buildings" routerLinkActive="active"><i class="icon_buildingsB" style="vertical-align: middle;"></i> Buildings</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  routerLink="/campus-manager/floors" routerLinkActive="active"><i class="icon_floorW" style="padding-right: 5px; height: 15px; vertical-align: middle;"></i>Floors</a>
+                <a class="nav-link"  routerLink="/campus-manager/floors" routerLinkActive="active"><i class="icon_floorB" style="padding-right: 5px; height: 15px; vertical-align: middle;"></i>Floors</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled"  routerLink="/classrooms" routerLinkActive="active"><i class="icon_classroomW" style="height: 20px; padding-right: 5px; vertical-align: middle;"></i>Classrooms</a>
+                <a class="nav-link disabled"  routerLink="/classrooms" routerLinkActive="active"><i class="icon_classroomB" style="height: 20px; padding-right: 5px; vertical-align: middle;"></i>Classrooms</a>
             </li>
         </ul>
       </div>
     </div>
-  </nav>
-
-<router-outlet></router-outlet>
+</nav>
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
