@@ -7,6 +7,9 @@ import { CampusManagerComponent } from './campus-manager/campus-manager.componen
 import { RobotTypeComponent } from './robot-type/robot-type.component';
 import { FleetManagerComponent } from './fleet-manager/fleet-manager.component';
 import { RobotComponent } from './robot/robot.component';
+import { TunnelComponent } from './tunnel/tunnel.component';
+
+
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
   { path: 'fleet-manager', component: FleetManagerComponent , children: [
@@ -14,7 +17,8 @@ const routes: Routes = [
     { path: 'robot', component: RobotComponent }]},
   { path: 'campus-manager', component: CampusManagerComponent, children: [
     { path: 'buildings', component: BuildingComponent },
-    { path: 'floors', component: FloorComponent }
+    { path: 'floors', component: FloorComponent },
+    {path: "tunnels", component: TunnelComponent},
   ]},
   
   { path: '**', redirectTo: '' }

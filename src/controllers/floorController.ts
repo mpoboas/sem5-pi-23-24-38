@@ -82,4 +82,17 @@ export default class FloorController implements IFloorController /* TODO: extend
             return next(e);
         }
     }
+
+    public async findFloorByNumber(req: Request, res: Response, next: NextFunction) {
+        try {
+            const floorNumber = req.params.floorNumber;
+            const floor = await this.floorServiceInstance.getFloorByNumber(floorNumber);
+            if (floor.isFailure) {
+                return res.status(500).json(floor.error);
+            }
+            return res.json(floor).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
 }

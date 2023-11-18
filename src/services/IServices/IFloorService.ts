@@ -10,4 +10,5 @@ export default interface IFloorService {
   verifyFloorExists(floorId: string): Promise<Result<boolean>>;
   getFloor(floorId: string): Promise<Result<IFloorDTO>>;
   findFloorsByBuildingId(buildingCode: string): Result<IFloorDTO[]> | Promise<IFloorDTO[]>;
+  getFloorByNumber(floorNumber: string): Promise<Result<IFloorDTO>>;
 }

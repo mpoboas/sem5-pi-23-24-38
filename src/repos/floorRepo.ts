@@ -109,5 +109,17 @@ export default class FloorRepo implements IFloorRepo {
         }
     }
 
+    public async getFloorByNumber(floorNumber: string): Promise<Floor> {
+        try {
+            const query = { floorNumber: floorNumber };
+            const floorRecord = await this.floorSchema.findOne(query as FilterQuery<IFloorPersistence & Document>);
+
+            if (floorRecord != null) {
+                return FloorMap.toDomain(floorRecord);
+            } else return null;
+        } catch (error) {
+            throw new Error(`Error fetching floor: ${error.message}`);
+        }
+    }
 
 }

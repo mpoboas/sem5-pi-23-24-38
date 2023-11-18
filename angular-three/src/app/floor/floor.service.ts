@@ -22,4 +22,8 @@ export class FloorService {
     return this.http.get(`${this.baseUrl}/${buildingId}`);
   }
 
+  findFloorByNumber(floorNumber: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/byNumber/${floorNumber}`);
+  }
+
 }

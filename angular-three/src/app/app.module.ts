@@ -48,6 +48,9 @@ import { CreateRobotComponent } from './create-robot/create-robot.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RobotService } from './robot/robot.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TunnelComponent } from './tunnel/tunnel.component';
+import { CreateTunnelDialogComponent } from './create-tunnel-dialog/create-tunnel-dialog.component';
+import { TunnelService } from './tunnel/tunnel.service';
 
 
 
@@ -72,7 +75,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CreateRobotTypeComponent,
     RobotComponent,
     GetRobotsComponent,
-    CreateRobotComponent
+    CreateRobotComponent,
+    TunnelComponent,
+    CreateTunnelDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +98,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSlideToggleModule,
     MatCheckboxModule,
   ],
-  providers: [BuildingService , FloorService, RobotTypeService, RobotService] ,
+  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ export default interface IBuildingRepo extends Repo<Building> {
     //isFloorAssociated (buildingId: string, floorId: string): Promise<boolean>;
     getAllBuildings(): Promise<Building[]>;
     findBuildingByMinMaxFloors(min: number, max: number): Promise<Building[]>;
-    
+    findByCode (code: string): Promise<Building>;
     
     //findByIds (buildingsIds: BuildingId[]): Promise<Building[]>;
     //saveCollection (buildings: Building[]): Promise<Building[]>;

@@ -57,4 +57,6 @@ export default (app: Router) => {
 
     route.get('/:buildingId', (req, res, next) =>  ctrl.listAllFloorsInBuilding(req, res, next));
 
+    route.get('/byNumber/:floorNumber', (req, res, next) => ctrl.findFloorByNumber(req, res, next))
+
 };
