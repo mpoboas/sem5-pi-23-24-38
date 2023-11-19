@@ -78,6 +78,27 @@ $angular-three-theme: mat.define-light-theme((
     height: 20px;
 }
 
+// Tunnel icons
+.icon_tunnel {
+    content: url('assets/icons/tunnels/connection.svg');
+    height: 20px;
+}
+
+// robot icons
+.icon_robot {
+    content: url('assets/icons/robots/robot.svg');
+    height: 20px;
+}
+.icon_robottype {
+    content: url('assets/icons/robots/cog.svg');
+    height: 20px;
+}
+.icon_fleet {
+    content: url('assets/icons/robots/fleet.svg');
+    height: 20px;
+}
+
+
 // Classroom icons
 .icon_classroomW {
     content: url('assets/icons/classrooms/classroom_white.svg');
