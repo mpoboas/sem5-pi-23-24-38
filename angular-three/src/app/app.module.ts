@@ -52,6 +52,9 @@ import { TunnelComponent } from './tunnel/tunnel.component';
 import { CreateTunnelDialogComponent } from './create-tunnel-dialog/create-tunnel-dialog.component';
 import { TunnelService } from './tunnel/tunnel.service';
 import { GetTunnelsDialogComponent } from './get-tunnels/get-tunnels.component';
+import { ElevatorComponent } from './elevator/elevator.component';
+import { CreateElevatorComponent } from './create-elevator/create-elevator.component';
+import { ElevatorService } from './elevator/elevator.service';
 
 
 
@@ -79,7 +82,9 @@ import { GetTunnelsDialogComponent } from './get-tunnels/get-tunnels.component';
     CreateRobotComponent,
     TunnelComponent,
     CreateTunnelDialogComponent,
-    GetTunnelsDialogComponent
+    GetTunnelsDialogComponent,
+    ElevatorComponent,
+    CreateElevatorComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +105,7 @@ import { GetTunnelsDialogComponent } from './get-tunnels/get-tunnels.component';
     MatSlideToggleModule,
     MatCheckboxModule,
   ],
-  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService] ,
+  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
