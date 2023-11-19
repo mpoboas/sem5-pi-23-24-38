@@ -8,5 +8,5 @@ export default interface ITunnelService {
     patchTunnel(tunnelId: string, tunnelDTO: ITunnelDTO): Promise<Result<ITunnelDTO>>;
     getTunnel(tunnelId: string): Promise<Result<ITunnelDTO>>;
     getAllTunnelsFloors(): Promise<IFloorDTO[]>;
-    getTunnels2B(id1: string,id2: string): Promise<ITunnelDTO[]>;
+    getTunnels2B(): Promise<ITunnelDTO[]>;
 }

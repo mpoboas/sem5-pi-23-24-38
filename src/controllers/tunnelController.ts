@@ -72,11 +72,8 @@ export default class TunnelController implements ITunnelController /* TODO: exte
 
     public async listTunnels2B(req: Request, res: Response, next: NextFunction) {
         try{
-            const ids = req.params.ids;
-            const ids2 = ids.split(",");
-            const id1 = ids2[0];
-            const id2 = ids2[1];
-            const tunnels = await this.tunnelServiceInstance.getTunnels2B(id1, id2);
+            
+            const tunnels = await this.tunnelServiceInstance.getTunnels2B();
             console.log(tunnels);
             return res.json(tunnels).status(200);
         }catch(e){

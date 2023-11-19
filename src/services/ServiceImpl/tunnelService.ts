@@ -169,16 +169,15 @@ export default class TunnelService implements ITunnelService {
         }
     }
 
-    public async getTunnels2B(id1 : string,id2: string): Promise<ITunnelDTO[]> {
+    public async getTunnels2B(): Promise<ITunnelDTO[]> {
         try{
 
             const tunnels = await this.tunnelRepo.getAllTunnels();
             
-            const tunnels2 = tunnels.filter((tunnel) => {tunnel.floor1.id.toString() == id1 && tunnel.floor2.id.toString() == id2});
 
 
 
-            const tunnelDTOs = await Promise.all(tunnels2.map(TunnelMap.toDTO));
+            const tunnelDTOs = await Promise.all(tunnels.map(TunnelMap.toDTO));
             return tunnelDTOs;
         }catch(e){
             throw e;
