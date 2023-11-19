@@ -13,4 +13,8 @@ export class TunnelService {
   createTunnel(tunnelData: any): Observable<any> {
     return this.http.post(this.baseUrl, tunnelData);
   }
+
+  getTunnels(): Observable<any> {
+    return this.http.get(this.baseUrl);
+  }
 }
