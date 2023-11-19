@@ -14,4 +14,8 @@ export class ElevatorService {
   createElevator(elevatorData: any): Observable<any> {
     return this.http.post(this.baseUrl, elevatorData);
   }
+
+  getElevators(): Observable<any> {
+    return this.http.get(this.baseUrl);
+  }
 }
