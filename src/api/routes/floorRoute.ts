@@ -59,4 +59,6 @@ export default (app: Router) => {
 
     route.get('/byNumber/:floorNumber', (req, res, next) => ctrl.findFloorByNumber(req, res, next))
 
+    route.get('/getFloorNum/:id', (req, res, next) => ctrl.findFloorNum(req, res, next))
+
 };

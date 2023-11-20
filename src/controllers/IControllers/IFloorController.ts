@@ -7,4 +7,5 @@ export default interface IFloorController  {
   listAllFloors(req: Request, res: Response, next: NextFunction);
   listAllFloorsInBuilding(req: Request, res: Response, next: NextFunction);
   findFloorByNumber(req: Request, res: Response, next: NextFunction);
+  findFloorNum(req: Request, res: Response, next: NextFunction);
 }

@@ -17,4 +17,8 @@ export class TunnelService {
   getTunnels(): Observable<any> {
     return this.http.get(this.baseUrl);
   }
+
+  getFloorNumber(floorId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/byId/${floorId}`);
+  }
 }
