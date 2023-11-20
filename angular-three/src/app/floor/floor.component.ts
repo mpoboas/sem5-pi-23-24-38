@@ -15,7 +15,7 @@ export class FloorComponent {
 
   openCreateFloorDialog(): void {
     const dialogRef = this.dialog.open(CreateFloorComponent, {
-      data: { floorNumber: '', description: '', length: '' , width:'', buildingId: '' },
+      data: { floorNumber: '', description: '', length: '' , width:'', map:'', buildingId: '' },
       width: '400px',
     });
 

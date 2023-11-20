@@ -13,7 +13,7 @@ import { EditFloorComponent } from '../edit-floor/edit-floor.component';
   styleUrls: ['./get-floors.component.scss']
 })
 export class GetFloorsComponent implements OnInit {
-  displayedColumns: string[] = ['floorNumber', 'description', 'length', 'width', 'buildingId', 'actions'];
+  displayedColumns: string[] = ['floorNumber', 'description', 'length', 'width', 'map', 'buildingId', 'actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -12,6 +12,7 @@ export interface FloorData {
   length: number;
   width: number;
   buildingId: string;
+  map: string;
 }
 
 
@@ -38,6 +39,7 @@ export class EditFloorComponent {
         length: [data.length],
         width: [data.width],
         buildingId: [data.buildingId],
+        map: [data.map],
       });
 
   }

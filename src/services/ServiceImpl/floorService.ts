@@ -77,6 +77,7 @@ export default class FloorService implements IFloorService {
                 } else {
                 floor.buildingId = floorDTO.buildingId;
                 }
+                floor.map = floorDTO.map;
 
                 await this.floorRepo.save(floor);
 
