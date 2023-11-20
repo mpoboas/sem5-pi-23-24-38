@@ -5,20 +5,21 @@ import { floor } from 'lodash';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BuildingService } from '../building/building.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { EditFloorComponent } from '../edit-floor/edit-floor.component';
 @Component({
   selector: 'app-get-floors',
   templateUrl: './get-floors.component.html',
   styleUrls: ['./get-floors.component.scss']
 })
 export class GetFloorsComponent implements OnInit {
-  displayedColumns: string[] = ['floorNumber', 'description', 'length', 'width', 'buildingId'];
+  displayedColumns: string[] = ['floorNumber', 'description', 'length', 'width', 'buildingId', 'actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private floorService: FloorService,private buildingService: BuildingService ) {}
+  constructor(private floorService: FloorService,private buildingService: BuildingService,private dialog:  MatDialog) {}
 
   ngOnInit() {
     this.floorService.getFloors().subscribe(
@@ -68,4 +69,31 @@ export class GetFloorsComponent implements OnInit {
       this.paginator.pageSize = 10;
     }
   }
+
+  editFloor(floor: any) {
+    // Open the edit floor dialog
+    const dialogRef = this.dialog.open(EditFloorComponent, {
+      width: '500px',
+      data: floor
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Update the floor in the database
+        this.floorService.updateFloor(result).subscribe(
+          (data: any) => {
+            // Update the floor in the table
+            const index = this.dataSource.data.findIndex(b => b.id === data.id);
+            this.dataSource.data[index] = data;
+            this.dataSource._updateChangeSubscription();
+          },
+          (error: any) => {
+            console.error('Error updating floor', error);
+          }
+        );
+      }
+    });
+  }
+
+
 }

@@ -30,4 +30,11 @@ export class FloorService {
     return this.http.get(`${this.baseUrl}/getFloorNum/${floorId}`);
   }
 
+  updateFloor(floorData: any): Observable<any> {
+    return this.http.put(this.baseUrl, floorData);
+  }
+
+  patchFloor(id: string, floorData: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${id}`, floorData);
+  }
 }

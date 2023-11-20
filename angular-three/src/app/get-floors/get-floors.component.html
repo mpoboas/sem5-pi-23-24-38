@@ -56,14 +56,14 @@
         <td mat-cell *matCellDef="let row">{{ row.buildingId }}</td>
       </ng-container>
 
-      <!--<ng-container matColumnDef="actions">
+      <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let row">
           <button (click)="editFloor(row)" style="background: none; border: none;">
             <i class="icon_putB" style="height: 18px;"></i>
           </button>
         </td>
-      </ng-container>-->
+      </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
