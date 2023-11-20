@@ -11,6 +11,7 @@ export interface FloorData {
   length: number;
   width: number;
   buildingCode: string;
+  map: string;
 }
 
 @Component({
@@ -36,6 +37,7 @@ export class CreateFloorComponent implements OnInit {
       length: [data.length, Validators.required],
       width: [data.width, Validators.required],
       buildingCode: [data.buildingCode, Validators.required],
+      map: [data.map, Validators.required],
     });
   }
 
@@ -67,6 +69,7 @@ export class CreateFloorComponent implements OnInit {
         length: this.form.value.length,
         width: this.form.value.width,
         buildingId: null,
+        map: this.form.value.map,
       };
   
       const buildingCode = this.form.value.buildingCode;

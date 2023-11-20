@@ -18,6 +18,10 @@
       <input matInput placeholder="Ex: 30" formControlName="length">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
+      <mat-label>Map</mat-label>
+      <input matInput placeholder="Floor map JSON data" formControlName="map">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
       <mat-label>Building Code</mat-label>
       <mat-select formControlName="buildingCode">
         <mat-option *ngFor="let building of buildingOptions" [value]="building.code">

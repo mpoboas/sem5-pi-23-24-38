@@ -21,6 +21,7 @@ export default (app: Router) => {
                 width: Joi.number().required(),
                 description: Joi.string().required(),
                 buildingId: Joi.string().required(),
+                map: Joi.string().required(),
             })
         }),
         (req, res, next) => ctrl.createFloor(req, res, next) );
@@ -34,6 +35,7 @@ export default (app: Router) => {
                 width: Joi.number().required(),
                 description: Joi.string().required(),
                 buildingId: Joi.string().required(),
+                map: Joi.string().required(),
             })
         }),
         (req, res, next) => ctrl.updateFloor(req, res, next) );
@@ -49,6 +51,7 @@ export default (app: Router) => {
             width: Joi.number(),
             description: Joi.string(),
             buildingId: Joi.string(),
+            map: Joi.string(),
         }),
     }),
     (req, res, next) => ctrl.patchFloor(req, res, next) );
