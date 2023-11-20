@@ -176,7 +176,21 @@ export default class BuildingController implements IBuildingController /* TODO: 
           console.log('Error in BuildingController.findByMinMaxFloors(): ', e);
           return next(e);
         }
-      }
+    }
+    public async findBuildingCode(req: Request, res: Response, next: NextFunction) {
+        try {
+            const buildingId = req.params.buildingId;
+            const building = await this.buildingServiceInstance.getBuilding(buildingId);
+            if (building.isFailure) {
+                //500- The server has encountered a situation it does not know how to handle
+                return res.status(500).json(building.error);
+              }
+            return res.json(building.getValue().code).status(200);
+        } catch (e) {
+            console.log('Error in BuildingController.findBuildingCode(): ', e);
+          return next(e);
+        }
+    }
 
     /*public async listAllFloors(req: Request, res: Response, next: NextFunction) {
         try {

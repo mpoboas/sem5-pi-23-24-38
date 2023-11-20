@@ -9,5 +9,6 @@ export default interface IBuildingController  {
   findBuildingByDomainId(req: Request, res: Response, next: NextFunction);
   findBuildingByCode(req: Request, res: Response, next: NextFunction);
   findBuildingByMinMaxFloors(req: Request, res: Response, next: NextFunction);
+  findBuildingCode(req: Request, res: Response, next: NextFunction);
   //listAllFloors(req: Request, res: Response, next: NextFunction);
 }

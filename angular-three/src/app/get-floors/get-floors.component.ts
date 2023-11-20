@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { floor } from 'lodash';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { BuildingService } from '../building/building.service';
 
 @Component({
   selector: 'app-get-floors',
@@ -17,20 +18,39 @@ export class GetFloorsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private floorService: FloorService) {}
+  constructor(private floorService: FloorService,private buildingService: BuildingService ) {}
 
   ngOnInit() {
     this.floorService.getFloors().subscribe(
-      (data: any) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;      
+      (floor: any) => {
+        this.getBuildingCode(floor);
+          
       },
       (error: any) => {
         console.error('Error fetching floors', error);
       }
     );
   }
+
+  getBuildingCode(floor: any) {
+    floor.forEach((element: any) => {
+      this.buildingService.getBuildingCode(element.buildingId).subscribe(
+        (building: any) => {
+          element.buildingId = building;      
+          this.dataSource = new MatTableDataSource(floor);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        (error: any) => {
+          console.error('Error fetching building', error);
+        }
+      );
+
+    });
+
+  }
+
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
