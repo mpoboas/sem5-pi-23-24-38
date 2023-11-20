@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FloorService } from './floor.service';
 import { CreateFloorComponent, FloorData } from '../create-floor/create-floor.component';
+import { GetFloorWithTunnelComponent } from '../get-floor-with-tunnel/get-floor-with-tunnel.component';
 
 @Component({
   selector: 'app-floor',
@@ -23,6 +24,12 @@ export class FloorComponent {
         // Handle the data returned from the dialog (e.g., save it to your service)
         console.log('Floor created:', result);
       }
+    });
+  }
+
+  openGetFloorWithTunnelDialog(): void {
+    const dialogRef = this.dialog.open(GetFloorWithTunnelComponent, {
+      width: '400px',
     });
   }
 

@@ -59,6 +59,7 @@ import { GetElevatorsComponent } from './get-elevators/get-elevators.component';
 import { EditTunnelComponent } from './edit-tunnel/edit-tunnel.component';
 import { EditFloorComponent } from './edit-floor/edit-floor.component';
 import { EditElevatorComponent } from './edit-elevator/edit-elevator.component';
+import { GetFloorWithTunnelComponent } from './get-floor-with-tunnel/get-floor-with-tunnel.component';
 
 
 
@@ -92,7 +93,8 @@ import { EditElevatorComponent } from './edit-elevator/edit-elevator.component';
     GetElevatorsComponent,
     EditTunnelComponent,
     EditFloorComponent,
-    EditElevatorComponent
+    EditElevatorComponent,
+    GetFloorWithTunnelComponent
   ],
   imports: [
     BrowserModule,

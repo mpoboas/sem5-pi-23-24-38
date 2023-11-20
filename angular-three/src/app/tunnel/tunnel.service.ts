@@ -29,4 +29,8 @@ export class TunnelService {
   patchTunnel(id: string, tunnelData: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}/${id}`, tunnelData);
   }
+
+  getFloorsTunnel(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/getFloorsTunnel`);
+  }
 }
