@@ -18,4 +18,12 @@ export class ElevatorService {
   getElevators(): Observable<any> {
     return this.http.get(this.baseUrl);
   }
+
+  updateElevator(elevatorData: any): Observable<any> {
+    return this.http.put(this.baseUrl, elevatorData);
+  }
+
+  patchElevator(id: string, elevatorData: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${id}`, elevatorData);
+  }
 }

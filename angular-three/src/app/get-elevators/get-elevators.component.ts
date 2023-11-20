@@ -5,20 +5,23 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ElevatorService } from '../elevator/elevator.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditElevatorComponent } from '../edit-elevator/edit-elevator.component';
 import { BuildingService } from '../building/building.service';
+
 @Component({
   selector: 'app-get-elevators',
   templateUrl: './get-elevators.component.html',
   styleUrls: ['./get-elevators.component.scss']
 })
 export class GetElevatorsComponent implements OnInit {
-  displayedColumns: string[] = ['buildingId','x', 'y'];
+  displayedColumns: string[] = ['buildingId','x', 'y', 'actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private elevatorService: ElevatorService,private buildingService: BuildingService) {}
+  constructor(private elevatorService: ElevatorService,private buildingService: BuildingService,private dialog: MatDialog) {}
 
   ngOnInit() {
     this.elevatorService.getElevators().subscribe(
@@ -65,4 +68,31 @@ export class GetElevatorsComponent implements OnInit {
       this.paginator.pageSize = 10;
     }
   }
+
+  editElevator(elevator: any) {
+    // Open the edit elevator dialog
+     const dialogRef = this.dialog.open(EditElevatorComponent, {
+       width: '500px',
+       data: elevator
+     });
+
+     dialogRef.afterClosed().subscribe(result => {
+       if (result) {
+         // If the user clicked save, update the elevator
+         this.elevatorService.updateElevator(result).subscribe(
+           (data: any) => {
+             console.log('elevator updated', data);
+             this.ngOnInit();
+           },
+           (error: any) => {
+             console.error('Error updating elevator', error);
+           }
+         );
+       }
+     });
+  }
+
+
+
+
 }

@@ -56,6 +56,9 @@ import { ElevatorComponent } from './elevator/elevator.component';
 import { CreateElevatorComponent } from './create-elevator/create-elevator.component';
 import { ElevatorService } from './elevator/elevator.service';
 import { GetElevatorsComponent } from './get-elevators/get-elevators.component';
+import { EditTunnelComponent } from './edit-tunnel/edit-tunnel.component';
+import { EditFloorComponent } from './edit-floor/edit-floor.component';
+import { EditElevatorComponent } from './edit-elevator/edit-elevator.component';
 
 
 
@@ -86,7 +89,10 @@ import { GetElevatorsComponent } from './get-elevators/get-elevators.component';
     GetTunnelsDialogComponent,
     ElevatorComponent,
     CreateElevatorComponent,
-    GetElevatorsComponent
+    GetElevatorsComponent,
+    EditTunnelComponent,
+    EditFloorComponent,
+    EditElevatorComponent
   ],
   imports: [
     BrowserModule,
