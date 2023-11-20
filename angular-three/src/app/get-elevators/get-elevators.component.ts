@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ElevatorService } from '../elevator/elevator.service';
-
+import { BuildingService } from '../building/building.service';
 @Component({
   selector: 'app-get-elevators',
   templateUrl: './get-elevators.component.html',
@@ -18,19 +18,35 @@ export class GetElevatorsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private elevatorService: ElevatorService) {}
+  constructor(private elevatorService: ElevatorService,private buildingService: BuildingService) {}
 
   ngOnInit() {
     this.elevatorService.getElevators().subscribe(
-      (data: any) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;      
+      (elevator: any) => {
+        this.getBuildingCode(elevator);
       },
       (error: any) => {
         console.error('Error fetching elevators', error);
       }
     );
+  }
+
+
+  getBuildingCode(elevator: any) {
+    elevator.forEach((element: any) => {
+      this.buildingService.getBuildingCode(element.buildingId).subscribe(
+        (building: any) => {
+          element.buildingId = building;      
+          this.dataSource = new MatTableDataSource(elevator);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        (error: any) => {
+          console.error('Error fetching building', error);
+        }
+      );
+
+    });
   }
 
   applyFilter(event: Event) {
