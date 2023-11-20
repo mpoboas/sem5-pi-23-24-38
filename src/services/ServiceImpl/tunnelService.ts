@@ -122,9 +122,7 @@ export default class TunnelService implements ITunnelService {
     }
     public async getAllTunnelsFloors(): Promise<IFloorDTO[]> {
         try{
-            console.log("bomdia");
             const tunnels = await this.tunnelRepo.getAllTunnels();
-            console.log(tunnels);
             
 
             const floor = tunnels.map( async (tunnel) => {
@@ -156,11 +154,9 @@ export default class TunnelService implements ITunnelService {
                 
             });
             
-            console.log(floor2);
             const floorDTOs = await Promise.all(floor2.map(FloorMap.toDTO));
         
             //const tunnelDTOs = await Promise.all(tunnels.map(TunnelMap.toDTO));
-            console.log(floorDTOs)
             return floorDTOs;
                 
         

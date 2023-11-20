@@ -135,7 +135,6 @@ export default class BuildingRepo implements IBuildingRepo {
             // Obter os IDs dos edifícios encontrados na etapa anterior
             const buildingIDs = buildingIDsInRange.map(item => item._id);
         
-            console.log("buildingIDs dos edificios dentro do range", buildingIDs);
         
             // Array para armazenar os resultados
             const buildingDocuments: Building[] = [];
@@ -148,7 +147,6 @@ export default class BuildingRepo implements IBuildingRepo {
               }
             }
         
-            console.log("buildings encontrados atraves do id", buildingDocuments);
         
             return buildingDocuments;
           } catch (error) {

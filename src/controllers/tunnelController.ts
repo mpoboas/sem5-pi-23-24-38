@@ -62,7 +62,6 @@ export default class TunnelController implements ITunnelController /* TODO: exte
     public async listAllTunnels(req: Request, res: Response, next: NextFunction) {
         try{
             const tunnels = await this.tunnelServiceInstance.getAllTunnelsFloors();
-            console.log(tunnels);
             return res.json(tunnels).status(200);
         }catch(e){
             return next(e);
@@ -74,7 +73,6 @@ export default class TunnelController implements ITunnelController /* TODO: exte
         try{
             
             const tunnels = await this.tunnelServiceInstance.getTunnels2B();
-            console.log(tunnels);
             return res.json(tunnels).status(200);
         }catch(e){
             return next(e);

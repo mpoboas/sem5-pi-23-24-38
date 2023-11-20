@@ -1,25 +1,26 @@
-  import { Component } from '@angular/core';
-  import { OnInit, ViewChild } from '@angular/core';
-  import { MatPaginator } from '@angular/material/paginator';
-  import { MatTableDataSource } from '@angular/material/table'
-  import { MatSort } from '@angular/material/sort';
-  import { TunnelService } from '../tunnel/tunnel.service';
-  import { MatDialog } from '@angular/material/dialog';
-  import { FloorService } from '../floor/floor.service';
+import { Component } from '@angular/core';
+import { OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table'
+import { MatSort } from '@angular/material/sort';
+import { TunnelService } from '../tunnel/tunnel.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FloorService } from '../floor/floor.service';
+import { EditTunnelComponent } from '../edit-tunnel/edit-tunnel.component';
 
-  @Component({
-    selector: 'app-get-tunnels',
-    templateUrl: './get-tunnels.component.html',
-    styleUrls: ['./get-tunnels.component.scss']
-  })
-  export class GetTunnelsDialogComponent implements OnInit {
-  displayedColumns: string[] = ['description', 'floor1Id', 'floor2Id'];
+@Component({
+  selector: 'app-get-tunnels',
+  templateUrl: './get-tunnels.component.html',
+  styleUrls: ['./get-tunnels.component.scss']
+})
+export class GetTunnelsDialogComponent implements OnInit {
+  displayedColumns: string[] = ['description', 'floor1Id', 'floor2Id','actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private tunnelService: TunnelService,private floorServise: FloorService) {}
+  constructor(private tunnelService: TunnelService,private floorService: FloorService,private dialog: MatDialog) {}
 
     ngOnInit() {
       this.tunnelService.getTunnels().subscribe(
@@ -34,7 +35,7 @@
 
     getFloorNumber(tunnel: any) {
       tunnel.forEach((element: any) => {
-        this.floorServise.getFloorNum(element.floor1Id).subscribe(
+        this.floorService.getFloorNum(element.floor1Id).subscribe(
           (floor: any) => {
             element.floor1Id = floor;
           },
@@ -42,7 +43,7 @@
             console.error('Error fetching floor', error);
           }
         );
-        this.floorServise.getFloorNum(element.floor2Id).subscribe(
+        this.floorService.getFloorNum(element.floor2Id).subscribe(
           (floor: any) => {
             element.floor2Id = floor;
           },
@@ -74,4 +75,31 @@
         this.paginator.pageSize = 10;
       }
     }
-  }
+
+    editTunnel(tunnel: any) {
+      // Open the edit building dialog
+      const dialogRef = this.dialog.open(EditTunnelComponent, {
+        width: '500px',
+        data: tunnel
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          // Update the building in the database
+          this.tunnelService.updateTunnel(result).subscribe(
+            (data: any) => {
+              // Update the building in the table
+              const index = this.dataSource.data.findIndex(b => b.id === data.id);
+              this.dataSource.data[index] = data;
+              this.dataSource._updateChangeSubscription();
+            },
+            (error: any) => {
+              console.error('Error updating tunnel', error);
+            }
+          );
+        }
+      });
+    }
+
+
+}

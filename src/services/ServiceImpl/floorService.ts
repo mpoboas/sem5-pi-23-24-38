@@ -175,7 +175,6 @@ export default class FloorService implements IFloorService {
 
     public async findFloorsByBuildingId(buildingId: string): Promise<IFloorDTO[]> {
         try {
-          console.log("id no service:\n"+buildingId);
           const floors = await this.floorRepo.findFloorsByBuildingId(buildingId);
 
           if (floors.length == 0) {

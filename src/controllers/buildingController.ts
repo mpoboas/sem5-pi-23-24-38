@@ -159,7 +159,6 @@ export default class BuildingController implements IBuildingController /* TODO: 
           const maxFloors = Number(splitrange[1]);
     
           if(minFloors > maxFloors) {
-            console.log("minFloors must be less than maxFloors");
             //400 -bad request (due to client error)
             return res.status(400).json("minFloors must be less than maxFloors");
           }
