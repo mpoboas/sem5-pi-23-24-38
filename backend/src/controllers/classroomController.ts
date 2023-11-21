@@ -45,4 +45,13 @@ export default class ClassroomController implements IClassroomController {
         }
         
     }
+
+    public async listAllClassrooms(req: Request, res: Response, next: NextFunction) {
+        try {
+            const floors = await this.classroomServiceInstance.getAllClassrooms();
+            return res.json(floors).status(200);
+        } catch (e) {
+            return next(e);
+        }
+    }
 }

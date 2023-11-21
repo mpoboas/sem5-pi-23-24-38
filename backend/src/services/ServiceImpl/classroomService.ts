@@ -78,4 +78,17 @@ export default class ClassroomService implements IClassroomService {
             throw new Error(`Error updating classroom: ${error.message}`);
         }
     }
+
+    public async getAllClassrooms(): Promise<IClassroomDTO[]> {
+        try {
+            const classrooms = await this.classroomRepo.getAllClassrooms();
+            
+            return classrooms.map((floor) => {
+                const classroomDTOResult = ClassroomMap.toDTO(floor) as IClassroomDTO;
+                return classroomDTOResult;
+            });
+        } catch (error) {
+            throw new Error(`Error listing classrooms: ${error.message}`);
+        }
+    }
 }

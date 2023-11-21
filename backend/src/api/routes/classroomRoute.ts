@@ -39,4 +39,6 @@ export default (app: Router) => {
             })
         }),
         (req, res, next) => ctrl.updateClassroom(req, res, next) );
+
+    route.get('', (req, res, next) => ctrl.listAllClassrooms(req, res, next) );
 }
