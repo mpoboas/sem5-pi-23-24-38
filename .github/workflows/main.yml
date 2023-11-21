@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and linting
+        run: npm test && npm run lint:fix
+
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_ADDRESS }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.HOST_PORT }}
+          script: |
+            cd /root/sem5-pi-23-24-38
+            git pull
+            npm install
+            export MONGODB_URI="${{ secrets.DB_CONNECTION_STRING }}"
+            export PORT=80
+            npm run pm2:restart
