@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FloorService } from '../floor/floor.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { floor } from 'lodash';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BuildingService } from '../building/building.service';

@@ -1,4 +1,3 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -32,6 +31,7 @@ $angular-three-theme: mat.define-light-theme((
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($angular-three-theme);
+
 
 /* You can add global styles to this file, and also import other style files */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
@@ -84,7 +84,7 @@ $angular-three-theme: mat.define-light-theme((
     height: 20px;
 }
 
-// robot icons
+// Robot icons
 .icon_robot {
     content: url('assets/icons/robots/robot.svg');
     height: 20px;
@@ -93,8 +93,12 @@ $angular-three-theme: mat.define-light-theme((
     content: url('assets/icons/robots/cog.svg');
     height: 20px;
 }
-.icon_fleet {
-    content: url('assets/icons/robots/fleet.svg');
+.icon_fleetW {
+    content: url('assets/icons/robots/fleet_white.svg');
+    height: 20px;
+}
+.icon_fleetB {
+    content: url('assets/icons/robots/fleet_black.svg');
     height: 20px;
 }
 

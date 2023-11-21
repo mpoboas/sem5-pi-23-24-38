@@ -1,0 +1,7 @@
+// Import Bootstrap and Bootswatch
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootswatch/dist/lumen/bootstrap.min.css';
+
+// Override Bootstrap Variables
+$primary: #ff0000; // Your custom primary color
+$secondary: #00ff00; // Your custom secondary color

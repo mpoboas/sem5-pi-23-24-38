@@ -32,8 +32,9 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootswatch/dist/lumen/bootstrap.min.css",
+              "src/custom-styles.scss",
               "src/styles.scss"
-            ],
+            ],            
             "scripts": []
           },
           "configurations": {
