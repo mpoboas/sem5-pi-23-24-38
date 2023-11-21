@@ -1,57 +1,56 @@
-import { Inject, Service } from "typedi";
-import IClassroomService from "../services/IServices/IClassroomService";
-import IClassroomController from "./IControllers/IClassroomController";
-import config from "../../config";
-import { NextFunction, Request, Response } from "express";
-import IClassroomDTO from "../dto/IClassroomDTO";
+import { Inject, Service } from 'typedi';
+import IClassroomService from '../services/IServices/IClassroomService';
+import IClassroomController from './IControllers/IClassroomController';
+import config from '../../config';
+import { NextFunction, Request, Response } from 'express';
+import IClassroomDTO from '../dto/IClassroomDTO';
 
 @Service()
 export default class ClassroomController implements IClassroomController {
-    constructor(@Inject(config.services.classroom.name) private classroomServiceInstance: IClassroomService) {}
+  constructor(@Inject(config.services.classroom.name) private classroomServiceInstance: IClassroomService) {}
 
-    public async createClassroom(req: Request, res: Response, next: NextFunction) {
-        try {
-            const classroomDTO = req.body as IClassroomDTO;
-            
-            const classroomOrError = await this.classroomServiceInstance.createClassroom(classroomDTO);
+  public async createClassroom(req: Request, res: Response, next: NextFunction) {
+    try {
+      const classroomDTO = req.body as IClassroomDTO;
 
-            if (classroomOrError.isFailure) {
-                return res.status(402).send();
-            }
+      const classroomOrError = await this.classroomServiceInstance.createClassroom(classroomDTO);
 
-            const createdClassroomDTO = classroomOrError.getValue(); // Rename the variable
+      if (classroomOrError.isFailure) {
+        return res.status(402).send();
+      }
 
-            return res.json(createdClassroomDTO).status(201); // Rename the variable
-        } catch (e) {
-            return next(e);
-        }
+      const createdClassroomDTO = classroomOrError.getValue(); // Rename the variable
+
+      return res.json(createdClassroomDTO).status(201); // Rename the variable
+    } catch (e) {
+      return next(e);
     }
+  }
 
-    public async updateClassroom(req: Request, res: Response, next: NextFunction) {
-        try {
-            const classroomDTO = req.body as IClassroomDTO;
-            
-            const classroomOrError = await this.classroomServiceInstance.updateClassroom(classroomDTO);
+  public async updateClassroom(req: Request, res: Response, next: NextFunction) {
+    try {
+      const classroomDTO = req.body as IClassroomDTO;
 
-            if (classroomOrError.isFailure) {
-                return res.status(404).send();
-            }
+      const classroomOrError = await this.classroomServiceInstance.updateClassroom(classroomDTO);
 
-            const updatedClassroomDTO = classroomOrError.getValue(); // Rename the variable
+      if (classroomOrError.isFailure) {
+        return res.status(404).send();
+      }
 
-            return res.status(201).json(updatedClassroomDTO); // Rename the variable
-        } catch (e) {
-            return next(e);
-        }
-        
+      const updatedClassroomDTO = classroomOrError.getValue(); // Rename the variable
+
+      return res.status(201).json(updatedClassroomDTO); // Rename the variable
+    } catch (e) {
+      return next(e);
     }
+  }
 
-    public async listAllClassrooms(req: Request, res: Response, next: NextFunction) {
-        try {
-            const floors = await this.classroomServiceInstance.getAllClassrooms();
-            return res.json(floors).status(200);
-        } catch (e) {
-            return next(e);
-        }
+  public async listAllClassrooms(req: Request, res: Response, next: NextFunction) {
+    try {
+      const floors = await this.classroomServiceInstance.getAllClassrooms();
+      return res.json(floors).status(200);
+    } catch (e) {
+      return next(e);
     }
+  }
 }

@@ -1,9 +1,9 @@
 export default interface IClassroomDTO {
-    id: string;
-    name: string;
-    description: string;
-    category: string;
-    length: number;
-    width: number;
-    floorId: string;
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  length: number;
+  width: number;
+  floorId: string;
 }

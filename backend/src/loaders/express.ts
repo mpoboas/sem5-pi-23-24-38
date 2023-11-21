@@ -32,14 +32,10 @@ export default ({ app }: { app: express.Application }) => {
 
   // Middleware that transforms the raw string of req.body into json
   app.use(bodyParser.json());
-  
-
 
   // Load API routes
   app.use(config.api.prefix, routes());
 
-
-  
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {
     const err = new Error('Not Found');
@@ -60,6 +56,7 @@ export default ({ app }: { app: express.Application }) => {
     }
     return next(err);
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({

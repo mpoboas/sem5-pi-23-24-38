@@ -11,18 +11,18 @@ import classroom from './routes/classroomRoute';
 import tunnel from './routes/tunnelRoute';
 
 export default () => {
-	const app = Router();
+  const app = Router();
 
-	auth(app);
-	user(app);
-	role(app);
-	building(app);
-	robotType(app);
-	robot(app);
-	floor(app);
-	elevator(app);
-	classroom(app);
-	tunnel(app);
-	
-	return app
-}
+  auth(app);
+  user(app);
+  role(app);
+  building(app);
+  robotType(app);
+  robot(app);
+  floor(app);
+  elevator(app);
+  classroom(app);
+  tunnel(app);
+
+  return app;
+};

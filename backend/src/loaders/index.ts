@@ -5,8 +5,6 @@ import Logger from './logger';
 
 import config from '../../config';
 
-
-
 export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
   Logger.info('✌️ DB loaded and connected!');
@@ -61,112 +59,112 @@ export default async ({ expressApp }) => {
 
   const roleController = {
     name: config.controllers.role.name,
-    path: config.controllers.role.path
-  }
+    path: config.controllers.role.path,
+  };
 
   const roleRepo = {
     name: config.repos.role.name,
-    path: config.repos.role.path
-  }
+    path: config.repos.role.path,
+  };
 
   const tunnelController = {
     name: config.controllers.tunnel.name,
-    path: config.controllers.tunnel.path
-  }
+    path: config.controllers.tunnel.path,
+  };
 
   const tunnelRepo = {
     name: config.repos.tunnel.name,
-    path: config.repos.tunnel.path
-  }
+    path: config.repos.tunnel.path,
+  };
 
   const robotTypeController = {
     name: config.controllers.robotType.name,
-    path: config.controllers.robotType.path
-  }
+    path: config.controllers.robotType.path,
+  };
 
   const robotTypeRepo = {
     name: config.repos.robotType.name,
-    path: config.repos.robotType.path
-  }
+    path: config.repos.robotType.path,
+  };
 
   const buildingController = {
     name: config.controllers.building.name,
-    path: config.controllers.building.path
-  }
+    path: config.controllers.building.path,
+  };
 
   const buildingRepo = {
     name: config.repos.building.name,
-    path: config.repos.building.path
-  }
+    path: config.repos.building.path,
+  };
 
   const userRepo = {
     name: config.repos.user.name,
-    path: config.repos.user.path
-  }
+    path: config.repos.user.path,
+  };
 
   const floorController = {
     name: config.controllers.floor.name,
-    path: config.controllers.floor.path
+    path: config.controllers.floor.path,
   };
 
   const floorRepo = {
     name: config.repos.floor.name,
-    path: config.repos.floor.path
+    path: config.repos.floor.path,
   };
 
   const elevatorController = {
     name: config.controllers.elevator.name,
-    path: config.controllers.elevator.path
+    path: config.controllers.elevator.path,
   };
 
   const elevatorRepo = {
     name: config.repos.elevator.name,
-    path: config.repos.elevator.path
+    path: config.repos.elevator.path,
   };
 
   const classroomController = {
     name: config.controllers.classroom.name,
-    path: config.controllers.classroom.path
+    path: config.controllers.classroom.path,
   };
 
   const classroomRepo = {
     name: config.repos.classroom.name,
-    path: config.repos.classroom.path
+    path: config.repos.classroom.path,
   };
-  
+
   const roleService = {
     name: config.services.role.name,
-    path: config.services.role.path
-  }
+    path: config.services.role.path,
+  };
 
   const tunnelService = {
     name: config.services.tunnel.name,
-    path: config.services.tunnel.path
-  }
+    path: config.services.tunnel.path,
+  };
 
   const robotTypeService = {
     name: config.services.robotType.name,
-    path: config.services.robotType.path
-  }
+    path: config.services.robotType.path,
+  };
 
   const buildingService = {
     name: config.services.building.name,
-    path: config.services.building.path
-  }
+    path: config.services.building.path,
+  };
 
   const floorService = {
     name: config.services.floor.name,
-    path: config.services.floor.path
+    path: config.services.floor.path,
   };
 
   const elevatorService = {
     name: config.services.elevator.name,
-    path: config.services.elevator.path
+    path: config.services.elevator.path,
   };
 
   const classroomService = {
     name: config.services.classroom.name,
-    path: config.services.classroom.path
+    path: config.services.classroom.path,
   };
 
   const robotSchema = {
@@ -177,18 +175,18 @@ export default async ({ expressApp }) => {
 
   const robotController = {
     name: config.controllers.robot.name,
-    path: config.controllers.robot.path
-  }
+    path: config.controllers.robot.path,
+  };
 
   const robotRepo = {
     name: config.repos.robot.name,
-    path: config.repos.robot.path
-  }
+    path: config.repos.robot.path,
+  };
 
   const robotService = {
     name: config.services.robot.name,
-    path: config.services.robot.path
-  }
+    path: config.services.robot.path,
+  };
 
   await dependencyInjectorLoader({
     mongoConnection,
@@ -201,7 +199,7 @@ export default async ({ expressApp }) => {
       elevatorSchema,
       robotSchema,
       classroomSchema,
-      tunnelSchema
+      tunnelSchema,
     ],
     controllers: [
       roleController,
@@ -211,7 +209,7 @@ export default async ({ expressApp }) => {
       elevatorController,
       robotController,
       classroomController,
-      tunnelController
+      tunnelController,
     ],
     repos: [
       roleRepo,
@@ -222,7 +220,7 @@ export default async ({ expressApp }) => {
       elevatorRepo,
       robotRepo,
       classroomRepo,
-      tunnelRepo
+      tunnelRepo,
     ],
     services: [
       roleService,
@@ -232,8 +230,8 @@ export default async ({ expressApp }) => {
       elevatorService,
       robotService,
       classroomService,
-      tunnelService
-    ]
+      tunnelService,
+    ],
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
 

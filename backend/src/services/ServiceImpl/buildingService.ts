@@ -9,147 +9,143 @@ import { BuildingMap } from '../../mappers/BuildingMap';
 import { BuildingLetter } from '../../domain/building/buildingLetter';
 import { BuildingDescription } from '../../domain/building/buildingDescription';
 import { BuildingCode } from '../../domain/building/buildingCode';
-import IClassroomDTO from '../../dto/IClassroomDTO';
-import { Classroom } from '../../domain/classroom/classroom';
 import IFloorRepo from '../IRepos/IFloorRepo';
 import IFloorService from '../IServices/IFloorService';
 import IClassroomRepo from '../IRepos/IClassroomRepo';
 import IClassroomService from '../IServices/IClassroomService';
-import { Floor } from '../../domain/floor/floor';
-import IFloorDTO from '../../dto/IFloorDTO';
-import { FloorMap } from '../../mappers/FloorMap';
 
 @Service()
 export default class BuildingService implements IBuildingService {
-    constructor(@Inject(config.repos.building.name) private buildingRepo: IBuildingRepo,
-                @Inject(config.repos.floor.name) private floorRepo: IFloorRepo,
-                @Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo,
-                private floorService: IFloorService,
-                private classroomService: IClassroomService) {}
+  constructor(
+    @Inject(config.repos.building.name) private buildingRepo: IBuildingRepo,
+    @Inject(config.repos.floor.name) private floorRepo: IFloorRepo,
+    @Inject(config.repos.classroom.name) private classroomRepo: IClassroomRepo,
+    private floorService: IFloorService,
+    private classroomService: IClassroomService,
+  ) {}
 
-    
-    public async getBuilding(buildingId: string): Promise<Result<IBuildingDTO>> {
-        try {
-            const building = await this.buildingRepo.findByDomainId(buildingId);
+  public async getBuilding(buildingId: string): Promise<Result<IBuildingDTO>> {
+    try {
+      const building = await this.buildingRepo.findByDomainId(buildingId);
 
-            if (building === null) {
-                return Result.fail<IBuildingDTO>('Building not found');
-            } else {
-                const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
-                return Result.ok<IBuildingDTO>(buildingDTOResult);
-            }
-        } catch (e) {
-            throw e;
-        }
+      if (building === null) {
+        return Result.fail<IBuildingDTO>('Building not found');
+      } else {
+        const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+        return Result.ok<IBuildingDTO>(buildingDTOResult);
+      }
+    } catch (e) {
+      throw e;
     }
+  }
 
-    public async findByCode(code: string): Promise<Result<IBuildingDTO>> {
-        try {
-            const building = await this.buildingRepo.findByCode(code);
+  public async findByCode(code: string): Promise<Result<IBuildingDTO>> {
+    try {
+      const building = await this.buildingRepo.findByCode(code);
 
-            if (building === null) {
-                return Result.fail<IBuildingDTO>('Building not found');
-            } else {
-                const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
-                return Result.ok<IBuildingDTO>(buildingDTOResult);
-            }
-        } catch (e) {
-            throw e;
-        }
+      if (building === null) {
+        return Result.fail<IBuildingDTO>('Building not found');
+      } else {
+        const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+        return Result.ok<IBuildingDTO>(buildingDTOResult);
+      }
+    } catch (e) {
+      throw e;
     }
+  }
 
-    /**
-     * Creates a new building with the given data and associates it with the provided floor IDs.
-     * @param buildingDTO The data for the building to be created.
-     * @param floorIds The IDs of the floors to associate with the building.
-     * @returns A Promise that resolves to a Result containing either the created building's data or an error message.
-     */
-    public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
-        try {
-            const buildingOrError = await Building.create(buildingDTO);
-    
-            if (buildingOrError.isFailure) {
-                const errorMessage = buildingOrError.errorValue();
-                return Result.fail<IBuildingDTO>(errorMessage);
-            }
-    
-            const buildingResult = buildingOrError.getValue();
-            
-            await this.buildingRepo.save(buildingResult);
-    
-            const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
-            return Result.ok<IBuildingDTO>(buildingDTOResult);
-        } catch (error) {
-            throw new Error(`Error creating building: ${error.message}`);
-        }
-    }
-    
-    /**
-     * Updates a building and its associated floors.
-     * @param buildingDTO - The building data transfer object to update.
-     * @param floorIds - An array of floor IDs to associate with the building.
-     * @returns A promise that resolves to a Result object containing the updated building data transfer object.
-     * If the building is not found, the promise resolves to a failed Result object with an error message.
-     * If an error occurs during the update, the promise is rejected with the error.
-     */
-    public async updateBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
-        try {
-            const building = await this.buildingRepo.findByDomainId(buildingDTO.id);
-    
-            if (building === null) {
-                return Result.fail<IBuildingDTO>('Building not found');
-            } else {
-                // Update building properties as before
-                building.letter = BuildingLetter.create(buildingDTO.letter).getValue().letter;
-                building.length = buildingDTO.length;
-                building.width = buildingDTO.width;
-                building.description = BuildingDescription.create(buildingDTO.description).getValue().description;
-                building.code = BuildingCode.create(buildingDTO.code).getValue().code;
+  /**
+   * Creates a new building with the given data and associates it with the provided floor IDs.
+   * @param buildingDTO The data for the building to be created.
+   * @param floorIds The IDs of the floors to associate with the building.
+   * @returns A Promise that resolves to a Result containing either the created building's data or an error message.
+   */
+  public async createBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
+    try {
+      const buildingOrError = await Building.create(buildingDTO);
 
-                await this.buildingRepo.save(building);
-    
-                const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
-                return Result.ok<IBuildingDTO>(buildingDTOResult);
-            }
-        } catch (error) {
-            throw new Error(`Error updating building: ${error.message}`);
-        }
+      if (buildingOrError.isFailure) {
+        const errorMessage = buildingOrError.errorValue();
+        return Result.fail<IBuildingDTO>(errorMessage);
+      }
+
+      const buildingResult = buildingOrError.getValue();
+
+      await this.buildingRepo.save(buildingResult);
+
+      const buildingDTOResult = BuildingMap.toDTO(buildingResult) as IBuildingDTO;
+      return Result.ok<IBuildingDTO>(buildingDTOResult);
+    } catch (error) {
+      throw new Error(`Error creating building: ${error.message}`);
     }
-    
-    public async patchBuilding(buildingId: string, buildingUpdate: IBuildingDTO): Promise<Result<IBuildingDTO>> {
-        try {
-            const building = await this.buildingRepo.findByDomainId(buildingId);
-    
-            if (!building) {
-                return Result.fail<IBuildingDTO>('Building not found');
-            }
-    
-            if (buildingUpdate.letter != null) {
-                building.letter = BuildingLetter.create(buildingUpdate.letter).getValue().letter;
-            }
-            if (buildingUpdate.length != null) {
-                building.length = buildingUpdate.length;
-            }
-            if (buildingUpdate.width != null) {
-                building.width = buildingUpdate.width;
-            }
-            if (buildingUpdate.description != null) {
-                building.description = BuildingDescription.create(buildingUpdate.description).getValue().description;
-            }
-            if (buildingUpdate.code != null) {
-                building.code = BuildingCode.create(buildingUpdate.code).getValue().code;
-            }
-    
-            await this.buildingRepo.save(building);
-    
-            const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
-            return Result.ok<IBuildingDTO>(buildingDTOResult);
-        } catch (error) {
-            throw new Error(`Error patching building: ${error.message}`);
-        }
+  }
+
+  /**
+   * Updates a building and its associated floors.
+   * @param buildingDTO - The building data transfer object to update.
+   * @param floorIds - An array of floor IDs to associate with the building.
+   * @returns A promise that resolves to a Result object containing the updated building data transfer object.
+   * If the building is not found, the promise resolves to a failed Result object with an error message.
+   * If an error occurs during the update, the promise is rejected with the error.
+   */
+  public async updateBuilding(buildingDTO: IBuildingDTO): Promise<Result<IBuildingDTO>> {
+    try {
+      const building = await this.buildingRepo.findByDomainId(buildingDTO.id);
+
+      if (building === null) {
+        return Result.fail<IBuildingDTO>('Building not found');
+      } else {
+        // Update building properties as before
+        building.letter = BuildingLetter.create(buildingDTO.letter).getValue().letter;
+        building.length = buildingDTO.length;
+        building.width = buildingDTO.width;
+        building.description = BuildingDescription.create(buildingDTO.description).getValue().description;
+        building.code = BuildingCode.create(buildingDTO.code).getValue().code;
+
+        await this.buildingRepo.save(building);
+
+        const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+        return Result.ok<IBuildingDTO>(buildingDTOResult);
+      }
+    } catch (error) {
+      throw new Error(`Error updating building: ${error.message}`);
     }
-    
-    /*public async loadFloors(buildingId: string, floor: IFloorDTO, classrooms: IClassroomDTO[]): Promise<Result<IFloorDTO>> {
+  }
+
+  public async patchBuilding(buildingId: string, buildingUpdate: IBuildingDTO): Promise<Result<IBuildingDTO>> {
+    try {
+      const building = await this.buildingRepo.findByDomainId(buildingId);
+
+      if (!building) {
+        return Result.fail<IBuildingDTO>('Building not found');
+      }
+
+      if (buildingUpdate.letter != null) {
+        building.letter = BuildingLetter.create(buildingUpdate.letter).getValue().letter;
+      }
+      if (buildingUpdate.length != null) {
+        building.length = buildingUpdate.length;
+      }
+      if (buildingUpdate.width != null) {
+        building.width = buildingUpdate.width;
+      }
+      if (buildingUpdate.description != null) {
+        building.description = BuildingDescription.create(buildingUpdate.description).getValue().description;
+      }
+      if (buildingUpdate.code != null) {
+        building.code = BuildingCode.create(buildingUpdate.code).getValue().code;
+      }
+
+      await this.buildingRepo.save(building);
+
+      const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+      return Result.ok<IBuildingDTO>(buildingDTOResult);
+    } catch (error) {
+      throw new Error(`Error patching building: ${error.message}`);
+    }
+  }
+
+  /*public async loadFloors(buildingId: string, floor: IFloorDTO, classrooms: IClassroomDTO[]): Promise<Result<IFloorDTO>> {
         try {
             const building = await this.buildingRepo.findByDomainId(buildingId);
             console.log('\x1b[33m%s\x1b[0m', "Found the building: ", building.id);
@@ -196,31 +192,30 @@ export default class BuildingService implements IBuildingService {
           }
     }*/
 
+  /**
+   * Retrieves all buildings from the database and returns them as an array of building DTOs.
+   * @returns {Promise<IBuildingDTO[]>} A promise that resolves to an array of building DTOs.
+   * @throws {Error} If there was an error fetching the buildings from the database.
+   */
+  public async getAllBuildings(): Promise<IBuildingDTO[]> {
+    try {
+      const buildings = await this.buildingRepo.getAllBuildings();
 
-    /**
-     * Retrieves all buildings from the database and returns them as an array of building DTOs.
-     * @returns {Promise<IBuildingDTO[]>} A promise that resolves to an array of building DTOs.
-     * @throws {Error} If there was an error fetching the buildings from the database.
-     */
-    public async getAllBuildings(): Promise<IBuildingDTO[]> {
-        try {
-            const buildings = await this.buildingRepo.getAllBuildings();
-
-            return buildings.map((building) => {
-                const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
-                return buildingDTOResult;
-            });
-        } catch (error) {
-            throw new Error(`Error fetching buildings: ${error.message}`);
-        }
+      return buildings.map(building => {
+        const buildingDTOResult = BuildingMap.toDTO(building) as IBuildingDTO;
+        return buildingDTOResult;
+      });
+    } catch (error) {
+      throw new Error(`Error fetching buildings: ${error.message}`);
     }
+  }
 
-    /**
-     * Validates an array of floor IDs.
-     * @param floorIds - An array of floor IDs to be validated.
-     * @returns An array of valid floor IDs.
-     */
-    /** 
+  /**
+   * Validates an array of floor IDs.
+   * @param floorIds - An array of floor IDs to be validated.
+   * @returns An array of valid floor IDs.
+   */
+  /** 
     public async validateFloorIds(buildingId: string, floorIds: string[]): Promise<string[]> {
         const validFloorIds: string[] = [];
 
@@ -249,27 +244,23 @@ export default class BuildingService implements IBuildingService {
         return validFloorIds;
     }*/
 
-    public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<Result<IBuildingDTO[]>> {
-        try{
-          const buildings = await this.buildingRepo.findBuildingByMinMaxFloors(minFloors, maxFloors);
+  public async findBuildingByMinMaxFloors(minFloors: number, maxFloors: number): Promise<Result<IBuildingDTO[]>> {
+    try {
+      const buildings = await this.buildingRepo.findBuildingByMinMaxFloors(minFloors, maxFloors);
 
-          const buildingArray: IBuildingDTO[] = buildings.map(buildingDocument =>
-            BuildingMap.toDTO(buildingDocument));
+      const buildingArray: IBuildingDTO[] = buildings.map(buildingDocument => BuildingMap.toDTO(buildingDocument));
 
-          if (buildings.length == 0) {
-             return Result.fail<IBuildingDTO[]>("No buildings found");
-            }
-
-         return Result.ok<IBuildingDTO[]>(buildingArray);
-      
-    
-        } catch (error) {
-            throw error;
-        }
+      if (buildings.length == 0) {
+        return Result.fail<IBuildingDTO[]>('No buildings found');
       }
 
+      return Result.ok<IBuildingDTO[]>(buildingArray);
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      /*public async getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>> {
+  /*public async getAllFloors(buildingId: string): Promise<Result<IFloorDTO[]>> {
         const floors: IFloorDTO[] = [];
         try {
             // lista com os id dos floors

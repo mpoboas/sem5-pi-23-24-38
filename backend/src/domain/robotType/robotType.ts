@@ -5,53 +5,52 @@ import { Result } from '../../core/logic/Result';
 import { RobotTypeId } from './robotTypeId';
 
 import IRobotTypeDTO from '../../dto/IRobotTypeDTO';
-import { get } from 'lodash';
 import { Guard } from '../../core/logic/Guard';
 
 interface RobotTypeProps {
-    tasks?: string[];
-    brand: string;
-    model: string;
+  tasks?: string[];
+  brand: string;
+  model: string;
 }
 
 export class RobotType extends AggregateRoot<RobotTypeProps> {
-    get id(): UniqueEntityID {
-        return this._id;
-    }
+  get id(): UniqueEntityID {
+    return this._id;
+  }
 
-    get robotTypeId(): RobotTypeId {
-        return new RobotTypeId(this.robotTypeId.toValue());
-    }
+  get robotTypeId(): RobotTypeId {
+    return new RobotTypeId(this.robotTypeId.toValue());
+  }
 
-    get tasks(): string[] {
-        return this.props.tasks;
-    }
+  get tasks(): string[] {
+    return this.props.tasks;
+  }
 
-    set tasks(value: string[]) {
-        this.props.tasks = value;
-    }
+  set tasks(value: string[]) {
+    this.props.tasks = value;
+  }
 
-    get brand(): string {
-        return this.props.brand;
-    }
+  get brand(): string {
+    return this.props.brand;
+  }
 
-    set brand(value: string) {
-        this.props.brand = value;
-    }
+  set brand(value: string) {
+    this.props.brand = value;
+  }
 
-    get model(): string {
-        return this.props.model;
-    }
+  get model(): string {
+    return this.props.model;
+  }
 
-    set model(value: string) {
-        this.props.model = value;
-    }
+  set model(value: string) {
+    this.props.model = value;
+  }
 
-    private constructor(props: RobotTypeProps, id?: UniqueEntityID) {
-        super(props, id);
-    }
+  private constructor(props: RobotTypeProps, id?: UniqueEntityID) {
+    super(props, id);
+  }
 
-    /*public static create (props: RobotTypeProps, id?: UniqueEntityID): Result<RobotType> {
+  /*public static create (props: RobotTypeProps, id?: UniqueEntityID): Result<RobotType> {
 
         const guardedProps = [
           { argument: props.tasks, argumentName: 'tasks' },
@@ -72,32 +71,32 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
         }
       }
     */
-    public static create (robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
+  public static create(robotTypeDTO: IRobotTypeDTO, id?: UniqueEntityID): Result<RobotType> {
+    const rtBrand = robotTypeDTO.brand;
+    const rtModel = robotTypeDTO.model;
+    const rtTasks = robotTypeDTO.tasks;
 
-        const rtBrand = robotTypeDTO.brand;
-        const rtModel = robotTypeDTO.model;
-        const rtTasks = robotTypeDTO.tasks;
-        
+    const guardedProps = [
+      { argument: rtTasks, argumentName: 'tasks' },
+      { argument: rtModel, argumentName: 'model' },
+      { argument: rtBrand, argumentName: 'brand' },
+    ];
 
-        const guardedProps = [
-          { argument: rtTasks, argumentName: 'tasks' },
-          { argument: rtModel, argumentName: 'model' },
-          { argument: rtBrand, argumentName: 'brand' }
-        ];
-    
-        const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
-    
-        if (!guardResult.succeeded) {
-          return Result.fail<RobotType>(guardResult.message)
-        } else {
-          const robotType = new RobotType({
-            brand: rtBrand,
-            model: rtModel,
-            tasks: rtTasks
-          }, id);
-    
-          return Result.ok<RobotType>(robotType);
-        }
-      }
+    const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 
+    if (!guardResult.succeeded) {
+      return Result.fail<RobotType>(guardResult.message);
+    } else {
+      const robotType = new RobotType(
+        {
+          brand: rtBrand,
+          model: rtModel,
+          tasks: rtTasks,
+        },
+        id,
+      );
+
+      return Result.ok<RobotType>(robotType);
+    }
+  }
 }

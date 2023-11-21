@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BuildingService {
-  private baseUrl = 'http://localhost:3000/api/buildings'; // Replace with your API URL
+  private baseUrl = 'http://vs826.dei.isep.ipp.pt:3000/api/buildings'; // Replace with your API URL
 
   constructor(private http: HttpClient) { }
 

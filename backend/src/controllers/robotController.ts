@@ -10,60 +10,60 @@ import { Result } from '../core/logic/Result';
 
 @Service()
 export default class RobotController implements IRobotController /* TODO: extends ../core/infra/BaseController */ {
-    constructor(@Inject(config.services.robot.name) private robotServiceInstance: IRobotService) {}
+  constructor(@Inject(config.services.robot.name) private robotServiceInstance: IRobotService) {}
 
-    public async createRobot(req: Request, res: Response, next: NextFunction) {
-        try {
-            const robotOrError = (await this.robotServiceInstance.createRobot(req.body as IRobotDTO)) as Result<IRobotDTO>;
-            if (robotOrError.isFailure) {
-                return res.status(402).send();
-            }
+  public async createRobot(req: Request, res: Response, next: NextFunction) {
+    try {
+      const robotOrError = (await this.robotServiceInstance.createRobot(req.body as IRobotDTO)) as Result<IRobotDTO>;
+      if (robotOrError.isFailure) {
+        return res.status(402).send();
+      }
 
-            const robotDTO = robotOrError.getValue();
-            return res.json(robotDTO).status(201);
-        } catch (e) {
-            return next(e);
-        }
+      const robotDTO = robotOrError.getValue();
+      return res.json(robotDTO).status(201);
+    } catch (e) {
+      return next(e);
     }
+  }
 
-    public async updateRobot(req: Request, res: Response, next: NextFunction) {
-        try {
-            const robotOrError = (await this.robotServiceInstance.updateRobot(req.body as IRobotDTO)) as Result<IRobotDTO>;
+  public async updateRobot(req: Request, res: Response, next: NextFunction) {
+    try {
+      const robotOrError = (await this.robotServiceInstance.updateRobot(req.body as IRobotDTO)) as Result<IRobotDTO>;
 
-            if (robotOrError.isFailure) {
-                return res.status(404).send();
-            }
+      if (robotOrError.isFailure) {
+        return res.status(404).send();
+      }
 
-            const robotDTO = robotOrError.getValue();
-            return res.status(201).json(robotDTO);
-        } catch (e) {
-            return next(e);
-        }
+      const robotDTO = robotOrError.getValue();
+      return res.status(201).json(robotDTO);
+    } catch (e) {
+      return next(e);
     }
+  }
 
-    public async patchRobot(req: Request, res: Response, next: NextFunction) {
-        try {
-            const robotId = req.params.id;
-            const robotUpdate: IRobotDTO = req.body;
+  public async patchRobot(req: Request, res: Response, next: NextFunction) {
+    try {
+      const robotId = req.params.id;
+      const robotUpdate: IRobotDTO = req.body;
 
-            const existingRobot = await this.robotServiceInstance.getRobot(robotId);
-            if (!existingRobot) {
-                return res.status(404).send();
-            }
-            const updatedRobot = await this.robotServiceInstance.patchRobot(robotId, robotUpdate);
-    
-            return res.status(200).json(updatedRobot);
-        } catch (e) {
-            return next(e);
-        }
+      const existingRobot = await this.robotServiceInstance.getRobot(robotId);
+      if (!existingRobot) {
+        return res.status(404).send();
+      }
+      const updatedRobot = await this.robotServiceInstance.patchRobot(robotId, robotUpdate);
+
+      return res.status(200).json(updatedRobot);
+    } catch (e) {
+      return next(e);
     }
+  }
 
-    public async listAllRobots(req: Request, res: Response, next: NextFunction){
-        try {
-            const robots = await this.robotServiceInstance.getAllRobots();
-            return res.json(robots).status(200);
-        } catch (e) {
-            return next(e);
-        }
+  public async listAllRobots(req: Request, res: Response, next: NextFunction) {
+    try {
+      const robots = await this.robotServiceInstance.getAllRobots();
+      return res.json(robots).status(200);
+    } catch (e) {
+      return next(e);
     }
+  }
 }

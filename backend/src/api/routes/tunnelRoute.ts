@@ -9,44 +9,50 @@ import config from '../../../config';
 const route = Router();
 
 export default (app: Router) => {
-    app.use('/tunnels', route);
+  app.use('/tunnels', route);
 
-    const ctrl = Container.get(config.controllers.tunnel.name) as ITunnelController;
+  const ctrl = Container.get(config.controllers.tunnel.name) as ITunnelController;
 
-    route.post('',
-        celebrate({
-            body: Joi.object({
-                description: Joi.string().required(),
-                floor1Id: Joi.string().required(),
-                floor2Id: Joi.string().required()
-            })
-        }),
-        (req, res, next) => ctrl.createTunnel(req, res, next) );
+  route.post(
+    '',
+    celebrate({
+      body: Joi.object({
+        description: Joi.string().required(),
+        floor1Id: Joi.string().required(),
+        floor2Id: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.createTunnel(req, res, next),
+  );
 
-    route.put('',
-        celebrate({
-            body: Joi.object({
-                id: Joi.string().required(),
-                description: Joi.string().required(),
-                floor1Id: Joi.string().required(),
-                floor2Id: Joi.string().required()
-            }),
-        }),
-        (req, res, next) => ctrl.updateTunnel(req, res, next) );
+  route.put(
+    '',
+    celebrate({
+      body: Joi.object({
+        id: Joi.string().required(),
+        description: Joi.string().required(),
+        floor1Id: Joi.string().required(),
+        floor2Id: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.updateTunnel(req, res, next),
+  );
 
-    route.patch('/:id',
-        celebrate({
-                params: Joi.object({
-                    id: Joi.string().required()
-                }),
-                body: Joi.object({
-                    description: Joi.string(),
-                    floor1Id: Joi.string(),
-                    floor2Id: Joi.string()
-                }),
-            }),
-        (req, res, next) => ctrl.patchTunnel(req, res, next) );
+  route.patch(
+    '/:id',
+    celebrate({
+      params: Joi.object({
+        id: Joi.string().required(),
+      }),
+      body: Joi.object({
+        description: Joi.string(),
+        floor1Id: Joi.string(),
+        floor2Id: Joi.string(),
+      }),
+    }),
+    (req, res, next) => ctrl.patchTunnel(req, res, next),
+  );
 
-    route.get('/getFloorsTunnel',(req, res, next) => ctrl.listAllTunnels(req, res, next));
-    route.get('',(req,res,next)=> ctrl.listTunnels2B(req, res, next));
+  route.get('/getFloorsTunnel', (req, res, next) => ctrl.listAllTunnels(req, res, next));
+  route.get('', (req, res, next) => ctrl.listTunnels2B(req, res, next));
 };

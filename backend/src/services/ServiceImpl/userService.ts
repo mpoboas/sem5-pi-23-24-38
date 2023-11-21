@@ -1,4 +1,4 @@
-import { Container, Service, Inject } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 import jwt from 'jsonwebtoken';
 import config from '../../../config';
