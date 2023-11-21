@@ -19,10 +19,14 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd backend
+          npm install
 
       - name: Run tests and linting
-        run: npm test && npm run lint:fix
+        run: |
+          cd backend
+          npm test && npm run lint:fix
 
       - name: Deploy to production
         uses: appleboy/ssh-action@master
