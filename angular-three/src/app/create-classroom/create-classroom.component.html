@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Create Building</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Ex: B208" formControlName="name">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Ex: Sala B208" formControlName="description">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Category</mat-label>
+      <input matInput placeholder="Ex: Laboratório" formControlName="category">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Width</mat-label>
+      <input matInput placeholder="Ex: 20" formControlName="width">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Length</mat-label>
+      <input matInput placeholder="Ex: 30" formControlName="length">
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>FloorNumber</mat-label>
+      <mat-select formControlName="floorNumber">
+        <mat-option *ngFor="let floor of floorOptions" [value]="floor.floorNumber">
+          {{ floor.floorNumber }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+</div>

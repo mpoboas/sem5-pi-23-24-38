@@ -63,4 +63,20 @@ export default class ClassroomRepo implements IClassroomRepo {
             return ClassroomMap.toDomain(classroomRecord);
         } else return null;
     }
+
+    public async getAllClassrooms(): Promise<Classroom[]> {
+        try {
+            const classroomDocuments = await this.classroomSchema.find().exec();
+
+            if (!classroomDocuments) {
+                return [];
+            }
+
+            const classrooms = classroomDocuments.map((classroomDocument) => ClassroomMap.toDomain(classroomDocument));
+
+            return classrooms;
+        } catch (error) {
+            throw new Error(`Error fetching classrooms: ${error.message}`);
+        }
+    }
 }

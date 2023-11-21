@@ -60,6 +60,10 @@ import { EditTunnelComponent } from './edit-tunnel/edit-tunnel.component';
 import { EditFloorComponent } from './edit-floor/edit-floor.component';
 import { EditElevatorComponent } from './edit-elevator/edit-elevator.component';
 import { GetFloorWithTunnelComponent } from './get-floor-with-tunnel/get-floor-with-tunnel.component';
+import { ClassroomComponent } from './classroom/classroom.component';
+import { CreateClassroomComponent } from './create-classroom/create-classroom.component';
+import { GetClassroomComponent } from './get-classroom/get-classroom.component';
+import { EditClassroomComponent } from './edit-classroom/edit-classroom.component';
 
 
 
@@ -94,7 +98,11 @@ import { GetFloorWithTunnelComponent } from './get-floor-with-tunnel/get-floor-w
     EditTunnelComponent,
     EditFloorComponent,
     EditElevatorComponent,
-    GetFloorWithTunnelComponent
+    GetFloorWithTunnelComponent,
+    ClassroomComponent,
+    CreateClassroomComponent,
+    GetClassroomComponent,
+    EditClassroomComponent
   ],
   imports: [
     BrowserModule,
