@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.HOST_PORT }}
           script: |
-            cd /root/sem5-pi-23-24-38
+            cd /root/sem5-pi-23-24-38/backend
             git pull
             npm install
             export MONGODB_URI="${{ secrets.DB_CONNECTION_STRING }}"
