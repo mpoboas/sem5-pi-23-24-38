@@ -12,7 +12,14 @@
         "lint": "npm run lint:js ",
         "lint:eslint": "eslint --ignore-path .gitignore --ext .ts",
         "lint:js": "npm run lint:eslint src/",
-        "lint:fix": "npm run lint:js -- --fix"
+        "lint:fix": "npm run lint:js -- --fix",
+        "pm2:start": "pm2 start npm --name rdg-dam -- start",
+        "pm2:logs": "pm2 logs rdg-dam",
+        "pm2:list": "pm2 list",
+        "pm2:show": "pm2 show rdg-dam",
+        "pm2:stop": "pm2 stop rdg-dam",
+        "pm2:restart": "pm2 restart rdg-dam --update-env",
+        "pm2:delete": "pm2 delete rdg-dam"
     },
     "repository": {
         "type": "git",
@@ -57,6 +64,7 @@
         "mongodb": "^4.2.1",
         "mongoose": "^6.12.1",
         "morgan": "^1.9.1",
+        "pm2": "^5.3.0",
         "reflect-metadata": "^0.1.13",
         "shallow-equal-object": "^1.1.1",
         "sinon": "^7.5.0",
