@@ -75,6 +75,11 @@ export default (app: Router) => {
 
   route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next));
 
+  // mock hello world get route 
+  route.get('/hello', (req, res) => {
+    res.send('Hello World!');
+  });
+
   route.get('/floorRange/:range', (req, res, next) => ctrl.findBuildingByMinMaxFloors(req, res, next));
 
   route.get('/getBuildingCode/:buildingId', (req, res, next) => ctrl.findBuildingCode(req, res, next));
