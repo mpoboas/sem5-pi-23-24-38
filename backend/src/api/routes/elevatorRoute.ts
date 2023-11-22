@@ -17,8 +17,8 @@ export default (app: Router) => {
     '',
     celebrate({
       body: Joi.object({
-        x: Joi.number().required(),
-        y: Joi.number().required(),
+        name: Joi.string().required(),
+        floors: Joi.array().items(Joi.string()).required(),
         buildingId: Joi.string().required(),
       }),
     }),
@@ -30,14 +30,14 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
-        x: Joi.number().required(),
-        y: Joi.number().required(),
+        name: Joi.string().required(),
+        floors: Joi.array().items(Joi.string()).required(),
         buildingId: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.updateElevator(req, res, next),
   );
-
+/*
   route.patch(
     '/:id',
     celebrate({
@@ -52,6 +52,6 @@ export default (app: Router) => {
     }),
     (req, res, next) => ctrl.patchElevator(req, res, next),
   );
-
+*/
   route.get('', (req, res, next) => ctrl.listAllElevators(req, res, next));
 };

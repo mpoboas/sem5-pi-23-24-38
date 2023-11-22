@@ -13,10 +13,11 @@ export default class ElevatorController
 
   public async createElevator(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log('1');
       const elevatorOrError = (await this.elevatorServiceInstance.createElevator(req.body as IElevatorDTO)) as Result<
         IElevatorDTO
       >;
-
+      console.log('2');
       if (elevatorOrError.isFailure) {
         return res.status(402).send();
       }
@@ -65,6 +66,7 @@ export default class ElevatorController
 
   public async listAllElevators(req: Request, res: Response, next: NextFunction) {
     try {
+ 
       const elevators = await this.elevatorServiceInstance.getAllElevators();
       return res.json(elevators).status(200);
     } catch (e) {

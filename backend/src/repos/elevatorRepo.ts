@@ -27,21 +27,24 @@ export default class ElevatorRepo implements IElevatorRepo {
     return !!elevatorDocument === true;
   }
 
-  public async save(elevator: any): Promise<any> {
+  public async save(elevator: Elevator): Promise<Elevator> {
     const query = { domainId: elevator.id.toString() };
-
     const elevatorDocument = await this.elevatorSchema.findOne(query);
-
     try {
       if (elevatorDocument === null) {
         const rawElevator: any = ElevatorMap.toPersistence(elevator);
 
         const elevatorCreated = await this.elevatorSchema.create(rawElevator);
-
         return ElevatorMap.toDomain(elevatorCreated);
       } else {
-        elevatorDocument.x = elevator.x;
-        elevatorDocument.y = elevator.y;
+
+        let floors: string[] = [];
+        elevator.floors.forEach(floor => {
+          floors.push(floor.id.toString());
+        });
+
+        elevatorDocument.name = elevator.name;
+        elevatorDocument.floors = floors;
         elevatorDocument.buildingId = elevator.buildingId;
 
         await elevatorDocument.save();
@@ -49,6 +52,7 @@ export default class ElevatorRepo implements IElevatorRepo {
         return elevator;
       }
     } catch (err) {
+
       throw err;
     }
   }
@@ -71,8 +75,9 @@ export default class ElevatorRepo implements IElevatorRepo {
       }
 
       const elevators = elevatorDocuments.map(elevatorDocument => ElevatorMap.toDomain(elevatorDocument));
+      const elevators2 = await Promise.all(elevators);
 
-      return elevators;
+      return elevators2;
     } catch (error) {
       throw new Error(`Error fetching elevator: ${error.message}`);
     }

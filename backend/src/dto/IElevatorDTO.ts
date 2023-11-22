@@ -1,6 +1,6 @@
 export default interface IElevatorDTO {
   id: string;
-  x: number;
-  y: number;
+  name: string;
+  floors: string[];
   buildingId: string;
 }

@@ -1,6 +1,6 @@
 export interface IElevatorPersistence {
   domainId: string;
-  x: number;
-  y: number;
+  name: string;
+  floors: string[];
   buildingId: string;
 }

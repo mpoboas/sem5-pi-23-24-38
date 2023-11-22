@@ -3,10 +3,12 @@ import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Coordinates } from '../coordinates';
 import { Result } from '../../core/logic/Result';
 import IElevatorDTO from '../../dto/IElevatorDTO';
+import { Floor } from '../floor/floor';
+import { Guard } from '../../core/logic/Guard';
 
 interface ElevatorProps {
-  x: number;
-  y: number;
+  name: string;
+  floors: Floor[];
   buildingId: string;
 }
 
@@ -15,21 +17,22 @@ export class Elevator extends AggregateRoot<ElevatorProps> {
     return this._id;
   }
 
-  get x(): number {
-    return this.props.x;
+  get name(): string {
+    return this.props.name;
   }
 
-  set x(value: number) {
-    this.props.x = value;
+  set name(value: string) {
+    this.props.name = value;
   }
 
-  get y(): number {
-    return this.props.y;
+  get floors(): Floor[] {
+    return this.props.floors;
   }
 
-  set y(value: number) {
-    this.props.y = value;
+  set floors(value: Floor[]) {
+    this.props.floors = value;
   }
+
 
   get buildingId(): string {
     return this.props.buildingId;
@@ -43,20 +46,25 @@ export class Elevator extends AggregateRoot<ElevatorProps> {
     super(props, id);
   }
 
-  public static create(elevatorDTO: IElevatorDTO, id?: UniqueEntityID): Result<Elevator> {
-    const eleCoordinates = Coordinates.create(elevatorDTO.x, elevatorDTO.y);
+  public static create(props: ElevatorProps, id?: UniqueEntityID): Result<Elevator> {
+    const guardedProps = [
+      { argument: props.name, argumentName: 'name' },
+      { argument: props.floors, argumentName: 'floors' },
+      { argument: props.buildingId, argumentName: 'buildingId' },
+    ];
 
-    if (eleCoordinates.isFailure) {
-      return Result.fail<Elevator>(eleCoordinates.error.toString());
+    const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
+
+    if (!guardResult.succeeded) {
+      return Result.fail<Elevator>(guardResult.message);
     } else {
       const elevator = new Elevator(
         {
-          x: eleCoordinates.getValue().x,
-          y: eleCoordinates.getValue().y,
-          buildingId: elevatorDTO.buildingId,
+          ...props,
         },
         id,
       );
+
       return Result.ok<Elevator>(elevator);
     }
   }
