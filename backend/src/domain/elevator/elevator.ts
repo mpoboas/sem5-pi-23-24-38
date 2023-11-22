@@ -1,7 +1,9 @@
 import { AggregateRoot } from '../../core/domain/AggregateRoot';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Coordinates } from '../coordinates';
 import { Result } from '../../core/logic/Result';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import IElevatorDTO from '../../dto/IElevatorDTO';
 import { Floor } from '../floor/floor';
 import { Guard } from '../../core/logic/Guard';
@@ -32,7 +34,6 @@ export class Elevator extends AggregateRoot<ElevatorProps> {
   set floors(value: Floor[]) {
     this.props.floors = value;
   }
-
 
   get buildingId(): string {
     return this.props.buildingId;

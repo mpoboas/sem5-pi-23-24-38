@@ -6,6 +6,7 @@ import IElevatorRepo from '../IRepos/IElevatorRepo';
 import IBuildingRepo from '../IRepos/IBuildingRepo';
 import { Result } from '../../core/logic/Result';
 import IElevatorDTO from '../../dto/IElevatorDTO';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Elevator } from '../../domain/elevator/elevator';
 import { ElevatorMap } from '../../mappers/ElevatorMap';
 import IFloorRepo from '../IRepos/IFloorRepo';
@@ -40,36 +41,30 @@ export default class ElevatorService implements IElevatorService {
         return Result.fail<IElevatorDTO>('Building not found');
       }
       const floorsB = await this.floorRepo.findFloorsByBuildingId(elevatorDTO.buildingId);
-      
+
       if (floorsB === null) {
         return Result.fail<IElevatorDTO>('Floors not found');
       }
 
-      let floors: string[] = [];
+      const floors: string[] = [];
 
       elevatorDTO.floors.forEach(floor => {
-
         const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
         if (!floor2) {
           throw new ReferenceError('Floor not found');
         }
         floors.push(floor2.id.toString());
-        
-   
       });
-        
 
       const elevator = await ElevatorMap.toDomain(elevatorDTO);
-      
+
       const elevatorCreated = await this.elevatorRepo.save(elevator);
 
       if (elevatorCreated === null) {
         return Result.fail<IElevatorDTO>('Elevator already exists');
       }
-
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const elevatorDTOResult = ElevatorMap.toDTO(elevatorCreated) as IElevatorDTO;
-
-
     } catch (error) {
       throw new Error(`Error creating elevator: ${error.message}`);
     }
@@ -87,26 +82,21 @@ export default class ElevatorService implements IElevatorService {
           return Result.fail<IElevatorDTO>('Building not found');
         }
 
-
         const floorsB = await this.floorRepo.findFloorsByBuildingId(elevatorDTO.buildingId);
 
         if (floorsB === null) {
           return Result.fail<IElevatorDTO>('Floors not found');
         }
-  
-  
-        let floors: string[] = [];
-  
+
+        const floors: string[] = [];
+
         elevatorDTO.floors.forEach(floor => {
-  
           const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
-  
+
           if (!floor2) {
             throw new ReferenceError('Floor not found');
           }
           floors.push(floor2.id.toString());
-            
-     
         });
 
         elevator.name = elevatorDTO.name;
@@ -121,12 +111,12 @@ export default class ElevatorService implements IElevatorService {
       throw e;
     }
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async patchElevator(elevatorId: string, patchData: any): Promise<Result<IElevatorDTO>> {
     // Implementation goes here
     return null;
   }
-/*
+  /*
   public async patchElevator(elevatorId: string, elevatorUpdate: IElevatorDTO): Promise<Result<IElevatorDTO>> {
     try {
       const elevator = await this.elevatorRepo.findByDomainId(elevatorId);

@@ -5,6 +5,8 @@ import { IElevatorPersistence } from '../dataschema/IElevatorPersistence';
 import { Elevator } from '../domain/elevator/elevator';
 import { ElevatorId } from '../domain/elevator/elevatorID';
 import { ElevatorMap } from '../mappers/ElevatorMap';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import e from 'express';
 
 @Service()
 export default class ElevatorRepo implements IElevatorRepo {
@@ -35,10 +37,11 @@ export default class ElevatorRepo implements IElevatorRepo {
         const rawElevator: any = ElevatorMap.toPersistence(elevator);
 
         const elevatorCreated = await this.elevatorSchema.create(rawElevator);
-        return ElevatorMap.toDomain(elevatorCreated);
+        ~console.log(elevatorCreated.floors);
+        const eleven = await ElevatorMap.toDomain(elevatorCreated);
+        return eleven;
       } else {
-
-        let floors: string[] = [];
+        const floors: string[] = [];
         elevator.floors.forEach(floor => {
           floors.push(floor.id.toString());
         });
@@ -52,7 +55,6 @@ export default class ElevatorRepo implements IElevatorRepo {
         return elevator;
       }
     } catch (err) {
-
       throw err;
     }
   }

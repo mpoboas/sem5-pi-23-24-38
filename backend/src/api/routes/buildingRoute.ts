@@ -75,7 +75,7 @@ export default (app: Router) => {
 
   route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next));
 
-  // mock hello world get route 
+  // mock hello world get route
   route.get('/hello', (req, res) => {
     res.send('Hello World!');
   });
