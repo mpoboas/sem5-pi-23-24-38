@@ -10,6 +10,7 @@ import { RobotComponent } from './robot/robot.component';
 import { TunnelComponent } from './tunnel/tunnel.component';
 import { ElevatorComponent } from './elevator/elevator.component';
 import { ClassroomComponent } from './classroom/classroom.component';
+import { VisualizationComponent } from './visualization/visualization.component';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
@@ -22,7 +23,8 @@ const routes: Routes = [
     { path: 'floors', component: FloorComponent },
     { path: 'classrooms', component: ClassroomComponent},
     { path: 'tunnels', component: TunnelComponent },
-    { path: 'elevators', component: ElevatorComponent }
+    { path: 'elevators', component: ElevatorComponent },
+    { path: 'visualization', component: VisualizationComponent }
   ]},
   { path: '**', redirectTo: '' },
 ];

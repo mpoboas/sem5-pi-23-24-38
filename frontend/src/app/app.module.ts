@@ -64,6 +64,7 @@ import { ClassroomComponent } from './classroom/classroom.component';
 import { CreateClassroomComponent } from './create-classroom/create-classroom.component';
 import { GetClassroomComponent } from './get-classroom/get-classroom.component';
 import { EditClassroomComponent } from './edit-classroom/edit-classroom.component';
+import { VisualizationComponent } from './visualization/visualization.component';
 
 
 
@@ -102,7 +103,8 @@ import { EditClassroomComponent } from './edit-classroom/edit-classroom.componen
     ClassroomComponent,
     CreateClassroomComponent,
     GetClassroomComponent,
-    EditClassroomComponent
+    EditClassroomComponent,
+    VisualizationComponent
   ],
   imports: [
     BrowserModule,
