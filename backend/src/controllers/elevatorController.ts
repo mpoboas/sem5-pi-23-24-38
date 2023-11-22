@@ -13,11 +13,9 @@ export default class ElevatorController
 
   public async createElevator(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('1');
       const elevatorOrError = (await this.elevatorServiceInstance.createElevator(req.body as IElevatorDTO)) as Result<
         IElevatorDTO
       >;
-      console.log('2');
       if (elevatorOrError.isFailure) {
         return res.status(402).send();
       }
