@@ -72,7 +72,7 @@ export class GetFloorsComponent implements OnInit {
   editFloor(floor: any) {
     // Open the edit floor dialog
     const dialogRef = this.dialog.open(EditFloorComponent, {
-      width: '500px',
+      width: '800px',
       data: floor
     });
 

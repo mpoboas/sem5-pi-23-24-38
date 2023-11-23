@@ -56,6 +56,45 @@ export class CreateFloorComponent implements OnInit {
     );
   }
 
+  onBuildingCodeSelect(): void {
+    const selectedBuildingCode = this.form.value.buildingCode;
+    const selectedBuilding = this.buildingOptions.find(building => building.code === selectedBuildingCode);
+
+    if (selectedBuilding) {
+      this.form.patchValue({
+        width: selectedBuilding.width,
+        length: selectedBuilding.length
+      });
+    }
+  }
+
+  // If no map is provided, create a default  empty map
+  defaultFloor(): string {
+    const width = this.form.value.width;
+    const length = this.form.value.length;
+    
+    // Fill the map with 0's
+    const newFloorMap: number[][] = [];
+    for (let i = 0; i <= length; i++) {
+      const row = Array(width + 1).fill(0);
+      newFloorMap.push(row);
+    }
+
+    // Set surrounding walls
+    for (let i = 1; i <= length - 1; i++) { newFloorMap[i][0] = 1; }      // Left wall
+    for (let i = 0; i <= length - 1; i++) { newFloorMap[i][width] = 1; }  // Right wall
+    for (let j = 1; j <= width - 1; j++) { newFloorMap[0][j] = 2; }       // Top wall
+    for (let j = 0; j <= width - 1; j++) { newFloorMap[length][j] = 2; }  // Bottom wall
+    newFloorMap[0][0] = 3;  // Set value at index [0][0] to 3
+    newFloorMap[length][width] = 0;  // Set value at index [length][width] to 0
+
+    // Convert the number[][] to a string
+    const floorMapString = newFloorMap.map(row => `[${row.join(',')}]`).join(',');
+
+    return floorMapString;
+  }
+  
+  
 
   onCancel(): void {
     this.dialogRef.close();
@@ -69,7 +108,7 @@ export class CreateFloorComponent implements OnInit {
         length: this.form.value.length,
         width: this.form.value.width,
         buildingId: null,
-        map: this.form.value.map,
+        map: this.defaultFloor(),
       };
   
       const buildingCode = this.form.value.buildingCode;

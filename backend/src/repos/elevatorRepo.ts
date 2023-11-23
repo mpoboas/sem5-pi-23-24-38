@@ -37,7 +37,6 @@ export default class ElevatorRepo implements IElevatorRepo {
         const rawElevator: any = ElevatorMap.toPersistence(elevator);
 
         const elevatorCreated = await this.elevatorSchema.create(rawElevator);
-        ~console.log(elevatorCreated.floors);
         const eleven = await ElevatorMap.toDomain(elevatorCreated);
         return eleven;
       } else {
