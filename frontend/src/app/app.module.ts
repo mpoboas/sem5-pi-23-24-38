@@ -65,6 +65,9 @@ import { CreateClassroomComponent } from './create-classroom/create-classroom.co
 import { GetClassroomComponent } from './get-classroom/get-classroom.component';
 import { EditClassroomComponent } from './edit-classroom/edit-classroom.component';
 import { VisualizationComponent } from './visualization/visualization.component';
+import { InfoManagerComponent } from './info-manager/info-manager.component';
+import { AdminManagerComponent } from './admin-manager/admin-manager.component';
+import { TaskManagerComponent } from './task-manager/task-manager.component';
 
 
 
@@ -104,7 +107,10 @@ import { VisualizationComponent } from './visualization/visualization.component'
     CreateClassroomComponent,
     GetClassroomComponent,
     EditClassroomComponent,
-    VisualizationComponent
+    VisualizationComponent,
+    InfoManagerComponent,
+    AdminManagerComponent,
+    TaskManagerComponent
   ],
   imports: [
     BrowserModule,

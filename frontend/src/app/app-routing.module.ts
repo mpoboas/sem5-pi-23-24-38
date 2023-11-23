@@ -11,9 +11,15 @@ import { TunnelComponent } from './tunnel/tunnel.component';
 import { ElevatorComponent } from './elevator/elevator.component';
 import { ClassroomComponent } from './classroom/classroom.component';
 import { VisualizationComponent } from './visualization/visualization.component';
+import { InfoManagerComponent } from './info-manager/info-manager.component';
+import { AdminManagerComponent } from './admin-manager/admin-manager.component';
+import { TaskManagerComponent } from './task-manager/task-manager.component';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
+  { path: 'info-manager', component: InfoManagerComponent },
+  { path: 'task-manager', component: AdminManagerComponent },
+  { path: 'admin-manager', component: TaskManagerComponent },
   { path: 'fleet-manager', component: FleetManagerComponent , children: [
     { path: 'robot-type', component: RobotTypeComponent },
     { path: 'robot', component: RobotComponent }
