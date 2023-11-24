@@ -103,24 +103,6 @@ $angular-three-theme: mat.define-light-theme((
 }
 
 
-.icon_task {
-    content: url('assets/icons/other/task.svg');
-    height: 20px;
-}
-
-.icon_admin {
-    content: url('assets/icons/other/admin.svg');
-    height: 20px;
-}
-
-.icon_info {
-    content: url('assets/icons/other/info.svg');
-    height: 20px;
-}
-
-
-
-
 // Classroom icons
 .icon_classroomW {
     content: url('assets/icons/classrooms/classroom_white.svg');
@@ -162,6 +144,27 @@ $angular-three-theme: mat.define-light-theme((
 }
 .icon_uploadB {
     content: url('assets/icons/other/uploadB.svg');
+    height: 20px;
+}
+.icon_task {
+    content: url('assets/icons/other/task.svg');
+    height: 20px;
+}
+.icon_admin {
+    content: url('assets/icons/other/admin.svg');
+    height: 20px;
+}
+
+.icon_info {
+    content: url('assets/icons/other/info.svg');
+    height: 20px;
+}
+.icon_visualizationW {
+    content: url('assets/icons/other/visualization_white.svg');
+    height: 20px;
+}
+.icon_visualizationB {
+    content: url('assets/icons/other/visualization_black.svg');
     height: 20px;
 }
 

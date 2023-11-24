@@ -14,6 +14,7 @@
 // User interaction
 
 import * as THREE from "three";
+import * as _ from "lodash";
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import { generalData, audioData, cubeTextureData, mazeData, playerData, ambientLightData, directionalLightData, spotLightData, flashLightData, shadowsData, fogData, collisionDetectionData, cameraData } from "./default_data.js";
@@ -490,7 +491,7 @@ export default class ThumbRaiser {
             camera: "none", // Camera whose viewport is currently being pointed
             frame: "none" // Viewport frame currently being pointed
         }
-
+        
         // Build the help panels
         this.buildHelpPanels();
 
