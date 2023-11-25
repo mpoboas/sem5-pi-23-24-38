@@ -21,25 +21,28 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field style="width: 100%;">
-      <mat-label>Width</mat-label>
-      <input matInput placeholder="Ex: 20" formControlName="width" readonly>
-    </mat-form-field>
-    <mat-form-field style="width: 100%;">
-      <mat-label>Length</mat-label>
-      <input matInput placeholder="Ex: 30" formControlName="length" readonly>
-    </mat-form-field>
+    <div style="display: flex; align-items: flex-start;">
+      <mat-form-field style="width: 100%; margin-right: 30px;">
+        <mat-label>Width</mat-label>
+        <input matInput placeholder="Ex: 20" formControlName="width" readonly>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Length</mat-label>
+        <input matInput placeholder="Ex: 30" formControlName="length" readonly>
+      </mat-form-field>
+    </div>
     <mat-form-field style="width: 100%;">
       <mat-label>Map</mat-label>
-      <table>
-        <tr *ngFor="let row of form.value.map; let i = index">
-          <td *ngFor="let cell of row; let j = index" [ngStyle]="getCellBorderStyle(cell)">
-            <input matInput [value]="form.value.map[i][j]" (input)="updateCellValue(i, j, $event)" type="number" style="width: 30px; text-align: center;" min="0" max="3">
-          </td>          
-        </tr>
-      </table>
+      <div style="overflow-x: auto;">
+        <table>
+          <tr *ngFor="let row of form.value.map; let i = index">
+            <td *ngFor="let cell of row; let j = index" [ngStyle]="getCellBorderStyle(cell)">
+              <input matInput [value]="form.value.map[i][j]" (input)="updateCellValue(i, j, $event)" type="number" style="width: 40px; height: 40px; text-align: center; padding: 3px;" min="0" max="3">
+            </td>          
+          </tr>
+        </table>
+      </div>
     </mat-form-field>    
-    
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>

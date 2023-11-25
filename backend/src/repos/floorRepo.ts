@@ -46,6 +46,7 @@ export default class FloorRepo implements IFloorRepo {
         floorDocument.width = floor.width;
         floorDocument.buildingId = floor.buildingId;
         floorDocument.map = floor.map;
+        floorDocument.json = floor.json;
         await floorDocument.save();
 
         return floor;

@@ -78,24 +78,29 @@ export class EditFloorComponent {
       // Wall on the west side
       borderStyle = {
         'border-left': '1px solid black',
-        // Add other styles as needed
       };
     } else if (cellValue === 2) {
       // Wall on the north side
       borderStyle = {
         'border-top': '1px solid black',
-        // Add other styles as needed
       };
     } else if (cellValue === 3) {
       // Walls on both north and west sides
       borderStyle = {
         'border-top': '1px solid black',
         'border-left': '1px solid black',
-        // Add other styles as needed
+      };
+    } else if (cellValue === 4) {
+      // Door on north side
+      borderStyle = {
+        'border-top': '1px dashed black',
+      };
+    } else if (cellValue === 5) {
+      // Door on west side
+      borderStyle = {
+        'border-left': '1px dashed black',
       };
     }
-  
-    // Add more conditions as needed
     return borderStyle;
   }
   

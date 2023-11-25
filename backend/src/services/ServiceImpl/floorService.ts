@@ -80,6 +80,7 @@ export default class FloorService implements IFloorService {
           floor.buildingId = floorDTO.buildingId;
         }
         floor.map = floorDTO.map;
+        floor.json = floorDTO.json;
 
         await this.floorRepo.save(floor);
 
@@ -118,6 +119,12 @@ export default class FloorService implements IFloorService {
         } else {
           floor.buildingId = floorUpdate.buildingId;
         }
+      }
+      if (floorUpdate.map != null) {
+        floor.map = floorUpdate.map;
+      }
+      if (floorUpdate.json != null) {
+        floor.json = floorUpdate.json;
       }
 
       await this.floorRepo.save(floor);

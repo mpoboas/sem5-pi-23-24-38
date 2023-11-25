@@ -16,6 +16,7 @@ export class FloorMap extends Mapper<Floor> {
       width: floor.width,
       buildingId: floor.buildingId,
       map: floor.map,
+      json: floor.json,
     } as IFloorDTO;
   }
 
@@ -36,6 +37,7 @@ export class FloorMap extends Mapper<Floor> {
       width: floor.width,
       buildingId: floor.buildingId,
       map: floor.map,
+      json: floor.json,
     };
   }
 }

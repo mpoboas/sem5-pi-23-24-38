@@ -12,6 +12,7 @@ interface FloorProps {
   width: number;
   buildingId: string;
   map: string;
+  json: string;
 }
 
 export class Floor extends AggregateRoot<FloorProps> {
@@ -67,6 +68,14 @@ export class Floor extends AggregateRoot<FloorProps> {
     this.props.map = value;
   }
 
+  get json(): string {
+    return this.props.json;
+  }
+
+  set json(value: string) {
+    this.props.json = value;
+  }
+
   private constructor(props: FloorProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -101,6 +110,7 @@ export class Floor extends AggregateRoot<FloorProps> {
     const fWidth = floorDTO.width;
     const fBuildingId = floorDTO.buildingId;
     const fMap = floorDTO.map;
+    const fJson = floorDTO.json;
 
     const guardedProps = [
       { argument: fNumber, argumentName: 'floorNumber' },
@@ -109,6 +119,7 @@ export class Floor extends AggregateRoot<FloorProps> {
       { argument: fWidth, argumentName: 'width' },
       { argument: fBuildingId, argumentName: 'buildingId' },
       { argument: fMap, argumentName: 'map' },
+      { argument: fJson, argumentName: 'json' },
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
@@ -124,6 +135,7 @@ export class Floor extends AggregateRoot<FloorProps> {
           width: fWidth,
           buildingId: fBuildingId,
           map: fMap,
+          json: fJson,
         },
         id,
       );

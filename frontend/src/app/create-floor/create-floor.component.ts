@@ -12,6 +12,7 @@ export interface FloorData {
   width: number;
   buildingCode: string;
   map: string;
+  json: string;
 }
 
 @Component({
@@ -23,6 +24,7 @@ export class CreateFloorComponent implements OnInit {
   form: FormGroup;
   buildingOptions: any[] = [];
   selectedBuildingId: string | null = null;
+  jsonFile: File | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FloorData,
@@ -37,7 +39,7 @@ export class CreateFloorComponent implements OnInit {
       length: [data.length, Validators.required],
       width: [data.width, Validators.required],
       buildingCode: [data.buildingCode, Validators.required],
-      map: [data.map, Validators.required],
+      map: [data.map],
     });
   }
 
@@ -68,6 +70,32 @@ export class CreateFloorComponent implements OnInit {
     }
   }
 
+  onFileSelected(event: any): void {
+    this.jsonFile = event.target.files[0];
+    console.log('Selected JSON file this.jsonFile: ', this.jsonFile);
+    if (this.jsonFile != null) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const fileContent = reader.result as string;
+        this.setFloorMapFromFileContent(fileContent);
+      };
+      reader.readAsText(this.jsonFile);
+    }
+  }
+
+  setFloorMapFromFileContent(fileContent: string): void {
+    try {
+      const jsonData = JSON.parse(fileContent);
+      this.jsonFile = jsonData;
+      const floorMap = jsonData.maze.map;
+      console.log('Parsed JSON file floor map:', floorMap);
+
+      this.form.get('map')?.setValue(floorMap);
+    } catch (error) {
+      console.error('Error parsing JSON file', error);
+    }
+  }
+  
   // If no map is provided, create a default  empty map
   defaultFloor(): string {
     const width = this.form.value.width;
@@ -93,8 +121,6 @@ export class CreateFloorComponent implements OnInit {
 
     return floorMapString;
   }
-  
-  
 
   onCancel(): void {
     this.dialogRef.close();
@@ -108,17 +134,18 @@ export class CreateFloorComponent implements OnInit {
         length: this.form.value.length,
         width: this.form.value.width,
         buildingId: null,
-        map: this.defaultFloor(),
+        map: this.jsonFile ? JSON.stringify(this.form.value.map) : this.defaultFloor(),
+        json: this.jsonFile ? JSON.stringify(this.jsonFile) : "Ainda está por implementar caso não seja feito upload de um ficheiro ",
       };
-  
+
       const buildingCode = this.form.value.buildingCode;
-  
+
       this.buildingService.findBuildingByCode(buildingCode).subscribe(
         (building: any) => {
           floorData.buildingId = building ? building.id : null;
-          console.log('Floor data:', floorData);
-  
-          // Call the createFloor method from your FloorService
+
+          console.log('Creating floor with data', floorData);
+
           this.floorService.createFloor(floorData).subscribe(
             (response: any) => {
               console.log('Floor created successfully', response);
@@ -136,5 +163,4 @@ export class CreateFloorComponent implements OnInit {
       );
     }
   }
-  
 }

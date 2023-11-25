@@ -15,20 +15,26 @@
         <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
           {{ building.code }}
         </mat-option>
-      </mat-select>      
+      </mat-select>
     </mat-form-field>
-    <mat-form-field style="width: 100%;">
-      <mat-label>Width</mat-label>
-      <input matInput placeholder="Ex: 20" formControlName="width" readonly>
-    </mat-form-field>
-    <mat-form-field style="width: 100%;">
-      <mat-label>Length</mat-label>
-      <input matInput placeholder="Ex: 30" formControlName="length" readonly>
-    </mat-form-field>
+    <div style="display: flex; align-items: flex-start;">
+      <mat-form-field style="width: 100%; padding-right: 30px;">
+        <mat-label>Width</mat-label>
+        <input matInput placeholder="Ex: 20" formControlName="width" readonly>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Length</mat-label>
+        <input matInput placeholder="Ex: 30" formControlName="length" readonly>
+      </mat-form-field>
+    </div>
     <mat-form-field style="width: 100%;">
       <mat-label>Map</mat-label>
       <input matInput placeholder="Floor map JSON data" formControlName="map">
     </mat-form-field>
+    <div style="width: 100%; display: flex;">
+      <input #fileInput type="file" accept=".json" style="display: none" (change)="onFileSelected($event)">
+      <button class="btn btn-primary" (click)="fileInput.click()">Upload JSON File</button>
+    </div>
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>

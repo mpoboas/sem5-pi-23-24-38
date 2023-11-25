@@ -10,6 +10,7 @@ const FloorSchema = new mongoose.Schema(
     width: { type: Number },
     buildingId: { type: String },
     map: { type: String },
+    json: { type: String },
   },
   {
     timestamps: true,
