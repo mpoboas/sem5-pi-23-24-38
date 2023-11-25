@@ -3,6 +3,7 @@ import { OBB } from "three/addons/math/OBB.js";
 import { merge } from "./merge.js";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
+import Door from "./door.js";
 
 /*
  * parameters = {
@@ -92,20 +93,45 @@ export default class Maze extends THREE.Group {
                 secondaryColor: new THREE.Color(parseInt(description.wall.secondaryColor, 16))
             });
 
+            //create a door
+            const door = new Door({
+                groundHeight: description.ground.size.height,
+                segments: {
+                    doorWidth: description.door.segments.doorSize.width,
+                    doorHeight: description.door.segments.doorSize.height,
+                    doorDepth: description.door.segments.doorSize.depth,
+                    doorGap: description.door.segments.doorSize.gap,
+                    frameWidth: description.door.segments.frameSize.width,
+                    frameHeight: description.door.segments.frameSize.height,
+                    frameDepth: description.door.segments.frameSize.depth
+                },
+                materialParameters: {
+                    primaryColor: new THREE.Color(parseInt(description.door.primaryColor, 16)),
+                    frontDoorUrl: description.door.mapDoor.door_front.url,
+                    backDoorUrl: description.door.mapDoor.door_back.url, 
+                    frontFrameUrl: description.door.mapFrame.frame_front.url,
+                    backFrameUrl: description.door.mapFrame.frame_back.url,
+                    secondaryColor: new THREE.Color(parseInt(description.door.secondaryColor, 16))      
+                }
+            });
+
             // Build the maze
             let clonedWall;
+            let clonedDoor;
             this.aabb = [];
             for (let i = 0; i <= this.size.depth; i++) { // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
                 this.aabb[i] = [];
                 for (let j = 0; j <= this.size.width; j++) { // In order to represent the eastmost walls, the map width is one column greater than the actual maze width
                     this.aabb[i][j] = [];
                     /*
-                     *  this.map[][] | North wall | West wall
-                     * --------------+------------+-----------
-                     *       0       |     No     |     No
-                     *       1       |     No     |    Yes
-                     *       2       |    Yes     |     No
-                     *       3       |    Yes     |    Yes
+                     *  this.map[][] | North wall | West wall | North door | West door
+                     * --------------+------------+-----------+------------+-----------
+                     *       0       |     No     |     No    |     No     |     No
+                     *       1       |     No     |    Yes    |     No     |     No
+                     *       2       |    Yes     |     No    |     No     |     No
+                     *       3       |    Yes     |    Yes    |     No     |     No
+                     *       4       |     No     |     No    |    Yes     |     No
+                     *       5       |     No     |     No    |     No     |    Yes
                      */
                     if (this.map[i][j] == 2 || this.map[i][j] == 3) {
                         clonedWall = wall.clone();
@@ -121,6 +147,24 @@ export default class Maze extends THREE.Group {
                         this.add(clonedWall);
                         this.aabb[i][j][1] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                    }
+                    if (this.map[i][j] == 4) {
+                        console.log("door norte");
+                        clonedDoor = door.clone("North");
+                        clonedDoor.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
+                        this.add(clonedDoor);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedDoor).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
+                    }
+                    if (this.map[i][j] == 5) {
+                        console.log("door oeste");
+                        clonedDoor = door.clone("West");
+                        clonedDoor.rotateY(-Math.PI / 2.0);
+                        clonedDoor.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth + 0.5);
+                        this.add(clonedDoor);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        console.log("acabei");
                     }
                 }
             }

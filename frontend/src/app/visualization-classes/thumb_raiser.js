@@ -14,7 +14,7 @@
 // User interaction
 
 import * as THREE from "three";
-import * as _ from "lodash";
+//import * as _ from "lodash"; // uncomment for angular use
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import { generalData, audioData, cubeTextureData, mazeData, playerData, ambientLightData, directionalLightData, spotLightData, flashLightData, shadowsData, fogData, collisionDetectionData, cameraData } from "./default_data.js";

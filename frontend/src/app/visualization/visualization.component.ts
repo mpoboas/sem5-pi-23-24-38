@@ -16,7 +16,7 @@ export class VisualizationComponent implements AfterViewInit {
       this.render();
   }
   
-  @Input() public maze: string="../../assets/3d/mazes/edificioA.json";
+  @Input() public maze: string="../../assets/3d/mazes/edificioApiso1.json";
   private thumbRaiser: ThumbRaiser;
 
   private createScene(): void {
