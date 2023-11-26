@@ -5,6 +5,16 @@
             <table class="views">
                 <tr>
                     <td>
+                        <label for="select-floor">Select floor</label>
+                    </td>
+                    <td>
+                        <select id="select-floor" (change)="onFloorSelected($event)">
+                            <option *ngFor="let floor of floors" [value]="floor.floorNumber">{{ floor.floorNumber }}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         View:
                         <select id="view">
                             <option value="fixed">Fixed</option>

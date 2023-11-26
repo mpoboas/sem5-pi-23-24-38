@@ -4,22 +4,96 @@ import Orientation from '../visualization-classes/orientation';
 import * as THREE from 'three';
 import * as _ from 'lodash';
 
+import { FloorService } from '../floor/floor.service';
+
 @Component({
   selector: 'app-visualization',
   templateUrl: './visualization.component.html',
   styleUrls: ['./visualization.component.scss']
 })
 export class VisualizationComponent implements AfterViewInit {
-  constructor() { }
-  ngAfterViewInit(): void {
-      this.createScene();
-      this.render();
-  }
-  
-  @Input() public maze: string="../../assets/3d/mazes/edificioApiso1.json";
+  constructor(private floorService: FloorService) { }
+  @Input() public maze: string;
   private thumbRaiser: ThumbRaiser;
+  floors: any[] = [];
+
+  ngOnInit(): void {
+    this.fetchFloors();
+  }
+
+  private fetchFloors(): void {
+    this.floorService.getFloors().subscribe(
+      (floors) => {
+        this.floors = floors;
+        console.log("the floors are: ", this.floors);
+        
+        if (this.floors.length > 0) {
+          // Load the default floor or the first floor initially
+          const defaultFloorNumber = _.get(this.floors, '[0].floorNumber', 'defaultFloorNumber');
+          console.log("the default floor number is: ", defaultFloorNumber);
+          this.loadFloor(defaultFloorNumber);
+        } else {
+          console.warn("No floors found.");
+        }
+      },
+      (error) => {
+        console.error('Error fetching floors:', error);
+      }
+    );
+  }
+
+  private loadFloor(floorNumber: string): void {
+    this.floorService.findFloorByNumber(floorNumber).subscribe(
+      (floorData) => {
+        console.log("Fetched floor data: ", floorData);
+        this.maze = floorData.json;
+        this.createOrUpdateScene();
+        this.render();
+      },
+      (error) => {
+        console.error('Error loading floor:', error);
+      }
+    );
+  }
+
+  onFloorSelected(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement)?.value;
+    if (selectedValue !== undefined && selectedValue !== null) {
+      this.loadFloor(selectedValue);
+    }
+  }
+
+  private createOrUpdateScene(): void {
+    if (!this.thumbRaiser) {
+      this.createScene();
+    } else {
+      // Update existing instance with new parameters
+      this.thumbRaiser.updateScene({ url: this.maze, scale: new THREE.Vector3(1.0, 1.0, 1.0) });
+    }
+  }
+
+  private clearScene(): void {
+    if (this.thumbRaiser && this.thumbRaiser.scene) {
+        while (this.thumbRaiser.scene.children.length > 0) {
+            this.thumbRaiser.scene.remove(this.thumbRaiser.scene.children[0]);
+        }
+    }
+  }
+
+  private disposeScene(): void {
+      if (this.thumbRaiser && this.thumbRaiser.scene) {
+          this.thumbRaiser.scene.traverse((object) => {
+              if (object instanceof THREE.Mesh) {
+                  object.geometry.dispose();
+                  object.material.dispose();
+              }
+          });
+      }
+  }
+
 
   private createScene(): void {
+    this.clearScene();
     this.thumbRaiser = new ThumbRaiser(
       {}, // General Parameters
       {}, // Audio parameters
@@ -41,8 +115,15 @@ export class VisualizationComponent implements AfterViewInit {
   );
   }
 
+  ngAfterViewInit(): void {
+    this.createOrUpdateScene();
+    this.render();
+  }
+
   private render(): void {
     requestAnimationFrame(() => this.render());
-    this.thumbRaiser.update();
+    if (this.thumbRaiser) {
+      this.thumbRaiser.update();
+    }
   }
 }

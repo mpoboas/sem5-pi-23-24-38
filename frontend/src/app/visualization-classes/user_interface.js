@@ -46,7 +46,7 @@ export default class UserInterface extends GUI {
 
         const fontSize = "1.5vmin";
 
-        this.domElement.style.position = "absolute";
+        this.domElement.style.position = "inherit";
         this.domElement.style.right = "0.5vw";
         this.domElement.style.top = "1.0vh";
         this.domElement.style.fontSize = fontSize;

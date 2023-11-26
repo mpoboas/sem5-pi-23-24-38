@@ -499,6 +499,15 @@ export default class ThumbRaiser {
         this.buildCreditsPanel();
     }
 
+    updateScene(mazeParameters) {
+        // Update the maze parameters
+        this.mazeParameters = merge({}, mazeData, mazeParameters);
+        // Update the maze properties without recreating the entire maze
+        this.maze.updateMaze(this.mazeParameters);
+        this.gameRunning = false;
+    }
+
+    
     buildHelpPanels() {
         // Mouse help panel is static; so, it doesn't need to be built
 
