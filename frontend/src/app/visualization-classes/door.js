@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { merge } from "./merge.js";
 import MultiTexturedMaterial from "./material.js";
-import { Tween } from "../three.js-master/examples/jsm/libs/tween.module.js";
+import * as TWEEN from "../three.js-master/examples/jsm/libs/tween.module.js";
 
 export default class Door extends THREE.Group {
     constructor(parameters) {
@@ -80,23 +80,25 @@ export default class Door extends THREE.Group {
 
         this.add(door);
         this.state = "close";
-        let tween = new Tween(door.rotation);
+        this.tween = new TWEEN.Tween(door.rotation);
         this.actions = {
             open: () => {
                 this.state = "open";
-                tween.stop();
-                tween.to({ y: -Math.PI / 2.0 },0);
-                tween.start();
+                this.tween.stop();
+                console.log("open " + this.materialParameters.direction);
+                this.tween.to({ y: -Math.PI / 2.0 },0);
+                this.tween.start();
             },
             stop: () => {
                 this.state = "stop";
-                tween.stop();
+                this.tween.stop();
             },
             close: () => {
                 this.state = "close";
-                tween.stop();
-                tween.to({ y: 0.0 }, 2000 * door.rotation.y / (Math.PI / 2.0));
-                tween.start();
+                this.tween.stop();
+                console.log("close " + this.materialParameters.direction);
+                this.tween.to({ y: 0.0 }, 2000 * door.rotation.y / (Math.PI / 2.0));
+                this.tween.start();
             },
             getState: () => {
                 return this.state;

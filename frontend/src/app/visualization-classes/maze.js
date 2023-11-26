@@ -122,6 +122,7 @@ export default class Maze extends THREE.Group {
             // Build the maze
             let clonedWall;
             let clonedDoor;
+            this.doorClones = {};
             this.aabb = [];
             for (let i = 0; i <= this.size.depth; i++) { // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
                 this.aabb[i] = [];
@@ -159,6 +160,7 @@ export default class Maze extends THREE.Group {
                         this.add(clonedDoor);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedDoor).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
+                        this.doorClones[`${i}_${j}`] = clonedDoor;
                     }
                     if (this.map[i][j] == 5) {
                         console.log("door oeste");
@@ -168,7 +170,7 @@ export default class Maze extends THREE.Group {
                         this.add(clonedDoor);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
-                        console.log("acabei");
+                        this.doorClones[`${i}_${j}`] = clonedDoor;
                     }
                 }
             }
@@ -315,6 +317,7 @@ export default class Maze extends THREE.Group {
             // Build the maze
             let clonedWall;
             let clonedDoor;
+            this.doorClones = {};
             this.aabb = [];
             for (let i = 0; i <= this.size.depth; i++) { // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
                 this.aabb[i] = [];
@@ -352,6 +355,7 @@ export default class Maze extends THREE.Group {
                         this.add(clonedDoor);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedDoor).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
+                        this.doorClones[`${i}_${j}`] = clonedDoor;
                     }
                     if (this.map[i][j] == 5) {
                         console.log("door oeste");
@@ -361,7 +365,7 @@ export default class Maze extends THREE.Group {
                         this.add(clonedDoor);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
-                        console.log("acabei");
+                        this.doorClones[`${i}_${j}`] = clonedDoor;
                     }
                 }
             }
@@ -467,6 +471,91 @@ export default class Maze extends THREE.Group {
         return false;
     }
 
+    doorCollision(indices, offsets,direction, position, delta, radius, name) {
+        let doorActionsEnabled = false;
+        const row = indices[0]+offsets[0];
+        const column = indices[1]+offsets[1];
+        //TWEEN.update();
+
+
+        if(this.map[row][column] == "4"){
+            // Check if the current cell has a door
+            
+            if (this.map[row][column] == direction) {
+                    const doorNS = this.doorClones[row + "_" + column];
+                    const eventListener = (event) => {
+                        // Handle door actions based on the pressed key
+                        if (event.key === 'o') {
+                            doorNS.actions.open();
+                        } else if (event.key === 'c') {
+                            doorNS.actions.close();
+                        }
+                        // Remove the event listener after processing the key event
+                        doorActionsEnabled = false;
+                        document.removeEventListener("keydown", eventListener);
+                    };
+                
+                    // Add the event listener
+                    document.addEventListener("keydown", eventListener);
+                
+                    // Set a timeout to remove the event listener after a certain time (e.g., 5 seconds)
+                    const timeoutDuration = 5000; // milliseconds
+                    const timeoutId = setTimeout(() => {
+                        doorActionsEnabled = false;
+                        document.removeEventListener("keydown", eventListener);
+                    }, timeoutDuration);
+                    if (Math.abs(position.z - (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)) < radius) {
+                        if (doorNS.actions.getState() == "close") {
+                            console.log("Collision with " + name + ".");
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+            }
+       
+        
+        }else{
+            if (this.map[row][column] == direction) {
+                const doorNS = this.doorClones[row + "_" + column];
+                const eventListener = (event) => {
+                    // Handle door actions based on the pressed key
+                    if (event.key === 'e') {
+                        doorNS.actions.open();
+                    } else if (event.key === 'c') {
+                        doorNS.actions.close();
+                    }
+                    // Remove the event listener after processing the key event
+                    doorActionsEnabled = false;
+                    document.removeEventListener("keydown", eventListener);
+                };
+            
+                // Add the event listener
+                document.addEventListener("keydown", eventListener);
+            
+                // Set a timeout to remove the event listener after a certain time (e.g., 5 seconds)
+                const timeoutDuration = 5000; // milliseconds
+                const timeoutId = setTimeout(() => {
+                    doorActionsEnabled = false;
+                    document.removeEventListener("keydown", eventListener);
+                }, timeoutDuration);
+                if (Math.abs(position.x - (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)) < radius) {
+                    if (doorNS.actions.getState() == "close") {
+                        console.log("Collision with " + name + ".");
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+                
+            
+        
+        return false;
+    }
+
+
     // Detect collisions
     collision(method, position, halfSize, direction) {
         const indices = this.cartesianToCell(position);
@@ -480,6 +569,10 @@ export default class Maze extends THREE.Group {
                 this.cornerCollision(indices, [1, 1], 0, position, { x: -0.5, z: -0.525 }, halfSize, "southeast corner (WE-oriented wall)") || // Collision with southeast corner (WE-oriented wall)
                 this.cornerCollision(indices, [1, 1], 1, position, { x: -0.525, z: -0.5 }, halfSize, "southeast corner (NS-oriented wall)") || // Collision with southeast corner (NS-oriented wall)
                 this.cornerCollision(indices, [0, 1], 0, position, { x: -0.5, z: -0.475 }, halfSize, "northeast corner (WE-oriented wall)") || // Collision with northeast corner (WE-oriented wall)
+                this.doorCollision(indices, [0, 1], "5", position, { x: -0.5, z: -0.475 }, halfSize, "east door") || // Collision with northeast corner (WE-oriented wall)
+                this.doorCollision(indices, [0, 0], "4", position, { x: 0.0, z: -0.475 }, halfSize, "north door",) || // Collision with north wall
+                this.doorCollision(indices, [0, 0], "5", position, { x: -0.475, z: 0.0 }, halfSize, "west door") || // Collision with west wall
+                this.doorCollision(indices, [1, 0], "4", position, { x: 0.0, z: -0.525 }, halfSize, "south door") || // Collision with south wall
 
                 indices[0] > 0 && (
                     this.cornerCollision(indices, [-1, 1], 1, position, { x: -0.525, z: 0.5 }, halfSize, "northeast corner (NS-oriented wall)") || // Collision with northeast corner (NS-oriented wall)
