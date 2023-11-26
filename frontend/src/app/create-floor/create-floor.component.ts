@@ -61,7 +61,7 @@ export class CreateFloorComponent implements OnInit {
   onBuildingCodeSelect(): void {
     const selectedBuildingCode = this.form.value.buildingCode;
     const selectedBuilding = this.buildingOptions.find(building => building.code === selectedBuildingCode);
-
+    console.log('Selected building:', selectedBuilding);
     if (selectedBuilding) {
       this.form.patchValue({
         width: selectedBuilding.width,

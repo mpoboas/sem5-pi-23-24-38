@@ -19,6 +19,10 @@ export class ElevatorService {
     return this.http.get(this.baseUrl);
   }
 
+  getElevatorFloors(elevatorId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${elevatorId}`);
+  }
+
   updateElevator(elevatorData: any): Observable<any> {
     return this.http.put(this.baseUrl, elevatorData);
   }

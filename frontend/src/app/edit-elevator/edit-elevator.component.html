@@ -6,21 +6,27 @@
       <input matInput formControlName="id" readonly>
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <mat-label>Letter</mat-label>
-      <input matInput placeholder="Ex: 1" formControlName="x">
+      <mat-label>Elevator Name</mat-label>
+      <input matInput placeholder="Ex: ElevatorA" formControlName="name">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <mat-label>Description</mat-label>
-      <input matInput placeholder="Ex: 4" formControlName="y">
+      <mat-label>Building</mat-label>
+      <mat-select formControlName="buildingId" readonly>
+        <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
+          {{ building.code }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    <mat-form-field style="width: 100%;">
-        <mat-label>Building</mat-label>
-        <mat-select formControlName="buildingId">
-          <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
-            {{ building.code }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+
+    <!-- Dynamic section for floors -->
+    <div *ngIf="floorOptions && floorOptions.length > 0">
+      <mat-label>Floors</mat-label>
+      <div formArrayName="floors">
+        <div *ngFor="let floor of floorOptions; let i = index">
+          <mat-checkbox [formControl]="getFloorControl(i)">{{ floor.floorNumber }}</mat-checkbox>
+        </div>
+      </div>
+    </div>
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>

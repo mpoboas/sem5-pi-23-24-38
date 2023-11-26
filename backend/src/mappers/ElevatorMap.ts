@@ -8,7 +8,6 @@ import { IBuildingPersistence } from '../dataschema/IBuildingPersistence';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import { Container } from 'typedi';
 import FloorRepo from '../repos/floorRepo';
-import BuildingRepo from '../repos/buildingRepo';
 
 export class ElevatorMap extends Mapper<Elevator> {
   public static toDTO(elevator: Elevator): IElevatorDTO {

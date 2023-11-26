@@ -1,14 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ElevatorService } from '../elevator/elevator.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BuildingService } from '../building/building.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormArray } from '@angular/forms';
 import { FloorService } from '../floor/floor.service';
-import { FormControl } from '@angular/forms';
+
 export interface ElevatorData {
-    name: string;
-    buildingCode: string;
+  name: string;
+  buildingCode: string;
 }
 
 @Component({
@@ -16,10 +15,11 @@ export interface ElevatorData {
   templateUrl: './create-elevator.component.html',
   styleUrls: ['./create-elevator.component.scss']
 })
-export class CreateElevatorComponent implements OnInit{
+export class CreateElevatorComponent implements OnInit {
   form: FormGroup;
   buildingOptions: any[] = [];
-  floorOptions: string[] = [];
+  floorOptions: any[] = [];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ElevatorData,
     public dialogRef: MatDialogRef<CreateElevatorComponent>,
@@ -33,16 +33,11 @@ export class CreateElevatorComponent implements OnInit{
       buildingCode: [data.buildingCode, Validators.required],
       floors: this.fb.array([]), // Use FormArray for floors
     });
-    this.floorOptions.forEach(floor => {
-      this.form.addControl(floor, new FormControl(false)); // Add checkboxes dynamically
-    });
-  
   }
 
   ngOnInit(): void {
     this.loadBuildingOptions();
   }
-
 
   loadBuildingOptions(): void {
     this.buildingService.getBuildings().subscribe(
@@ -55,19 +50,14 @@ export class CreateElevatorComponent implements OnInit{
     );
   }
 
-   onBuildingChange(): void {
-    const buildingCode = this.form.value.buildingCode;
-    const selectedBuilding = this.buildingOptions.find(building => building === buildingCode);
-    console.log(selectedBuilding);
+  onBuildingChange(): void {
+    const selectedBuilding = this.form.value.buildingCode;
+
     this.floorService.getBuildingFloors(selectedBuilding.id).subscribe(
       (floors: any[]) => {
-        console.log('Floors for building', floors);
-        this.floorOptions = [];
-        floors.forEach(floor => {
-          this.floorOptions.push(floor.floorNumber);
-        }
-        );
-        console.log(this.floorOptions);
+        console.log('Selected building floors:', floors);
+        this.floorOptions = floors;
+        console.log('Floor options:', this.floorOptions);
         this.setupFloorCheckboxes();
       },
       (error: any) => {
@@ -79,17 +69,17 @@ export class CreateElevatorComponent implements OnInit{
   setupFloorCheckboxes(): void {
     const floorsFormArray = this.form.get('floors') as FormArray;
     floorsFormArray.clear(); // Clear existing floor controls
+
     this.floorOptions.forEach(floor => {
-      floorsFormArray.push(this.fb.control(true)); // Add checkboxes dynamically
+      floorsFormArray.push(this.fb.control(false)); // Add checkboxes dynamically
     });
   }
 
-
-  getFloorControl(floor: any): FormControl {
-    return this.form.get(floor.floorNumber) as FormControl;
+  getFloorControl(index: number): FormControl {
+    const floorsFormArray = this.form.get('floors') as FormArray;
+    return floorsFormArray.controls[index] as FormControl;
   }
-
-
+  
 
   onCancel(): void {
     this.dialogRef.close();
@@ -97,40 +87,27 @@ export class CreateElevatorComponent implements OnInit{
 
   onSave(): void {
     if (this.form.valid) {
+      const selectedFloors = this.floorOptions
+        .filter((floor, index) => this.form?.get(`floors.${index}`)?.value)
+        .map(floor => floor.id);
       
-      console.log(this.floorOptions);
-      console.log(this.form.value);
-      const selectedFloors = this.floorOptions.filter(floor => this.form.get(floor)?.value);
-      console.log(selectedFloors);
-      const building = this.form.value.buildingCode;
+      const building = this.form?.value.buildingCode;
       const elevatorData = {
-        name: this.form.value.name,
+        name: this.form?.value.name,
         floors: selectedFloors,
-        buildingId: null,
+        buildingId: building.id,
       };
-      this.buildingService.findBuildingByCode(building.code).subscribe(
-        (building: any) => {
-          elevatorData.buildingId = building ? building.id : null;
-          console.log('Elevator data:', elevatorData);
-  
-          // Call the createFloor method from your FloorService
-          this.elevatorService.createElevator(elevatorData).subscribe(
-            (response: any) => {
-              console.log('Elevator created successfully', response);
-              this.dialogRef.close(elevatorData);
-              //window.location.reload();
-            },
-            (error: any) => {
-              console.error('Error creating elevator', error);
-            }
-          );
+      console.log('Elevator data:', elevatorData);
+      this.elevatorService.createElevator(elevatorData).subscribe(
+        (response: any) => {
+          console.log('Elevator created successfully', response);
+          this.dialogRef.close(elevatorData);
+          window.location.reload();
         },
         (error: any) => {
-          console.error('Error finding building by code', error);
+          console.error('Error creating elevator', error);
         }
       );
     }
   }
-
-  
 }

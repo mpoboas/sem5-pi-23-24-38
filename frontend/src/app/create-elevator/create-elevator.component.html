@@ -13,15 +13,14 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-
     <div *ngIf="floorOptions && floorOptions.length > 0">
       <mat-label>Floors</mat-label>
-      <div *ngFor="let floor of floorOptions">
-        <mat-checkbox [formControl]="getFloorControl(floor)">{{ floor }}</mat-checkbox>
+      <div formArrayName="floors">
+        <div *ngFor="let floor of floorOptions; let i = index">
+          <mat-checkbox [formControl]="getFloorControl(i)">{{ floor.floorNumber }}</mat-checkbox>
+        </div>
       </div>
     </div>
-
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
