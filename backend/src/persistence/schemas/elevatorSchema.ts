@@ -5,7 +5,7 @@ const ElevatorSchema = new mongoose.Schema(
   {
     domainId: { type: String, unique: true },
     name: { type: String, unique: true },
-    floors: [{ type: [String] }],
+    floors: [{ type: String }],
     buildingId: { type: String, unique: true },
   },
   {

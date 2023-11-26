@@ -8,6 +8,7 @@ import { ElevatorService } from '../elevator/elevator.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditElevatorComponent } from '../edit-elevator/edit-elevator.component';
 import { BuildingService } from '../building/building.service';
+import { FloorService } from '../floor/floor.service';
 
 @Component({
   selector: 'app-get-elevators',
@@ -15,18 +16,22 @@ import { BuildingService } from '../building/building.service';
   styleUrls: ['./get-elevators.component.scss']
 })
 export class GetElevatorsComponent implements OnInit {
-  displayedColumns: string[] = ['buildingId','x', 'y', 'actions'];
+  displayedColumns: string[] = ['buildingId','name', 'floors', 'actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private elevatorService: ElevatorService,private buildingService: BuildingService,private dialog: MatDialog) {}
+  constructor(private elevatorService: ElevatorService,
+    private buildingService: BuildingService,
+    private dialog: MatDialog,
+    private floorService: FloorService) {}
 
   ngOnInit() {
     this.elevatorService.getElevators().subscribe(
       (elevator: any) => {
         this.getBuildingCode(elevator);
+
       },
       (error: any) => {
         console.error('Error fetching elevators', error);
@@ -39,10 +44,14 @@ export class GetElevatorsComponent implements OnInit {
     elevator.forEach((element: any) => {
       this.buildingService.getBuildingCode(element.buildingId).subscribe(
         (building: any) => {
-          element.buildingId = building;      
+          element.buildingId = building;    
+       
+
           this.dataSource = new MatTableDataSource(elevator);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+
+     
         },
         (error: any) => {
           console.error('Error fetching building', error);

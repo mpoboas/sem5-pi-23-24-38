@@ -2,25 +2,30 @@
 <div mat-dialog-content>
   <form [formGroup]="form">
     <mat-form-field style="width: 100%;">
-      <mat-label>First Floor</mat-label>
-      <input matInput placeholder="Ex: 1" formControlName="x">
-    </mat-form-field>
-    <mat-form-field style="width: 100%;">
-      <mat-label>Last Floor</mat-label>
-      <input matInput placeholder="Ex: 6" formControlName="y">
+      <mat-label>Elevator Name</mat-label>
+      <input matInput placeholder="Ex: ElevatorA" formControlName="name">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
       <mat-label>Building Code</mat-label>
-      <mat-select formControlName="buildingCode">
-        <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
+      <mat-select formControlName="buildingCode" (selectionChange)="onBuildingChange()">
+        <mat-option *ngFor="let building of buildingOptions" [value]="building">
           {{ building.code }}
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+
+    <div *ngIf="floorOptions && floorOptions.length > 0">
+      <mat-label>Floors</mat-label>
+      <div *ngFor="let floor of floorOptions">
+        <mat-checkbox [formControl]="getFloorControl(floor)">{{ floor }}</mat-checkbox>
+      </div>
+    </div>
+
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
   <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
-  <button class="btn btn-primary" mat-button ="!form.valid" (click)="onSave()">Save</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
 </div>
 

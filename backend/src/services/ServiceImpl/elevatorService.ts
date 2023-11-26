@@ -65,6 +65,7 @@ export default class ElevatorService implements IElevatorService {
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const elevatorDTOResult = ElevatorMap.toDTO(elevatorCreated) as IElevatorDTO;
+      return Result.ok<IElevatorDTO>(elevatorDTOResult);
     } catch (error) {
       throw new Error(`Error creating elevator: ${error.message}`);
     }

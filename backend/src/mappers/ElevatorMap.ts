@@ -8,13 +8,14 @@ import { IBuildingPersistence } from '../dataschema/IBuildingPersistence';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import { Container } from 'typedi';
 import FloorRepo from '../repos/floorRepo';
+import BuildingRepo from '../repos/buildingRepo';
 
 export class ElevatorMap extends Mapper<Elevator> {
   public static toDTO(elevator: Elevator): IElevatorDTO {
     const floors: string[] = [];
 
     elevator.floors.forEach(floor => {
-      floors.push(floor.id.toString());
+      floors.push(floor.floorNumber);
     });
 
     return {
@@ -31,7 +32,7 @@ export class ElevatorMap extends Mapper<Elevator> {
     const quem: string[] = elevatorDTO.floors;
 
     for (const floor of quem) {
-      console.log(floor);
+      //console.log(floor);
       const floorId = await floorRepo.findByDomainId(floor);
       if (!floorId) {
         throw new ReferenceError('Floor not found');
