@@ -3,7 +3,7 @@ body {
 }
 
 #container {
-    position: absolute;
+    position: relative;
     left: 50.0vw;
     top: 50.0vh;
     z-index: 1;
@@ -12,7 +12,7 @@ body {
 
 #views-panel {
     position: absolute;
-    left: -50.0vmin;
+    left: -70.0vmin;
     top: -49.0vh;
     width: 100.0vmin;
     font-size: 1.5vmin;

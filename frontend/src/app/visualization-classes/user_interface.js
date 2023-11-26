@@ -30,6 +30,11 @@ export default class UserInterface extends GUI {
             light.position.set(position.x, position.y, position.z);
         }
 
+        const floorCallback = function (options, floorNumber) {
+            thumbRaiser.updateFloor(floorNumber);
+        };
+        
+
         this.resetUserInterface = function () {
             this.reset();
             thumbRaiser.fixedViewCamera.fogDensity = thumbRaiser.fixedViewCamera.initialFogDensity;
@@ -166,6 +171,17 @@ export default class UserInterface extends GUI {
         collisionDetectionFolder.add(collisionDetectionParameters, "method").options(collisionDetectionOptions).onChange(name => thumbRaiser.setCollisionDetectionMethod(["bc-aabb", "obb-aabb"][collisionDetectionOptions.indexOf(name)]));
         collisionDetectionFolder.add(thumbRaiser.collisionDetectionParameters.boundingVolumes, "visible").onChange(visible => thumbRaiser.setBoundingVolumesVisibility(visible)).listen();
         collisionDetectionFolder.close();
+
+        // Create the floors folder
+        /*const floorsFolder = this.addFolder("Floors");
+        floorsFolder.domElement.style.fontSize = fontSize;
+        const floorOptions = [];
+        for (let i = 0; i < thumbRaiser.floors.length; i++) {
+            floorOptions[i] = thumbRaiser.floors[i].floorNumber;
+        }
+        const floorParameters = { floorNumber: thumbRaiser.activeFloor.floorNumber };
+        floorsFolder.add(floorParameters, "floorNumber").options(floorOptions).onChange(floorNumber => floorCallback(floorOptions, floorNumber));
+        floorsFolder.close();*/
 
         // Create the reset button
         this.add({ reset: () => this.resetUserInterface() }, "reset");
