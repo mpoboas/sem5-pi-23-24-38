@@ -20,7 +20,7 @@ export class ElevatorService {
   }
 
   getElevatorFloors(elevatorId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${elevatorId}`);
+    return this.http.get(`${this.baseUrl}/getElevatorFloors/${elevatorId}`);
   }
 
   updateElevator(elevatorData: any): Observable<any> {
@@ -30,4 +30,7 @@ export class ElevatorService {
   patchElevator(id: string, elevatorData: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}/${id}`, elevatorData);
   }
+
+
+  
 }

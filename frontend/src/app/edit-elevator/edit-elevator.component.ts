@@ -55,7 +55,7 @@ export class EditElevatorComponent implements OnInit {
 
   loadElevatorFloors(): void {
     // You may need to replace this logic based on how you retrieve floors for the elevator
-    this.floorService.getElevatorFloors(this.data.id).subscribe(
+    this.elevatorService.getElevatorFloors(this.data.id).subscribe(
       (floors: any[]) => {
         this.floorOptions = floors;
         this.setupFloorCheckboxes();

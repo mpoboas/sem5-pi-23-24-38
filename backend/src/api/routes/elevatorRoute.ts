@@ -58,4 +58,5 @@ export default (app: Router) => {
   );
 */
   route.get('', (req, res, next) => ctrl.listAllElevators(req, res, next));
+  route.get('/getElevatorFloors/:id', (req, res, next) => ctrl.findFloorsElevator(req, res, next));
 };

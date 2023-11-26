@@ -10,6 +10,9 @@ import IElevatorDTO from '../../dto/IElevatorDTO';
 import { Elevator } from '../../domain/elevator/elevator';
 import { ElevatorMap } from '../../mappers/ElevatorMap';
 import IFloorRepo from '../IRepos/IFloorRepo';
+import IFloorDTO from '../../dto/IFloorDTO';
+import { Floor } from '../../domain/floor/floor';
+import { FloorMap } from '../../mappers/FloorMap';
 
 @Service()
 export default class ElevatorService implements IElevatorService {
@@ -159,4 +162,29 @@ export default class ElevatorService implements IElevatorService {
       throw new Error(`Error fetching elevator: ${error.message}`);
     }
   }
+
+  public async findFloorsElevator(elevatorId: string): Promise<IFloorDTO[]> {
+    try {
+      const elevator = await this.elevatorRepo.findByDomainId(elevatorId);
+
+      if (elevator === null) {
+        return null;
+      } else {
+        const floors = elevator.floors;
+
+        const floorsDTO = Promise.all(floors.map(floor => {
+          const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
+          return floorDTOResult;
+        }));
+
+      return floorsDTO;
+
+    }
+  } catch (e) {
+      throw e;
+  }
+
+
+  }
+
 }
