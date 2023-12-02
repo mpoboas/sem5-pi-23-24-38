@@ -37,7 +37,7 @@
         <table>
           <tr *ngFor="let row of form.value.map; let i = index">
             <td *ngFor="let cell of row; let j = index" [ngStyle]="getCellBorderStyle(cell)">
-              <input matInput [value]="form.value.map[i][j]" (input)="updateCellValue(i, j, $event)" type="number" style="width: 40px; height: 40px; text-align: center; padding: 3px;" min="0" max="3">
+              <input matInput [value]="form.value.map[i][j]" (input)="updateCellValue(i, j, $event)" type="number" style="width: 40px; height: 40px; text-align: center; padding: 3px;" min="0" max="5">
             </td>          
           </tr>
         </table>
