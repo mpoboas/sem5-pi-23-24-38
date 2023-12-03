@@ -7,6 +7,8 @@ const TunnelSchema = new mongoose.Schema(
     description: { type: String, unique: true },
     floor1Id: { type: String, required: true },
     floor2Id: { type: String, required: true },
+    location1: { type: [Number], required: true },
+    location2: { type: [Number], required: true },
   },
   {
     timestamps: true,

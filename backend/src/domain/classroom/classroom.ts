@@ -13,6 +13,8 @@ interface ClassroomProps {
   category: string;
   length: number;
   width: number;
+  cordx: number;
+  cordy: number;
   floorId: string;
 }
 
@@ -69,6 +71,22 @@ export class Classroom extends AggregateRoot<ClassroomProps> {
     this.props.floorId = value;
   }
 
+  get cordx(): number {
+    return this.props.cordx;
+  }
+
+  set cordx(value: number) {
+    this.props.cordx = value;
+  }
+
+  get cordy(): number {
+    return this.props.cordy;
+  }
+
+  set cordy(value: number) {
+    this.props.cordy = value;
+  }
+
   private constructor(props: ClassroomProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -79,6 +97,8 @@ export class Classroom extends AggregateRoot<ClassroomProps> {
     const cCategory = ClassroomCategory.create(classroomDTO.category);
     const cDimension = Dimension.create(classroomDTO.length, classroomDTO.width);
     const cFloorId = classroomDTO.floorId;
+    const cCordx = classroomDTO.cordx;
+    const cCordy = classroomDTO.cordy;
 
     if (cName.isFailure) {
       return Result.fail<Classroom>(cName.error.toString());
@@ -97,6 +117,8 @@ export class Classroom extends AggregateRoot<ClassroomProps> {
           length: cDimension.getValue().length,
           width: cDimension.getValue().width,
           floorId: cFloorId,
+          cordx: cCordx,
+          cordy: cCordy,
         },
         id,
       );

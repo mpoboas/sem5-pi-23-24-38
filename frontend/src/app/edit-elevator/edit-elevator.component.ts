@@ -9,6 +9,8 @@ export interface ElevatorData {
   id: string;
   name: string;
   buildingId: string;
+  cordx: number;
+  cordy: number;
 }
 
 @Component({
@@ -31,8 +33,11 @@ export class EditElevatorComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       id: [data.id, Validators.required],
-      name: [data.name, Validators.required], 
+      name: [data.name, Validators.required],   
+      cordx: [data.cordx],
+      cordy: [data.cordy],
       buildingId: [data.buildingId],
+    
       floors: this.fb.array([]),
     });
   }

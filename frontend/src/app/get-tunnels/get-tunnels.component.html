@@ -17,9 +17,19 @@
         <td mat-cell *matCellDef="let row">{{ row.floor1Id }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="location1">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location 1</th>
+        <td mat-cell *matCellDef="let row">{{ row.location1 }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="floor2Id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Floor 2</th>
         <td mat-cell *matCellDef="let row">{{ row.floor2Id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="location2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location 2</th>
+        <td mat-cell *matCellDef="let row">{{ row.location2 }}</td>
       </ng-container>
 
       <ng-container matColumnDef="actions">

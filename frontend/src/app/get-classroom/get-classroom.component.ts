@@ -13,7 +13,7 @@ import { EditClassroomComponent } from '../edit-classroom/edit-classroom.compone
   styleUrls: ['./get-classroom.component.scss']
 })
 export class GetClassroomComponent {
-    displayedColumns: string[] = ['name', 'description', 'category', 'length', 'width', 'floorId','actions' ];
+    displayedColumns: string[] = ['name', 'description', 'category', 'length', 'width','cordx','cordy', 'floorId','actions' ];
     dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;

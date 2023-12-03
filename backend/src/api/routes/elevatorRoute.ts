@@ -22,6 +22,8 @@ export default (app: Router) => {
           .items(Joi.string())
           .required(),
         buildingId: Joi.string().required(),
+        cordx: Joi.number().required(),
+        cordy: Joi.number().required(),
       }),
     }),
     (req, res, next) => ctrl.createElevator(req, res, next),
@@ -37,6 +39,8 @@ export default (app: Router) => {
           .items(Joi.string())
           .required(),
         buildingId: Joi.string().required(),
+        cordx: Joi.number().required(),
+        cordy: Joi.number().required(),
       }),
     }),
     (req, res, next) => ctrl.updateElevator(req, res, next),

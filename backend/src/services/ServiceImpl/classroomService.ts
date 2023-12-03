@@ -69,6 +69,8 @@ export default class ClassroomService implements IClassroomService {
         classroom.length = classroomDTO.length;
         classroom.width = classroomDTO.width;
         classroom.floorId = classroomDTO.floorId;
+        classroom.cordx = classroomDTO.cordx;
+        classroom.cordy = classroomDTO.cordy;
 
         // Save the classroom
         await this.classroomRepo.save(classroom);

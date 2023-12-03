@@ -3,4 +3,6 @@ export default interface IElevatorDTO {
   name: string;
   floors: string[];
   buildingId: string;
+  cordx: number;
+  cordy: number;
 }

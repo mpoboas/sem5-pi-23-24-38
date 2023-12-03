@@ -69,6 +69,8 @@ export default class TunnelService implements ITunnelService {
         tunnel.description = tunnelDTO.description;
         tunnel.floor1 = await TunnelMap.getFloor(tunnelDTO.floor1Id);
         tunnel.floor2 = await TunnelMap.getFloor(tunnelDTO.floor2Id);
+        tunnel.location1 = tunnelDTO.location1;
+        tunnel.location2 = tunnelDTO.location2;
         await this.tunnelRepo.save(tunnel);
 
         const tunnelDTOResult = TunnelMap.toDTO(tunnel) as ITunnelDTO;
@@ -102,6 +104,12 @@ export default class TunnelService implements ITunnelService {
             return Result.fail<ITunnelDTO>('Floor not found');
           }
           tunnel.floor2 = await TunnelMap.getFloor(tunnelDTO.floor2Id);
+        }
+        if (tunnelDTO.location1) {
+          tunnel.location1 = tunnelDTO.location1;
+        }
+        if (tunnelDTO.location2) {
+          tunnel.location2 = tunnelDTO.location2;
         }
         await this.tunnelRepo.save(tunnel);
 

@@ -34,6 +34,14 @@
         <td mat-cell *matCellDef="let row">{{ row.width }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="cordx">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Porta x</th>
+        <td mat-cell *matCellDef="let row">{{ row.cordx }}</td>
+      </ng-container>
+      <ng-container matColumnDef="cordy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Porta y</th>
+        <td mat-cell *matCellDef="let row">{{ row.cordy }}</td>
+      </ng-container>
       <!-- Description Column -->
       <ng-container matColumnDef="floorId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Floor</th>

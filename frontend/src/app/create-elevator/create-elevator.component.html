@@ -5,6 +5,16 @@
       <mat-label>Elevator Name</mat-label>
       <input matInput placeholder="Ex: ElevatorA" formControlName="name">
     </mat-form-field>
+    <div style="display: flex; align-items: flex-start;">
+      <mat-form-field style="width: 100%; padding-right: 30px;">
+        <mat-label>Porta x</mat-label>
+        <input matInput placeholder="Ex: 3" formControlName="cordx">
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Porta y</mat-label>
+        <input matInput placeholder="Ex: 4" formControlName="cordy">
+      </mat-form-field>
+    </div>
     <mat-form-field style="width: 100%;">
       <mat-label>Building Code</mat-label>
       <mat-select formControlName="buildingCode" (selectionChange)="onBuildingChange()">

@@ -14,7 +14,7 @@ import { EditTunnelComponent } from '../edit-tunnel/edit-tunnel.component';
   styleUrls: ['./get-tunnels.component.scss']
 })
 export class GetTunnelsDialogComponent implements OnInit {
-  displayedColumns: string[] = ['description', 'floor1Id', 'floor2Id','actions'];
+  displayedColumns: string[] = ['description', 'floor1Id','location1', 'floor2Id','location2','actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

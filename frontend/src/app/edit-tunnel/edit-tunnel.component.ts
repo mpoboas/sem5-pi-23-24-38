@@ -12,6 +12,8 @@ export interface TunnelData {
   description: string;
   floor1Id: string;
   floor2Id: string;
+  location1: number[]; // Coordinates for Location 1
+  location2: number[]; // Coordinates for Location 2
 }
 
 
@@ -36,6 +38,10 @@ export class EditTunnelComponent {
         description: [data.description],
         floor1Id: [data.floor1Id],
         floor2Id: [data.floor2Id],
+        location1x: [data.location1[0]], // Location 1 x coordinate
+        location1y: [data.location1[1]], // Location 1 y coordinate
+        location2x: [data.location2[0]], // Location 2 x coordinate
+        location2y: [data.location2[1]], // Location 2 y coordinate
       });
 
     }
@@ -63,11 +69,19 @@ export class EditTunnelComponent {
 
   onSave(): void {
     if (this.form.valid) {
-      const tunnelData = this.form.value;
+      const tunnelData = {
+        id: this.form.value.id,
+        description: this.form.value.description,
+        floor1Id: this.form.value.floor1Id,
+        floor2Id: this.form.value.floor2Id,
+        location1: [this.form.value.location1x, this.form.value.location1y], // Location 1 coordinates
+        location2: [this.form.value.location2x, this.form.value.location2y], // Location 2 coordinates
+      };
+      console.log(tunnelData);
       this.floorService.findFloorByNumber(tunnelData.floor1Id).subscribe(
         (floor: any) => {
           tunnelData.floor1Id = floor.id;
-          
+  
 
           this.floorService.findFloorByNumber(tunnelData.floor2Id).subscribe(
             (floor: any) => {

@@ -8,6 +8,8 @@ import { FloorService } from '../floor/floor.service';
 export interface ElevatorData {
   name: string;
   buildingCode: string;
+  cordx: number;
+  cordy: number;
 }
 
 @Component({
@@ -31,6 +33,8 @@ export class CreateElevatorComponent implements OnInit {
     this.form = this.fb.group({
       name: [data.name, Validators.required],
       buildingCode: [data.buildingCode, Validators.required],
+      cordx: [data.cordx, Validators.required],
+      cordy: [data.cordy, Validators.required],
       floors: this.fb.array([]), // Use FormArray for floors
     });
   }
@@ -94,6 +98,8 @@ export class CreateElevatorComponent implements OnInit {
       const building = this.form?.value.buildingCode;
       const elevatorData = {
         name: this.form?.value.name,
+        cordx: this.form?.value.cordx,
+        cordy: this.form?.value.cordy,
         floors: selectedFloors,
         buildingId: building.id,
       };

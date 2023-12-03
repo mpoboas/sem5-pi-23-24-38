@@ -10,6 +10,8 @@ const ClassroomSchema = new mongoose.Schema(
     length: { type: Number },
     width: { type: Number },
     floorId: { type: String },
+    cordx: { type: Number },
+    cordy: { type: Number },
   },
   {
     timestamps: true,

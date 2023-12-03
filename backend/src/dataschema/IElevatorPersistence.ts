@@ -3,4 +3,6 @@ export interface IElevatorPersistence {
   name: string;
   floors: string[];
   buildingId: string;
+  cordx: number;
+  cordy: number;
 }

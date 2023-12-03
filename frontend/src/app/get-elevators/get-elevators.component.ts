@@ -16,7 +16,7 @@ import { FloorService } from '../floor/floor.service';
   styleUrls: ['./get-elevators.component.scss']
 })
 export class GetElevatorsComponent implements OnInit {
-  displayedColumns: string[] = ['buildingId','name', 'floors', 'actions'];
+  displayedColumns: string[] = ['buildingId','name','cordx','cordy', 'floors', 'actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -22,6 +22,8 @@ export class ElevatorMap extends Mapper<Elevator> {
       name: elevator.name,
       floors: floors,
       buildingId: elevator.buildingId,
+      cordx: elevator.cordx,
+      cordy: elevator.cordy,
     } as IElevatorDTO;
   }
 
@@ -43,6 +45,8 @@ export class ElevatorMap extends Mapper<Elevator> {
         name: elevatorDTO.name,
         floors: floorsArray,
         buildingId: elevatorDTO.buildingId,
+        cordx: elevatorDTO.cordx,
+        cordy: elevatorDTO.cordy,
       },
       new UniqueEntityID(elevatorDTO.domainId),
     );
@@ -63,6 +67,8 @@ export class ElevatorMap extends Mapper<Elevator> {
       name: elevator.name,
       floors: floors,
       buildingId: elevator.buildingId,
+      cordx: elevator.cordx,
+      cordy: elevator.cordy,
     };
   }
 }

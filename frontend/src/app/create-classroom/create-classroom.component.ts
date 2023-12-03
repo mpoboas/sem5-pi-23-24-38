@@ -13,6 +13,8 @@ export interface ClassroomData {
   length: number;
   width: number;
   floorNumber: string;
+  cordx: number;
+  cordy: number;
 }
 
 @Component({
@@ -30,6 +32,7 @@ export class CreateClassroomComponent {
     private fb: FormBuilder,
     private classroomService: ClassroomService,
     private floorService: FloorService,
+    
     ) {
     this.form = this.fb.group({
       name: [data.name, Validators.required],
@@ -37,7 +40,9 @@ export class CreateClassroomComponent {
       category: [data.category, Validators.required],
       length: [data.length, Validators.required],
       width: [data.width, Validators.required],
-      floorNumber: [data.floorNumber, Validators.required]
+      floorNumber: [data.floorNumber, Validators.required],
+      cordx: [data.cordx, Validators.required],
+      cordy: [data.cordy, Validators.required]
     });
   }
 
@@ -68,7 +73,9 @@ export class CreateClassroomComponent {
         category: this.form.value.category,
         length: this.form.value.length,
         width: this.form.value.width,
-        floorId: null
+        floorId: null,
+        cordx: this.form.value.cordx,
+        cordy: this.form.value.cordy
       };
 
       const floorNumber = this.form.value.floorNumber;

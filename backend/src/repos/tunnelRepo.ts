@@ -44,6 +44,8 @@ export default class TunnelRepo implements ITunnelRepo {
         tunnelDocument.description = tunnel.description;
         tunnelDocument.floor1Id = tunnel.floor1.id.toString();
         tunnelDocument.floor2Id = tunnel.floor2.id.toString();
+        tunnelDocument.location1 = tunnel.location1;
+        tunnelDocument.location2 = tunnel.location2;
         await tunnelDocument.save();
 
         return tunnel;

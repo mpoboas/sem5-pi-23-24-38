@@ -12,6 +12,8 @@ export interface ClassroomData {
   length: number;
   width: number;
   floorId: string;
+  cordx: number;
+  cordy: number;
 }
 
 @Component({
@@ -38,7 +40,9 @@ export class EditClassroomComponent {
       category: [data.category],
       length: [data.length],
       width: [data.width],
-      floorId: [data.floorId]
+      floorId: [data.floorId],
+      cordx: [data.cordx],
+      cordy: [data.cordy]
     });
   }
 

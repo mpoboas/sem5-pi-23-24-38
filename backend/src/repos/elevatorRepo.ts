@@ -35,11 +35,8 @@ export default class ElevatorRepo implements IElevatorRepo {
     try {
       if (elevatorDocument === null) {
         const rawElevator: any = ElevatorMap.toPersistence(elevator);
-        console.log(rawElevator);
         const elevatorCreated = await this.elevatorSchema.create(rawElevator);
-        console.log(elevatorCreated);
         const eleven = await ElevatorMap.toDomain(elevatorCreated);
-        console.log(eleven);
         return eleven;
       } else {
         const floors: string[] = [];
@@ -50,6 +47,8 @@ export default class ElevatorRepo implements IElevatorRepo {
         elevatorDocument.name = elevator.name;
         elevatorDocument.floors = floors;
         elevatorDocument.buildingId = elevator.buildingId;
+        elevatorDocument.cordx = elevator.cordx;
+        elevatorDocument.cordy = elevator.cordy;
 
         await elevatorDocument.save();
 

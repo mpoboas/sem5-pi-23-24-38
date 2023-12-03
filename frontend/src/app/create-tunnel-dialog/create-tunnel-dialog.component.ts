@@ -32,6 +32,10 @@ export class CreateTunnelDialogComponent implements OnInit {
       description: [data.description, Validators.required],
       floor1Number: [data.floor1Number, Validators.required],
       floor2Number: [data.floor2Number, Validators.required],
+      location1x: [null, Validators.required], // Add validators as needed
+      location1y: [null, Validators.required], // Add validators as needed
+      location2x: [null, Validators.required], // Add validators as needed
+      location2y: [null, Validators.required], // Add validators as needed
     });
   }
 
@@ -64,6 +68,8 @@ export class CreateTunnelDialogComponent implements OnInit {
         description: this.form.value.description,
         floor1Id: null,
         floor2Id: null,
+        location1: [this.form.value.location1x, this.form.value.location1y],
+        location2: [this.form.value.location2x, this.form.value.location2y],
       }
 
       const floor1Number = this.form.value.floor1Number;

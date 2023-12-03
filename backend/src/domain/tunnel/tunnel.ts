@@ -6,11 +6,12 @@ import { TunnelId } from './tunnelId';
 
 import { Guard } from '../../core/logic/Guard';
 import { Floor } from '../floor/floor';
+import { Coordinates } from '../coordinates';
 
 interface TunnelProps {
   description: string;
-  //location1: Coordinates;
-  //location2: Coordinates;
+  location1: number[];
+  location2: number[];
   floor1: Floor;
   floor2: Floor;
 }
@@ -48,6 +49,22 @@ export class Tunnel extends AggregateRoot<TunnelProps> {
     this.props.floor2 = value;
   }
 
+  get location1(): number[] {
+    return this.props.location1;
+  }
+
+  set location1(value: number[]) {
+    this.props.location1 = value;
+  }
+
+  get location2(): number[] {
+    return this.props.location2;
+  }
+
+  set location2(value: number[]) {
+    this.props.location2 = value;
+  }
+
   private constructor(props: TunnelProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -57,6 +74,8 @@ export class Tunnel extends AggregateRoot<TunnelProps> {
       { argument: props.description, argumentName: 'description' },
       { argument: props.floor1, argumentName: 'floor1' },
       { argument: props.floor2, argumentName: 'floor2' },
+      { argument: props.location1, argumentName: 'location1' },
+      { argument: props.location2, argumentName: 'location2' },
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

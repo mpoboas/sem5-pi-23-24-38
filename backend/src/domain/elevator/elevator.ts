@@ -12,6 +12,8 @@ interface ElevatorProps {
   name: string;
   floors: Floor[];
   buildingId: string;
+  cordx: number;
+  cordy: number;
 }
 
 export class Elevator extends AggregateRoot<ElevatorProps> {
@@ -43,6 +45,22 @@ export class Elevator extends AggregateRoot<ElevatorProps> {
     this.props.buildingId = value;
   }
 
+  get cordx(): number {
+    return this.props.cordx;
+  }
+
+  set cordx(value: number) {
+    this.props.cordx = value;
+  }
+
+  get cordy(): number {
+    return this.props.cordy;
+  }
+
+  set cordy(value: number) {
+    this.props.cordy = value;
+  }
+
   private constructor(props: ElevatorProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -52,6 +70,8 @@ export class Elevator extends AggregateRoot<ElevatorProps> {
       { argument: props.name, argumentName: 'name' },
       { argument: props.floors, argumentName: 'floors' },
       { argument: props.buildingId, argumentName: 'buildingId' },
+      { argument: props.cordx, argumentName: 'cordx' },
+      { argument: props.cordy, argumentName: 'cordy' },
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

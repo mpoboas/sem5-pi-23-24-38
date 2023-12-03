@@ -6,4 +6,6 @@ export interface IClassroomPersistence {
   length: number;
   width: number;
   floorId: string;
+  cordx: number;
+  cordy: number;
 }

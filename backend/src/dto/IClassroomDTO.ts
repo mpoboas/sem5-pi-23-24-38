@@ -6,4 +6,6 @@ export default interface IClassroomDTO {
   length: number;
   width: number;
   floorId: string;
+  cordx: number;
+  cordy: number;
 }

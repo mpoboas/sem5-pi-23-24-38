@@ -106,6 +106,8 @@ export default class ElevatorService implements IElevatorService {
         elevator.name = elevatorDTO.name;
 
         elevator.buildingId = elevatorDTO.buildingId;
+        elevator.cordx = elevatorDTO.cordx;
+        elevator.cordy = elevatorDTO.cordy;
         await this.elevatorRepo.save(elevator);
 
         const elevatorDTOResult = ElevatorMap.toDTO(elevator) as IElevatorDTO;
