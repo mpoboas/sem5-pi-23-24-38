@@ -30,7 +30,7 @@ elevador(b, [b1,b2,b3]).
 elevador(c, [c1,c3]).
 elevador(d, [d1,d2,d3]).
 
-%ligação
+%ligaï¿½ï¿½o
 liga(a,b).
 liga(b,c).
 liga(b,d).
@@ -108,7 +108,7 @@ sala(d305,7,17,d3).
 sala(d304,9,11,d3).
 sala(d302,9,8,d3).
 
-%posição corredores
+%posiï¿½ï¿½o corredores
 corr_pos(a2b2,23,6,a2).
 corr_pos(b2a2,1,7,b2).
 
@@ -121,7 +121,7 @@ corr_pos(d3b2,9,1,d3).
 corr_pos(c3d3,1,16,c3).
 corr_pos(d3c3,13,2,d3).
 
-%posição elevadores
+%posiï¿½ï¿½o elevadores
 elev_pos(ea1,21,3,a1).
 elev_pos(ea2,21,3,a2).
 
@@ -365,7 +365,7 @@ fazer_matrizes() :-
     converter_matriz(MatrizD3,d3).
 
 
-% Conversão de células da matriz para Nodes.
+% Conversï¿½o de cï¿½lulas da matriz para Nodes.
 converter_matriz(Matriz,Floor) :-
     converter_matriz_aux(Matriz, 1, 0,Floor).
 
@@ -375,7 +375,7 @@ converter_matriz_aux([Linha|Resto], LinhaAtual, ID,Floor) :-
     ProximaLinha is LinhaAtual + 1,
     converter_matriz_aux(Resto, ProximaLinha, ProximoID,Floor).
 
-% Conversão de células da linha para Nodes.
+% Conversï¿½o de cï¿½lulas da linha para Nodes.
 converter_linha([], _, _, ID, ID,_).
 converter_linha([Valor|Resto], Linha, Coluna, ID, ProximoID,Floor) :-
     atomic_concat(Floor, '(', TempID),
@@ -425,15 +425,15 @@ cria_grafo_lin(Col,Lin,Piso):-
   node(Id1,Col,Lin,0,Piso)),
   !,
   ColS is Col+1, ColA is Col-1, LinS is Lin+1,LinA is Lin-1,
-  ((node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca à direita.
-  ((node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca à esquerda.
+  ((node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id2, 1, Piso));true)), % Verifca ï¿½ direita.
+  ((node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id3, 1, Piso));true)), % Verifca ï¿½ esquerda.
   ((node(Id4,Col,LinS,0,Piso), assertz(edge(Id1, Id4, 1, Piso));true)), % Verifica abaixo.
   ((node(Id5,Col,LinA,0,Piso), assertz(edge(Id1, Id5, 1, Piso));true)), % Verifica acima.
   C is sqrt(2),
-  ((node(Id6,ColS,LinA,0,Piso), node(Id5,Col,LinA,0,Piso), node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id6, C, Piso));true)), % Ligação à diagonal superior direita.
-  ((node(Id7,ColA,LinA,0,Piso), node(Id5,Col,LinA,0,Piso), node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id7, C, Piso));true)), % Ligação à diagonal superior esquerda.
-  ((node(Id8,ColS,LinS,0,Piso), node(Id4,Col,LinS,0,Piso), node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id8, C, Piso));true)), % Ligação à diagonal inferior direita.
-  ((node(Id9,ColA,LinS,0,Piso), node(Id4,Col,LinS,0,Piso), node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id9, C, Piso));true)), % Ligação à diagonal inferior esquerda.
+  ((node(Id6,ColS,LinA,0,Piso), node(Id5,Col,LinA,0,Piso), node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id6, C, Piso));true)), % Ligaï¿½ï¿½o ï¿½ diagonal superior direita.
+  ((node(Id7,ColA,LinA,0,Piso), node(Id5,Col,LinA,0,Piso), node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id7, C, Piso));true)), % Ligaï¿½ï¿½o ï¿½ diagonal superior esquerda.
+  ((node(Id8,ColS,LinS,0,Piso), node(Id4,Col,LinS,0,Piso), node(Id2,ColS,Lin,0,Piso), assertz(edge(Id1, Id8, C, Piso));true)), % Ligaï¿½ï¿½o ï¿½ diagonal inferior direita.
+  ((node(Id9,ColA,LinS,0,Piso), node(Id4,Col,LinS,0,Piso), node(Id3,ColA,Lin,0,Piso), assertz(edge(Id1, Id9, C, Piso));true)), % Ligaï¿½ï¿½o ï¿½ diagonal inferior esquerda.
 
   Col1 is Col-1,
   cria_grafo_lin(Col1,Lin,Piso),!.
@@ -449,10 +449,16 @@ remove_nodes_edges() :-
 
 % Relaciona o pedido HTTP a um predicado
 :- http_handler('/Caminho_entre_edificios', caminho_entre_edificios, []).
+:- http_handler('/caminho_final', caminho_final, []).
 
 % Cria o servidor HTTP
 server(Port) :-
   http_server(http_dispatch, [port(Port)]).
+
+ caminho_final(Request):-
+  cors_enable(Request, [methods([get])]),
+  http_parameters(Request, [origem(Origem, []), destino(Destino, [])]),
+
 
 % Calcula o caminho entre dois pisos
 caminho_entre_edificios(Request):-
@@ -462,7 +468,7 @@ caminho_entre_edificios(Request):-
   atom_string(Origem, Or),
   atom_string(Destino, Dest),
 
-  % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
+  % Busca pelas coordenadas e piso da origem e do destino atravï¿½s dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
   % Calcula o trajeto entre pisos.
@@ -470,7 +476,7 @@ caminho_entre_edificios(Request):-
   node(X1, COr, LOr, _, PisoOr), % Pos inicial tem que ser   %define_dados(ResVal, PisoOr, COr, LOr, PisoDest, CDest, LDest),
   edge(X1, X, _, PisoOr),
 
-  node(Y1, CDest, LDest, _, PisoDest), % Pos destino tem que ser 0 também.
+  node(Y1, CDest, LDest, _, PisoDest), % Pos destino tem que ser 0 tambï¿½m.
   edge(Y1, Y, _, PisoDest),
 
   % Calcula o trajeto dentro de cada piso.
@@ -486,7 +492,7 @@ caminho_entre_edificios(Request):-
 
 % Calcula o caminho entre dois pisos
 caminho_final(Or,Dest):-
-  % Busca pelas coordenadas e piso da origem e do destino através dos identificadores.
+  % Busca pelas coordenadas e piso da origem e do destino atravï¿½s dos identificadores.
   busca_coordenadas_piso(Or, Dest, PisoOr, COr, LOr, PisoDest, CDest, LDest),
 
   % Calcula o trajeto entre pisos.
@@ -569,9 +575,9 @@ extrai_request(Data, [Data.origem, Data.posOrigem, Data.destino, Data.posDestino
 define_dados([PO, [ColOr, LinOr], PD, [ColDest, LinDest]], PO, ColOr, LinOr, PD, ColDest, LinDest).
 
 
-% Vai aplicar o A-Star a cada um dos pisos da solução de melhor_caminho_pisos ou caminho_pisos.
-% 1º - Lista de pisos da solução.
-% 2º - Lista de listas contendo as soluções do A-Star para cada piso.
+% Vai aplicar o A-Star a cada um dos pisos da soluï¿½ï¿½o de melhor_caminho_pisos ou caminho_pisos.
+% 1ï¿½ - Lista de pisos da soluï¿½ï¿½o.
+% 2ï¿½ - Lista de listas contendo as soluï¿½ï¿½es do A-Star para cada piso.
 aStar_piso([PisoDest|[]], [UltCaminho|[]], [], Or, Dest):-
   aStar(Or, Dest, UltCaminho, _, PisoDest),
   !.
@@ -633,7 +639,7 @@ caminho_edificios2(EdAct, EdDest, LEdPassou, LEdCam):-
   %!. % Cut to prevent backtracking
 
 
-% Algoritmo que vai retornar os caminhos com o critério de preferência sem elevadores.
+% Algoritmo que vai retornar os caminhos com o critï¿½rio de preferï¿½ncia sem elevadores.
 
 melhor_caminho_pisos(PisoOr,PisoDest,LLigMelhor,LPiCam):-
 findall(_,caminho_pisos(PisoOr,PisoDest,_,_,LPiCam),LLLig),
@@ -681,9 +687,9 @@ estimativa(Nodo1,Nodo2,Estimativa,Piso):-
 
 
 
-% Predicados para fazer a ligação entre Prolog e a base de dados do
+% Predicados para fazer a ligaï¿½ï¿½o entre Prolog e a base de dados do
 % projeto integrador.
-%Criaçao de servidor HTTP no porto 'Port'
+%Criaï¿½ao de servidor HTTP no porto 'Port'
 
 %server(Port):-
  %http_server(http_dispatch, [port(Port)]).

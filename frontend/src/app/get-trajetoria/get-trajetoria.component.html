@@ -1,0 +1,22 @@
+
+<h1 mat-dialog-title>Get shortest path</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div mat-dialog-content>
+      <form [formGroup]="form">
+        <mat-form-field style="width: auto; padding-right: 5px;">
+          <mat-label>Begining</mat-label>
+          <input matInput placeholder="Ex: 2" formControlName="piso1">
+        </mat-form-field>
+        <mat-form-field style="width: auto; padding-right: 5px;">
+            <mat-label>End</mat-label>
+            <input matInput placeholder="Ex: 4" formControlName="piso2">
+        </mat-form-field>
+        <button class="btn btn-primary" mat-button="!form.valid" (click)="getTrajeto()">Get path</button>
+      </form>
+    </div>
+    {{ trajeto }}
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+</div>
+

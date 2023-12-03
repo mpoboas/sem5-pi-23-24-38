@@ -68,6 +68,9 @@ import { VisualizationComponent } from './visualization/visualization.component'
 import { InfoManagerComponent } from './info-manager/info-manager.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
+import { PlaneamentoComponent } from './planeamento/planeamento.component';
+import { GetTrajetoriaComponent } from './get-trajetoria/get-trajetoria.component';
+import { PlaneamentoService } from './planeamento/planeamento.service';
 
 
 
@@ -110,7 +113,9 @@ import { TaskManagerComponent } from './task-manager/task-manager.component';
     VisualizationComponent,
     InfoManagerComponent,
     AdminManagerComponent,
-    TaskManagerComponent
+    TaskManagerComponent,
+    PlaneamentoComponent,
+    GetTrajetoriaComponent
   ],
   imports: [
     BrowserModule,
@@ -131,7 +136,7 @@ import { TaskManagerComponent } from './task-manager/task-manager.component';
     MatSlideToggleModule,
     MatCheckboxModule,
   ],
-  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService] ,
+  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService, PlaneamentoService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

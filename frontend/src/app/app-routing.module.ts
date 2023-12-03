@@ -14,6 +14,7 @@ import { VisualizationComponent } from './visualization/visualization.component'
 import { InfoManagerComponent } from './info-manager/info-manager.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
+import { PlaneamentoComponent } from './planeamento/planeamento.component';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'admin-manager', component: TaskManagerComponent },
   { path: 'fleet-manager', component: FleetManagerComponent , children: [
     { path: 'robot-type', component: RobotTypeComponent },
-    { path: 'robot', component: RobotComponent }
+    { path: 'robot', component: RobotComponent },
+    { path: 'planning', component: PlaneamentoComponent }
   ]},
   { path: 'campus-manager', component: CampusManagerComponent, children: [
     { path: 'buildings', component: BuildingComponent },
