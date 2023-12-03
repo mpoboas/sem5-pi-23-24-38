@@ -55,4 +55,15 @@ export default class RobotTypeController
       return next(e);
     }
   }
+
+  public async findRobotTypeById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const robotTypeId = req.params.id;
+      const robotType = await this.robotTypeServiceInstance.getRobotType(robotTypeId);
+      return res.json(robotType.getValue()).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
 }

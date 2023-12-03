@@ -11,7 +11,7 @@ import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
   styleUrls: ['./get-robot-type.component.scss']
 })
 export class GetRobotTypeComponent {
-  displayedColumns: string[] = ['brand', 'model', 'tasks'];
+  displayedColumns: string[] = ['designation','brand', 'model', 'tasks'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

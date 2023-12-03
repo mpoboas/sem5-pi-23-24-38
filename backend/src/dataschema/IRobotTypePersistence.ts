@@ -3,4 +3,5 @@ export interface IRobotTypePersistence {
   brand: string;
   model: string;
   tasks?: string[];
+  designation: string;
 }

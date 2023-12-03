@@ -47,6 +47,7 @@ export default class RobotTypeRepo implements IRobotTypeRepo {
         robotTypeDocument.brand = robotType.brand;
         robotTypeDocument.model = robotType.model;
         robotTypeDocument.tasks = robotType.tasks;
+        robotTypeDocument.designation = robotType.designation;
         await robotTypeDocument.save();
 
         return robotType;
@@ -60,6 +61,14 @@ export default class RobotTypeRepo implements IRobotTypeRepo {
     const query = { domainId: robotTypeId };
     const robotTypeRecord = await this.robotTypeSchema.findOne(query as FilterQuery<IRobotTypePersistence & Document>);
 
+    if (robotTypeRecord != null) {
+      return RobotTypeMap.toDomain(robotTypeRecord);
+    } else return null;
+  }
+
+  public async findByDesignation(designation: string): Promise<RobotType> {
+    const query = { designation: designation };
+    const robotTypeRecord = await this.robotTypeSchema.findOne(query as FilterQuery<IRobotTypePersistence & Document>);
     if (robotTypeRecord != null) {
       return RobotTypeMap.toDomain(robotTypeRecord);
     } else return null;

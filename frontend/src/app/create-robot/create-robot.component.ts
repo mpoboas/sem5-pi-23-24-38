@@ -35,7 +35,7 @@ export class CreateRobotComponent implements OnInit {
       serialNr: [data.serialNr, Validators.required],
       description: [data.description],
       isActive: [true],
-      robotType: [data.robotTypeId, Validators.required],
+      robotTypeId: [data.robotTypeId, Validators.required],
     });
   }
 

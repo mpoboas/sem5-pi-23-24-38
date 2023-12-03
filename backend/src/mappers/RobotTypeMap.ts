@@ -15,6 +15,7 @@ export class RobotTypeMap extends Mapper<RobotType> {
       brand: robotType.brand,
       model: robotType.model,
       tasks: robotType.tasks,
+      designation: robotType.designation,
     } as IRobotTypeDTO;
   }
 
@@ -32,6 +33,7 @@ export class RobotTypeMap extends Mapper<RobotType> {
       brand: robotType.brand,
       model: robotType.model,
       tasks: robotType.tasks,
+      designation: robotType.designation,
     };
   }
 }

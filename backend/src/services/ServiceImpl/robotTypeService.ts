@@ -69,6 +69,7 @@ export default class RobotTypeService implements IRobotTypeService {
         robotType.brand = robotTypeDTO.brand;
         robotType.model = robotTypeDTO.model;
         robotType.tasks = robotTypeDTO.tasks;
+        robotType.designation = robotTypeDTO.designation;
         await this.robotTypeRepo.save(robotType);
 
         const robotTypeDTOResult = RobotTypeMap.toDTO(robotType) as IRobotTypeDTO;
@@ -91,4 +92,6 @@ export default class RobotTypeService implements IRobotTypeService {
       throw e;
     }
   }
+
+
 }

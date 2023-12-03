@@ -20,6 +20,7 @@ export default (app: Router) => {
         brand: Joi.string().required(),
         model: Joi.string().required(),
         tasks: Joi.array().items(Joi.string()),
+        designation: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.createRobotType(req, res, next),
@@ -33,10 +34,12 @@ export default (app: Router) => {
         brand: Joi.string().required(),
         model: Joi.string().required(),
         tasks: Joi.array().items(Joi.string()),
+        designation: Joi.string().required(),
       }),
     }),
     (req, res, next) => ctrl.updateRobotType(req, res, next),
   );
 
   route.get('', (req, res, next) => ctrl.listAllRobotTypes(req, res, next));
+  route.get('/byId/:id', (req, res, next) => ctrl.findRobotTypeById(req, res, next));
 };

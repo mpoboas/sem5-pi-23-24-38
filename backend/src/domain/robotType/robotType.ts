@@ -8,6 +8,7 @@ import IRobotTypeDTO from '../../dto/IRobotTypeDTO';
 import { Guard } from '../../core/logic/Guard';
 
 interface RobotTypeProps {
+  designation: string;
   tasks?: string[];
   brand: string;
   model: string;
@@ -46,6 +47,14 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
     this.props.model = value;
   }
 
+  get designation(): string {
+    return this.props.designation;
+  }
+
+  set designation(value: string) {
+    this.props.designation = value;
+  }
+
   private constructor(props: RobotTypeProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -75,11 +84,13 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
     const rtBrand = robotTypeDTO.brand;
     const rtModel = robotTypeDTO.model;
     const rtTasks = robotTypeDTO.tasks;
+    const rtDesignation = robotTypeDTO.designation;
 
     const guardedProps = [
       { argument: rtTasks, argumentName: 'tasks' },
       { argument: rtModel, argumentName: 'model' },
       { argument: rtBrand, argumentName: 'brand' },
+      { argument: rtDesignation, argumentName: 'designation' },	
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
@@ -92,6 +103,7 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
           brand: rtBrand,
           model: rtModel,
           tasks: rtTasks,
+          designation: rtDesignation,
         },
         id,
       );

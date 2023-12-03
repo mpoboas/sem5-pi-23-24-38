@@ -6,4 +6,5 @@ export default interface IRobotTypeService {
   updateRobotType(robotTypeDTO: IRobotTypeDTO): Promise<Result<IRobotTypeDTO>>;
   verifyRobotTypeExists(robotTypeId: string): Promise<Result<boolean>>;
   getAllRobotTypes(): Promise<IRobotTypeDTO[]>;
+  getRobotType(robotTypeId: string): Promise<Result<IRobotTypeDTO>>;
 }

@@ -13,8 +13,6 @@
       </ng-container>
   
       <!-- Name Column -->
-     
-
       <ng-container matColumnDef="serialNr">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial Number</th>
         <td mat-cell *matCellDef="let row">{{ row.serialNr }}</td>
@@ -25,6 +23,11 @@
         <td mat-cell *matCellDef="let row">{{ row.description }}</td>
       </ng-container>
 
+     <ng-container matColumnDef="robotTypeId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>RobotTypeId</th>
+        <td mat-cell *matCellDef="let row">{{ row.robotTypeId }}</td>
+      </ng-container>
+      
       <ng-container matColumnDef="isActive">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
         <td mat-cell *matCellDef="let row">
@@ -33,10 +36,7 @@
           </mat-slide-toggle>
       </ng-container>
 
-     <ng-container matColumnDef="robotTypeId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>RobotTypeId</th>
-        <td mat-cell *matCellDef="let row">{{ row.robotTypeId }}</td>
-      </ng-container>
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

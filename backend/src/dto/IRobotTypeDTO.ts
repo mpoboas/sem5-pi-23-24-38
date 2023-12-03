@@ -3,4 +3,5 @@ export default interface IRobotTypeDTO {
   brand: string;
   model: string;
   tasks?: string[];
+  designation: string;
 }

@@ -7,6 +7,7 @@ export interface RobotTypeData {
   tasks?: string[];
   brand: string;
   model: string;
+  designation: string;
 
 
 }
@@ -33,6 +34,7 @@ export class CreateRobotTypeComponent {
     this.form = this.fb.group({
       brand: ['', Validators.required],
       model: ['', Validators.required],
+      designation: ['', Validators.required],
     });
     this.taskOptions.forEach(task => {
       this.form.addControl(task, new FormControl(false)); // Add checkboxes dynamically
@@ -50,13 +52,15 @@ export class CreateRobotTypeComponent {
 
   onSave(): void {
     if (this.form.valid) {
-      const { brand, model}=this.form.value;
+      const { brand, model,designation}=this.form.value;
       const selectedTasks = this.taskOptions.filter(task => this.form.get(task)?.value);
 
       const robotTypeData = {
         brand,
         model,
         tasks: selectedTasks,
+        designation,
+
       };
       
       // Call the createRobotType method from your RobotTypeService

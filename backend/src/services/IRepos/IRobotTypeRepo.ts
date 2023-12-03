@@ -6,6 +6,7 @@ export default interface IRobotTypeRepo extends Repo<RobotType> {
   save(robotType: RobotType): Promise<RobotType>;
   findByDomainId(robotTypeId: RobotTypeId | string): Promise<RobotType>;
   getAllRobotTypes(): Promise<RobotType[]>;
+  findByDesignation(designation: string): Promise<RobotType>;
 
   //findByIds (robotTypesIds: RobotTypeId[]): Promise<RobotType[]>;
   //saveCollection (robotTypes: RobotType[]): Promise<RobotType[]>;

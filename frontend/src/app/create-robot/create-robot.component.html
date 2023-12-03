@@ -14,10 +14,10 @@
       <input matInput placeholder="Ex: Robot that does things" formControlName="description">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <mat-label>Robot Type ID</mat-label>
+      <mat-label>Robot Type</mat-label>
       <mat-select formControlName="robotTypeId">
         <mat-option *ngFor="let robotType of robotTypeOptions" [value]="robotType.id">
-          {{ robotType.id }}
+          {{ robotType.designation }}
         </mat-option>
       </mat-select>
     </mat-form-field>  

@@ -6,6 +6,12 @@
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
   
+        <!-- designation Column -->
+        <ng-container matColumnDef="designation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation</th>
+          <td mat-cell *matCellDef="let row">{{ row.designation }}</td>
+        </ng-container>
+    
       <!-- Brand Column -->
       <ng-container matColumnDef="brand">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Brand</th>

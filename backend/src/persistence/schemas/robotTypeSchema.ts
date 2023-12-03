@@ -7,6 +7,7 @@ const RobotTypeSchema = new mongoose.Schema(
     brand: { type: String },
     model: { type: String },
     tasks: [{ type: String }],
+    designation: { type: String, unique: true },
   },
   {
     timestamps: true,
