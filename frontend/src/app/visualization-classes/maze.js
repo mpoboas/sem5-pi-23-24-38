@@ -18,14 +18,13 @@ import Door from "./door.js";
 
 export default class Maze extends THREE.Group {
     constructor(parameters) {
+        console.log('Maze constructor called with parameters:', parameters);
         super();
         merge(this, parameters);
-        this.loaded = true;
-        console.log(parameters);
-        let description = JSON.parse(this.url);
-        this.description = description;
-        console.log(description);
-        
+        this.loaded = false;
+
+        console.log("The description is being loaded from '" + this.url + "'.")
+        this.onLoad = function (description) {
             const normalMapTypes = [THREE.TangentSpaceNormalMap, THREE.ObjectSpaceNormalMap];
             const wrappingModes = [THREE.ClampToEdgeWrapping, THREE.RepeatWrapping, THREE.MirroredRepeatWrapping];
             const magnificationFilters = [THREE.NearestFilter, THREE.LinearFilter];
@@ -214,13 +213,13 @@ export default class Maze extends THREE.Group {
             error => onError(this.url, error)
         );
     }
+}
 
     updateMaze(parameters) {
         merge(this, parameters);
+        console.log('Update maze called with parameters:', parameters);
         this.loaded = false;
-        let description = JSON.parse(this.url);
-        this.description = description;
-        
+        this.onLoad = function (description) {
             const normalMapTypes = [THREE.TangentSpaceNormalMap, THREE.ObjectSpaceNormalMap];
             const wrappingModes = [THREE.ClampToEdgeWrapping, THREE.RepeatWrapping, THREE.MirroredRepeatWrapping];
             const magnificationFilters = [THREE.NearestFilter, THREE.LinearFilter];
@@ -409,6 +408,7 @@ export default class Maze extends THREE.Group {
             error => onError(this.url, error)
         );
 
+        }
     }
 
 
