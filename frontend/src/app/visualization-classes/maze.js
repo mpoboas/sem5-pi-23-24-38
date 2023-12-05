@@ -486,9 +486,13 @@ export default class Maze extends THREE.Group {
                     const eventListener = (event) => {
                         // Handle door actions based on the pressed key
                         if (event.key === 'o') {
-                            doorNS.actions.open();
+                            if(doorNS.actions.getState() === "close"){
+                                doorNS.actions.open();
+                            }
                         } else if (event.key === 'c') {
-                            doorNS.actions.close();
+                            if(doorNS.actions.getState() === "open"){
+                                doorNS.actions.close();
+                            }   
                         }
                         // Remove the event listener after processing the key event
                         doorActionsEnabled = false;
@@ -520,10 +524,14 @@ export default class Maze extends THREE.Group {
                 const doorNS = this.doorClones[row + "_" + column];
                 const eventListener = (event) => {
                     // Handle door actions based on the pressed key
-                    if (event.key === 'e') {
-                        doorNS.actions.open();
+                    if (event.key === 'o') {
+                        if(doorNS.actions.getState() === "close"){
+                            doorNS.actions.open();
+                        }
                     } else if (event.key === 'c') {
-                        doorNS.actions.close();
+                        if(doorNS.actions.getState() === "open"){
+                            doorNS.actions.close();
+                        }   
                     }
                     // Remove the event listener after processing the key event
                     doorActionsEnabled = false;

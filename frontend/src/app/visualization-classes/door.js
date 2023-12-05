@@ -80,14 +80,18 @@ export default class Door extends THREE.Group {
 
         this.add(door);
         this.state = "close";
-        this.tween = new TWEEN.Tween(door.rotation);
         this.actions = {
             open: () => {
                 this.state = "open";
-                this.tween.stop();
                 console.log("open " + this.materialParameters.direction);
-                this.tween.to({ y: -Math.PI / 2.0 },0);
-                this.tween.start();
+                if(this.materialParameters.direction == "West"){
+                    door.rotateY(-Math.PI / 2.0);
+                    door.translateX(0.5);
+                    door.translateZ(-0.56);
+                }else{
+                    door.rotateY(-Math.PI / 2.0);
+                    door.translateZ(-0.06);
+                }
             },
             stop: () => {
                 this.state = "stop";
@@ -95,10 +99,16 @@ export default class Door extends THREE.Group {
             },
             close: () => {
                 this.state = "close";
-                this.tween.stop();
                 console.log("close " + this.materialParameters.direction);
-                this.tween.to({ y: 0.0 }, 2000 * door.rotation.y / (Math.PI / 2.0));
-                this.tween.start();
+                if(this.materialParameters.direction == "West"){
+                    door.translateZ(0.56);
+                    door.translateX(-0.5);
+                    door.rotateY(Math.PI / 2.0);
+                }else{
+                    door.translateZ(0.06);
+                    door.rotateY(Math.PI / 2.0);
+                }
+
             },
             getState: () => {
                 return this.state;
