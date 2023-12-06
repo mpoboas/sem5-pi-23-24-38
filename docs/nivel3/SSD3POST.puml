@@ -1,8 +1,12 @@
-@startuml
+@startuml lvl3
 
 autonumber
-participant "RobDroneGo UI" as UI
-participant "RobDroneGo" as API
+box "frontend"
+participant "create-x-component" as COM
+participant "x-service" as UI
+end box
+box "backend"
+participant ":xRouter" as API
 participant ":xController" as XC
 participant ":xService" as XS
 participant ":xRepository" as XR
@@ -10,8 +14,9 @@ participant ":xMapper" as XM
 participant ":xDTO" as DTO
 participant "domain:x" as X
 participant ":xSchema" as XSchema
-
-
+end box
+activate COM
+COM -> UI : createX()
 activate UI
 activate API
 UI -> API : .post(/x)
@@ -57,5 +62,7 @@ deactivate XS
 XC --> API : xDTO and status 201
 deactivate XC
 API --> UI : xDTO and status 201
+deactivate API
+UI --> COM : xDTO
 
 @enduml

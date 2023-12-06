@@ -1,8 +1,11 @@
-@startuml
+@startuml lvl3
 
 autonumber
-participant "RobDroneGo UI" as UI
-participant "RobDroneGo" as API
+box "frontend"
+participant "get-x-component" as COM
+participant "x-service" as UI
+box "backend"
+participant ":xRouter" as API
 participant ":xController" as XC
 participant ":xService" as XS
 participant ":xRepository" as XR
@@ -10,11 +13,13 @@ participant ":xMapper" as XM
 participant ":xDTO" as DTO
 participant "domain:x" as X
 participant ":xSchema" as XSchema
+activate COM
 
-
+COM -> UI : getX()
 activate UI
-activate API
+
 UI -> API : .get(/x)
+activate API
 API -> XC : getAll(req, res, next)
 activate XC
 XC -> XS : xs = getAll()
@@ -44,6 +49,8 @@ deactivate XS
 XC --> API : xArray and status 200
 deactivate XC
 API --> UI : xArray and status 200
+deactivate API
+UI --> COM : xArray
 
 
 @enduml

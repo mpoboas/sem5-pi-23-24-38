@@ -1,0 +1,31 @@
+@startuml lvl3
+
+
+autonumber
+
+participant "app-component" as AP
+box "fleet"
+participant "fleet-manager-component" as FM
+
+
+participant "robot-type-component" as RT
+participant "get-robot-type-component" as GRT
+participant "create-robot-type-component" as CRT
+
+
+participant "robot-component" as RC
+participant "get-robot-component" as GRC
+participant "create-robot-component" as CRC
+
+
+end box
+
+
+participant "campus-manager-component" as CM
+
+
+
+
+
+
+@enduml

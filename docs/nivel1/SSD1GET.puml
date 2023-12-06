@@ -1,11 +1,11 @@
-@startuml
-actor "Y" as OE
+@startuml lvl1
+actor "Client" as OE
 
 activate OE
-OE -> ":UI" : 1 : requests all x's
-activate ":UI"
-":UI" --> OE : 1.1 : return JSON with x's
-deactivate ":UI"
+OE -> ":RobDroneGO" : 1 : requests all x's
+activate ":RobDroneGO"
+":RobDroneGO" --> OE : 1.1 : return List with x's
+deactivate ":RobDroneGO"
 
 
 

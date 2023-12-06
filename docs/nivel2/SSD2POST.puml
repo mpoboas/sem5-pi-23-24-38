@@ -1,11 +1,17 @@
-@startuml
+@startuml lvl2
 participant "RobDroneGo UI" as UI
-participant "RobDroneGo" as API
+participant "RobDroneGo MD" as API
+database "mongoDB" as BD
 
 activate UI
 activate API
 UI -> API : 1 : .post(/x)
-API -> API : 1.1 : creates x object and the\n DTO saves it to the database
-API --> UI : 2 : response status
+API -> API : 1.1 : creates x object
+API -> BD : 1.2 : .post(/x) with the persistence to database
+activate BD
+
+BD --> API : 1.3 : response status
+deactivate
+API --> UI : 2 : gives DTO or failure
 
 @enduml

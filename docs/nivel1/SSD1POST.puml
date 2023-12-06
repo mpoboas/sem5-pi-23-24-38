@@ -1,16 +1,16 @@
-@startuml
-actor "Y" as OE
+@startuml lvl1
+actor "Client" as OE
 
 activate OE
-OE -> ":UI" : 1 : starts creation process
-activate ":UI"
-":UI" --> OE : 1.1 : requests data of x
-deactivate ":UI"
-OE -> ":UI" : 2 : inserts the data of x
-activate ":UI"
-":UI" --> OE : 2.1 : Shows data of x
+OE -> ":RobDroneGO" : 1 : starts creation process
+activate ":RobDroneGO"
+":RobDroneGO" --> OE : 1.1 : requests data of x
+deactivate ":RobDroneGO"
+OE -> ":RobDroneGO" : 2 : inserts the data of x and save
+activate ":RobDroneGO"
+":RobDroneGO" --> OE : 2.1 : success or failure
 
 
-deactivate ":UI"
+deactivate ":RobDroneGO"
 
 @enduml

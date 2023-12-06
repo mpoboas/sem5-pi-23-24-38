@@ -13,7 +13,7 @@ import { EditTunnelComponent } from '../edit-tunnel/edit-tunnel.component';
   templateUrl: './get-tunnels.component.html',
   styleUrls: ['./get-tunnels.component.scss']
 })
-export class GetTunnelsDialogComponent implements OnInit {
+export class GetTunnelsComponent implements OnInit {
   displayedColumns: string[] = ['description', 'floor1Id','location1', 'floor2Id','location2','actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 

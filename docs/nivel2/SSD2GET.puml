@@ -1,11 +1,17 @@
-@startuml
+@startuml lvl2
 participant "RobDroneGo UI" as UI
-participant "RobDroneGo" as API
+participant "RobDroneGo MD" as API
+database "mongoDB" as BD
 
 activate UI
 activate API
 UI -> API : 1 : .get(/x)
-API -> API : 1.1 : get all x's from database
-API --> UI : 2 : response status
+
+API -> BD : 1.1 : .get(/x)
+activate BD
+
+BD --> API : 1.2 : response status
+deactivate
+API --> UI : 1.3 : gives list of x or failure
 
 @enduml

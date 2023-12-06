@@ -31,11 +31,35 @@ _____
 ### Vista Fisica
 ![md.svg](nivel2/VF2.svg)
 
+## Mapeamento entre Vista Lógica e Vista de Implementação
+![md.svg](nivel2/VI_VL2.svg)
+
+## Mapeamento entre Vista Lógica e Vista Fisica
+![md.svg](nivel2/VL-VF2.svg)
+
+## Mapeamento entre Vista de Implementação e Vista Fisica
+![md.svg](nivel2/VI-VF.svg)
+
 # Nivel 3
 
 **A implementaçao do nosso projeto utiliza a arquitetura (Onion)**
 
-### Vista Logica
+### Vista Logica/Implementação MD
 ![md.svg](nivel3/VL3.svg)
+
+### Vista Logica UI
+![md.svg](nivel3/VL_UI3.svg)
+
+
+### Vista Implentação UI
+![md.svg](nivel3/VI_UI3.svg)
+
+## Mapeamento entre Vista Lógica e Vista de Implementação Frontend
+
+![md.svg](nivel3/VI-VLUI3.svg)
+
+## Mapeamento entre Vista Lógica e Vista de Implementação Backend
+
+![md.svg](nivel3/VL-VIMD3.svg)
 
 
