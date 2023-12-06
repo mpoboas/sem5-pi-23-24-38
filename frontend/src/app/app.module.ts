@@ -51,7 +51,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TunnelComponent } from './tunnel/tunnel.component';
 import { CreateTunnelDialogComponent } from './create-tunnel-dialog/create-tunnel-dialog.component';
 import { TunnelService } from './tunnel/tunnel.service';
-import { GetTunnelsDialogComponent } from './get-tunnels/get-tunnels.component';
+import { GetTunnelsComponent } from './get-tunnels/get-tunnels.component';
 import { ElevatorComponent } from './elevator/elevator.component';
 import { CreateElevatorComponent } from './create-elevator/create-elevator.component';
 import { ElevatorService } from './elevator/elevator.service';
@@ -98,7 +98,7 @@ import { PlaneamentoService } from './planeamento/planeamento.service';
     CreateRobotComponent,
     TunnelComponent,
     CreateTunnelDialogComponent,
-    GetTunnelsDialogComponent,
+    GetTunnelsComponent,
     ElevatorComponent,
     CreateElevatorComponent,
     GetElevatorsComponent,

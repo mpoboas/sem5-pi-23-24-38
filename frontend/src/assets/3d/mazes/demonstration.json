@@ -23,10 +23,10 @@
         "primaryColor": "0xffffff",
         "maps": {
             "color": {
-                "url": "../../assets/3d/textures/ground_0003_2k_372HqZ/ground_0003_color_2k.jpg"
+                "url": "../../assets/3d/textures/floor/Substance_Graph_BaseColor.jpg"
             },
             "ao": {
-                "url": "../../assets/3d/textures/ground_0003_2k_372HqZ/ground_0003_ao_2k.jpg",
+                "url": "../../assets/3d/textures/floor/Substance_Graph_AmbientOcclusion.jpg",
                 "intensity": 1.0
             },
             "displacement": {
@@ -35,7 +35,7 @@
                 "bias": 0.0
             },
             "normal": {
-                "url": "../../assets/3d/textures/ground_0003_2k_372HqZ/ground_0003_normal_opengl_2k.png",
+                "url": "../../assets/3d/textures/floor/Substance_Graph_Normal.png",
                 "type": 0,
                 "scale": { "x": 2.0, "y": 2.0 }
             },
@@ -44,7 +44,7 @@
                 "scale": 1.0
             },
             "roughness": {
-                "url": "../../assets/3d/textures/ground_0003_2k_372HqZ/ground_0003_roughness_2k.jpg",
+                "url": "../../assets/3d/textures/floor/Substance_Graph_Roughness.jpg",
                 "rough": 1.0
             }
         },
@@ -56,7 +56,7 @@
         "secondaryColor": "0x6b554b"
     },
     "wall": {
-        "segments": { "width": 1, "height": 1 },
+        "segments": { "width": 1, "height": 1.788 },
         "primaryColor": "0xffffff",
         "maps": {
             "color": {
@@ -93,14 +93,14 @@
         "secondaryColor": "0x6b554b"
     },
     "tunnel": {
-        "segments": { "width": 1, "height": 1 },
+        "segments": { "width": 1, "height": 1.788 },
         "primaryColor": "0xffffff",
         "maps": {
             "color": {
-                "url": "../../assets/3d/textures/tunnel/tunnel.png"
+                "url": "../../assets/3d/textures/tunnel/tunnel2.jpg"
             },
             "ao": {
-                "url": "../../assets/3d/textures/tunnel/tunnel.png",
+                "url": "../../assets/3d/textures/tunnel/tunnel2.jpg",
                 "intensity": 1.0
             },
             "displacement": {
@@ -109,7 +109,7 @@
                 "bias": 0.0
             },
             "normal": {
-                "url": "../../assets/3d/textures/tunnel/tunnel.png",
+                "url": "../../assets/3d/textures/tunnel/tunnel2.jpg",
                 "type": 0,
                 "scale": { "x": 2.0, "y": 2.0 }
                 },
@@ -118,7 +118,7 @@
                 "scale": 1.0
             },
             "roughness": {
-                "url": "../../assets/3d/textures/tunnel/tunnel.png",
+                "url": "../../assets/3d/textures/tunnel/tunnel2.jpg",
                 "rough": 1.0
             }
         },
@@ -156,5 +156,21 @@
             }
         },
         "secondaryColor": "0xc36e2d"
+    },
+    "elevator": {
+        "segments": {
+            "elevatorSize": {"width": 1.0, "height": 1.78, "depth": 1.0 }
+        },
+        "materialParameters":{
+            "color": "95949aff",
+            "mapElevator": {
+                "elevator_closed": {
+                    "url": "../../assets/3d/textures/elevator/elevator_closed.jpg"
+                },
+                "elevator_open": {
+                    "url": "../../assets/3d/textures/elevator/elevator_open.jpg"
+                }
+            }
+        }
     }
 }

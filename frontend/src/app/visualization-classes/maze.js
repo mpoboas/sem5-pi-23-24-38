@@ -519,6 +519,27 @@ export default class Maze extends THREE.Group {
         return false;
     }
 
+    // Detect collision with tunnels (method: OBB/AABB)
+    tunnelCollision(indices, offsets, orientation, obb, name) {
+        const row = indices[0] + offsets[0];
+        const column = indices[1] + offsets[1];
+        if (this.map[row][column] == 10 - orientation || this.map[row][column] == 11) {
+            if (orientation != 0) {
+                if (Math.abs(position.x - (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)) < radius) {
+                    console.log("Collision with " + name + ".");
+                    return true;
+                }
+            }
+            else {
+                if (Math.abs(position.z - (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)) < radius) {
+                    console.log("Collision with " + name + ".");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // Detect collision with walls and corners (method: OBB/AABB)
     wallAndCornerCollision(indices, offsets, orientation, obb, name) {
         const row = indices[0] + offsets[0];
@@ -642,7 +663,11 @@ export default class Maze extends THREE.Group {
                 this.doorCollision(indices, [0, 0], "4", position, { x: 0.0, z: -0.475 }, halfSize, "north door",) || // Collision with north wall
                 this.doorCollision(indices, [0, 0], "5", position, { x: -0.475, z: 0.0 }, halfSize, "west door") || // Collision with west wall
                 this.doorCollision(indices, [1, 0], "4", position, { x: 0.0, z: -0.525 }, halfSize, "south door") || // Collision with south wall
-
+                /*this.tunnelCollision(indices, [0, 0], "10", position, { x: 0.0, z: -0.475 }, halfSize, "north tunnel") || // Collision with north wall
+                this.tunnelCollision(indices, [0, 0], "11", position, { x: -0.475, z: 0.0 }, halfSize, "west tunnel") || // Collision with west wall
+                this.tunnelCollision(indices, [1, 0], "10", position, { x: 0.0, z: -0.525 }, halfSize, "south tunnel") || // Collision with south wall
+                this.tunnelCollision(indices, [0, 1], "11", position, { x: -0.525, z: 0.0 }, halfSize, "east tunnel") || // Collision with east wall
+*/
                 indices[0] > 0 && (
                     this.cornerCollision(indices, [-1, 1], 1, position, { x: -0.525, z: 0.5 }, halfSize, "northeast corner (NS-oriented wall)") || // Collision with northeast corner (NS-oriented wall)
                     this.cornerCollision(indices, [-1, 0], 1, position, { x: -0.475, z: 0.5 }, halfSize, "northwest corner (NS-oriented wall)") // Collision with northwest corner (NS-oriented wall)

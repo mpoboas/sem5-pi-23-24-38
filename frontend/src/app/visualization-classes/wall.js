@@ -44,12 +44,12 @@ export default class Wall extends THREE.Group {
         // Create a wall (seven faces) that casts and receives shadows
 
         // Create the front face (a rectangle)
-        let geometry = new THREE.PlaneGeometry(0.95, 0.5 + this.groundHeight, this.segments.x, this.segments.y);
+        let geometry = new THREE.PlaneGeometry(0.95, 1.788 + this.groundHeight, this.segments.x, this.segments.y);
         let uv = geometry.getAttribute("uv");
         let uv1 = uv.clone();
         geometry.setAttribute("uv1", uv1); // The aoMap requires a second set of UVs: https://threejs.org/docs/index.html?q=meshstand#api/en/materials/MeshStandardMaterial.aoMap
         let face = new THREE.Mesh(geometry, primaryMaterial);
-        face.position.set(0.0, -halfGroundHeight, 0.025);
+        face.position.set(0.0, halfGroundHeight + 0.5, 0.025);
         face.castShadow = true;
         face.receiveShadow = true;
         this.add(face);
@@ -57,21 +57,22 @@ export default class Wall extends THREE.Group {
         // Create the rear face (a rectangle)
         face = new THREE.Mesh().copy(face, false);
         face.rotation.y = Math.PI;
-        face.position.set(0.0, -halfGroundHeight, -0.025);
+        face.position.set(0.0, halfGroundHeight + 0.5, -0.025);
         this.add(face);
 
         // Create the two left faces (a four-triangle mesh)
         let points = new Float32Array([
-            -0.475, -0.25 - this.groundHeight, 0.025,
-            -0.475, 0.25, 0.025,
-            -0.5, 0.25, 0.0,
-            -0.5, -0.25 - this.groundHeight, 0.0,
-
-            -0.5, 0.25, 0.0,
-            -0.475, 0.25, -0.025,
-            -0.475, -0.25 - this.groundHeight, -0.025,
-            -0.5, -0.25 - this.groundHeight, 0.0
+            -0.475, -1.455 - this.groundHeight, 0.025,  // Vertex 0
+            -0.475, 1.455, 0.025,                       // Vertex 1
+            -0.5, 1.455, 0.0,                           // Vertex 2
+            -0.5, -1.455 - this.groundHeight, 0.0,     // Vertex 3
+        
+            -0.5, 1.455, 0.0,                           // Vertex 4 (shared with Vertex 2 of the previous rectangle)
+            -0.475, 1.455, -0.025,                      // Vertex 5
+            -0.475, -1.455 - this.groundHeight, -0.025,// Vertex 6
+            -0.5, -1.455 - this.groundHeight, 0.0      // Vertex 7 (shared with Vertex 3 of the previous rectangle)
         ]);
+        
         let normals = new Float32Array([
             -0.707, 0.0, 0.707,
             -0.707, 0.0, 0.707,
@@ -104,12 +105,12 @@ export default class Wall extends THREE.Group {
 
         // Create the top face (a four-triangle mesh)
         points = new Float32Array([
-            -0.5, 0.25, 0.0,
-            -0.475, 0.25, 0.025,
-            -0.475, 0.25, -0.025,
-            0.475, 0.25, 0.025,
-            0.475, 0.25, -0.025,
-            0.5, 0.25, 0.0
+            -0.5, 1.788, 0.0,
+            -0.475, 1.788, 0.025,
+            -0.475, 1.788, -0.025,
+            0.475, 1.788, 0.025,
+            0.475, 1.788, -0.025,
+            0.5, 1.788, 0.0
         ]);
         normals = new Float32Array([
             0.0, 1.0, 0.0,
