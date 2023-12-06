@@ -5,7 +5,7 @@ import Ground from "./ground.js";
 import Wall from "./wall.js";
 import Door from "./door.js";
 import Tunnel from "./tunnel.js";
-
+import Elevator from "./elevator.js";
 
 /*
  * parameters = {
@@ -149,11 +149,27 @@ export default class Maze extends THREE.Group {
                 }
             });
 
+            const elevator = new Elevator({
+                groundHeight: description.ground.size.height,
+                segments: {
+                    elevatorWidth: description.elevator.segments.elevatorSize.width,
+                    elevatorHeight: description.elevator.segments.elevatorSize.height,
+                    elevatorDepth: description.elevator.segments.elevatorSize.depth
+                },
+                materialParameters: {
+                    primaryColor: new THREE.Color(parseInt(description.elevator.materialParameters.color, 16)),
+                    elevatorClosed: description.elevator.materialParameters.mapElevator.elevator_closed.url,
+                    elevatorOpen: description.elevator.materialParameters.mapElevator.elevator_open.url
+                }
+            });
+
             // Build the maze
             let clonedWall;
             let clonedDoor;
             let clonedTunnel;
             this.doorClones = {};
+            let clonedElevator;
+            this.elevatorClones = {};
             this.aabb = [];
             for (let i = 0; i <= this.size.depth; i++) { // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
                 this.aabb[i] = [];
@@ -208,6 +224,42 @@ export default class Maze extends THREE.Group {
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
                         this.doorClones[`${i}_${j}`] = clonedDoor;
+                    }
+                    if (this.map[i][j] == 6) { 
+                        console.log("elevador norte");
+                        clonedElevator = elevator.clone("North");
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    if (this.map[i][j] == 7) {
+                        console.log("elevador oeste");
+                        clonedElevator = elevator.clone("West");                        
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    if (this.map[i][j] == 8) {
+                        console.log("elevador sul");
+                        clonedElevator = elevator.clone("South");
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    if (this.map[i][j] == 9) {
+                        console.log("elevador este");
+                        clonedElevator = elevator.clone("East");
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
                     }
                     if (this.map[i][j] == 10) {
                         console.log("tunnel norte");
