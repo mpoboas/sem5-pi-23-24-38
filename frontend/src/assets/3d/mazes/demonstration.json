@@ -6,13 +6,13 @@
             [ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 ],
             [ 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 ],
             [ 1, 0, 0, 0, 0, 0, 2, 2, 4, 2, 1 ],
+            [ 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
+            [ 1, 0, 0, 8, 0, 0, 0, 0, 0, 0, 11 ],
             [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
-            [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
-            [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
-            [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
-            [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
-            [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
-            [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0 ]
+            [ 1, 0, 9, 0, 7, 0, 0, 0, 0, 0, 1 ],
+            [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11 ],
+            [ 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 1 ],
+            [ 2, 2, 2, 2, 2, 2, 2, 2, 10, 2, 0 ]
 
         ],
         "exitLocation": [9.5, 9.0]
@@ -57,6 +57,43 @@
     },
     "wall": {
         "segments": { "width": 1, "height": 1 },
+        "primaryColor": "0xffffff",
+        "maps": {
+            "color": {
+                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_color_2k.jpg"
+            },
+            "ao": {
+                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_ao_2k.jpg",
+                "intensity": 1.0
+            },
+            "displacement": {
+                "url": "",
+                "scale": 1.0,
+                "bias": 0.0
+            },
+            "normal": {
+                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_normal_opengl_2k.png",
+                "type": 0,
+                "scale": { "x": 2.0, "y": 2.0 }
+                },
+            "bump": {
+                "url": "",
+                "scale": 1.0
+            },
+            "roughness": {
+                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_roughness_2k.jpg",
+                "rough": 1.0
+            }
+        },
+        "wrapS": 1,
+        "wrapT": 0,
+        "repeat": { "u": 2.0, "v": 1.0 },
+        "magFilter": 1,
+        "minFilter": 5,
+        "secondaryColor": "0x6b554b"
+    },
+    "tunnel": {
+        "segments": { "width": 1, "height": 2 },
         "primaryColor": "0xffffff",
         "maps": {
             "color": {

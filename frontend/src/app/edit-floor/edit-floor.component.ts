@@ -24,6 +24,7 @@ export class EditFloorComponent {
   form: FormGroup;
   buildingOptions: any[] = [];
   selectedBuildingId: string | null = null;
+  jsonFile: File | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FloorData,
@@ -103,6 +104,30 @@ export class EditFloorComponent {
     }
     return borderStyle;
   }
+
+  onFileSelected(event: any): void {
+    this.jsonFile = event.target.files[0];
+    console.log('Selected JSON file this.jsonFile: ', this.jsonFile);
+  }
+
+  parseJsonFile(file: File): Promise<any> {
+    console.log("[parseJsonFile] file: ", file);
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        try {
+          const parsedJson = JSON.parse(event.target.result);
+          resolve(parsedJson);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = (event: any) => {
+        reject(event.target.error);
+      };
+      reader.readAsText(file);
+    });
+  }
   
 
   ngOnInit(): void {
@@ -124,18 +149,42 @@ export class EditFloorComponent {
     this.dialogRef.close();
   }
 
-  onSave(): void {
-    if (this.form.valid) {
-      const floorData = this.form.value;
+  // Edit the onSave method
+onSave(): void {
+  if (this.form.valid) {
+    const floorData = this.form.value;
 
-      this.buildingService.findBuildingByCode(floorData.buildingId).subscribe(
-        (building: any) => {
-          floorData.buildingId = building.id;
-          console.log(floorData);
+    this.buildingService.findBuildingByCode(floorData.buildingId).subscribe(
+      (building: any) => {
+        floorData.buildingId = building.id;
+        console.log(floorData);
 
-          // Convert the edited floorMap back to a string before saving to the database
-          floorData.map = this.convertToFloorMapString(floorData.map);
+        if (this.jsonFile) {
+          // If a new file is selected, use the map from the file
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const fileContent = reader.result as string;
+            const jsonData = JSON.parse(fileContent);
+            floorData.map = JSON.stringify(jsonData.maze.map);
+            console.log('Parsed JSON file floor map:', floorData.map);
+            console.log('JSON file',jsonData);
+            floorData.json = JSON.stringify(jsonData);
 
+            console.log('Updating floor with new map:', floorData);
+            this.floorService.updateFloor(floorData).subscribe(
+              (response: any) => {
+                console.log('Floor updated successfully', response);
+                this.dialogRef.close(floorData);
+                window.location.reload();
+              },
+              (error: any) => {
+                console.error('Error updating floor', error);
+              }
+            );
+          };
+          reader.readAsText(this.jsonFile);
+        } else {
+          // If no file is selected, save manual changes made by the user
           this.floorService.updateFloor(floorData).subscribe(
             (response: any) => {
               console.log('Floor updated successfully', response);
@@ -146,11 +195,13 @@ export class EditFloorComponent {
               console.error('Error updating floor', error);
             }
           );
-        },
-        (error: any) => {
-          console.error('Error fetching building', error);
         }
-      );
-    }
+      },
+      (error: any) => {
+        console.error('Error fetching building', error);
+      }
+    );
   }
+}
+
 }

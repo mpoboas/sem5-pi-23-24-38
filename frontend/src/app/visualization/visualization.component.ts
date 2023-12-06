@@ -28,64 +28,60 @@ export class VisualizationComponent implements AfterViewInit {
     initialDirection: 0.0,
   };
 
-  ngAfterViewInit(): void {
-    console.log("[ngAfterViewInit()]");
+  ngOnInit(): void {
+    this.fetchFloors();
+  }
+
+  private fetchFloors(): void {
     this.floorService.getFloors().subscribe(
-      (data: any) => {
-        console.log("The floors are: ", data);
-        this.floors = data;
-        this.selectedFloor = this.floors[0].floorNumber;
-        this.getFloorMaze();
-        this.createScene();
-        this.render();
+      (floors) => {
+        this.floors = floors;
+        console.log("the floors are: ", this.floors);
+        
+        if (this.floors.length > 0) {
+          // Load the default floor or the first floor initially
+          const defaultFloorNumber = _.get(this.floors, '[12].floorNumber', 'defaultFloorNumber');
+          console.log("the default floor number is: ", defaultFloorNumber);
+          this.loadFloor(defaultFloorNumber);
+        } else {
+          console.warn("No floors found.");
+        }
       },
-      (error: any) => console.log(error)
+      (error) => {
+        console.error('Error fetching floors:', error);
+      }
     );
   }
 
-  onFloorSelected(floorNumber: string): Promise<void> {
-    console.log("[onFloorSelected()]");
-    return new Promise<void>((resolve) => {
-      this.selectedFloor = floorNumber;
-      setTimeout(() => {
-        this.showFloor();
-        resolve();
-      }, 200); // Adjust the delay as needed
-    });
-  }
-  
-  showFloor(): void {
-    console.log("[showFloor()]");
-    this.getFloorMaze();
-    this.updateScene();
-    this.render();
-  }
-
-
-  // Obter o mapa do piso
-  private getFloorMaze(): void {
-    console.log("[getFloorMaze()]");
-    const floor = this.getFloor();
-    this.maze = JSON.parse(floor?.json);
-    this.floorMaze = {
-      size: {
-        width: (floor?.width ?? 0) - 1,
-        height: (floor?.length ?? 0) - 1
-        // TODO: There's a chance these might be swapped
+  private loadFloor(floorNumber: string): void {
+    this.floorService.findFloorByNumber(floorNumber).subscribe(
+      (floorData) => {
+        console.log("Fetched floor data: ", floorData);
+        this.maze = floorData.json;
+        this.createOrUpdateScene();
+        this.render();
       },
-      "map": floor?.map ? JSON.parse(floor.map) : [[]],
-      initialPosition: [0, 4],
-      initialDirection: 0.0,
-    };
-
-    console.log("[getFloorMaze()] The maze aka the json is: ", this.maze);
-    console.log("[getFloorMaze()] The floor maze is: ", this.floorMaze);
-    console.log("[getFloorMaze()] The floor maze map is: ", this.floorMaze.map);
+      (error) => {
+        console.error('Error loading floor:', error);
+      }
+    );
   }
-  private getFloor() {
-    console.log("[getFloor()]");
-    // find selectedFloor in this.floors
-    return this.floors.find((floor) => floor.floorNumber === this.selectedFloor);
+
+  onFloorSelected(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement)?.value;
+    if (selectedValue !== undefined && selectedValue !== null) {
+      this.loadFloor(selectedValue);
+    }
+  }
+
+  private createOrUpdateScene(): void {
+    if (!this.thumbRaiser) {
+      this.createScene();
+    } else {
+      console.log("Updating scene...");
+      // Update existing instance with new parameters
+      this.thumbRaiser.updateScene({ url: this.maze, scale: new THREE.Vector3(1.0, 1.0, 1.0) });
+    }
   }
 
   // Criar a cena
@@ -112,31 +108,15 @@ export class VisualizationComponent implements AfterViewInit {
   );
   }
 
-  // Attualizar a cena
-  updateScene() {
-    console.log("[updateScene()]");
-    this.thumbRaiser.updateScene({ url: this.maze, maze: this.floorMaze,scale: new THREE.Vector3(1.0, 0.5, 1.0) });
-    console.log("[updateScene()] The scene has been updated!");
-  }
-
-  /*ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.createOrUpdateScene();
     this.render();
-  }*/
+  }
 
   private render(): void {
     requestAnimationFrame(() => this.render());
     if (this.thumbRaiser) {
-      if (this.thumbRaiser.gameRunning) {
-        console.log("[render()] The game is running!");
-        this.thumbRaiser.update();  // Ensure that update is called when the game is running
-      } else {
-        console.log("[render()] The game is not running!");
-      }
-      console.log("[render()] The scene has been rendered!");
-    } else {
-      console.log("[render()] The thumbRaiser is undefined!");
+      this.thumbRaiser.update();
     }
   }
-
 }

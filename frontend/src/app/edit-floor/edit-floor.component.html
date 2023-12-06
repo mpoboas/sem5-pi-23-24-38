@@ -42,7 +42,11 @@
           </tr>
         </table>
       </div>
-    </mat-form-field>    
+    </mat-form-field>
+    <div style="width: 100%; display: flex;">
+      <input #fileInput type="file" accept=".json" style="display: none" (change)="onFileSelected($event)">
+      <button class="btn btn-primary" (click)="fileInput.click()">Upload JSON File</button>
+    </div>
   </form>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>

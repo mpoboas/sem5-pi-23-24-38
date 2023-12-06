@@ -500,6 +500,8 @@ export default class ThumbRaiser {
     }
 
     updateScene(mazeParameters) {
+        console.log("Resetting the maze...");
+        //this.scene.remove(this.maze);
         // Update the maze parameters
         this.mazeParameters = merge({}, mazeData, mazeParameters);
         // Update the maze properties without recreating the entire maze

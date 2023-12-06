@@ -4,6 +4,7 @@ import { merge } from "./merge.js";
 import Ground from "./ground.js";
 import Wall from "./wall.js";
 import Door from "./door.js";
+import Tunnel from "./tunnel.js";
 
 
 /*
@@ -18,13 +19,14 @@ import Door from "./door.js";
 
 export default class Maze extends THREE.Group {
     constructor(parameters) {
-        console.log('Maze constructor called with parameters:', parameters);
         super();
         merge(this, parameters);
-        this.loaded = false;
-
-        console.log("The description is being loaded from '" + this.url + "'.")
-        this.onLoad = function (description) {
+        this.loaded = true;
+        console.log(parameters);
+        let description = JSON.parse(this.url);
+        this.description = description;
+        console.log(description);
+        
             const normalMapTypes = [THREE.TangentSpaceNormalMap, THREE.ObjectSpaceNormalMap];
             const wrappingModes = [THREE.ClampToEdgeWrapping, THREE.RepeatWrapping, THREE.MirroredRepeatWrapping];
             const magnificationFilters = [THREE.NearestFilter, THREE.LinearFilter];
@@ -96,7 +98,36 @@ export default class Maze extends THREE.Group {
                 secondaryColor: new THREE.Color(parseInt(description.wall.secondaryColor, 16))
             });
 
-            //create a door
+            // Create a tunnel
+            const tunnel = new Tunnel({
+                groundHeight: description.ground.size.height,
+                segments: new THREE.Vector2(description.tunnel.segments.width, description.tunnel.segments.height),
+                materialParameters: {
+                    color: new THREE.Color(parseInt(description.tunnel.primaryColor, 16)),
+                    mapUrl: description.tunnel.maps.color.url,
+                    aoMapUrl: description.tunnel.maps.ao.url,
+                    aoMapIntensity: description.tunnel.maps.ao.intensity,
+                    displacementMapUrl: description.tunnel.maps.displacement.url,
+                    displacementScale: description.tunnel.maps.displacement.scale,
+                    displacementBias: description.tunnel.maps.displacement.bias,
+                    normalMapUrl: description.tunnel.maps.normal.url,
+                    normalMapType: normalMapTypes[description.tunnel.maps.normal.type],
+                    normalScale: new THREE.Vector2(description.tunnel.maps.normal.scale.x, description.tunnel.maps.normal.scale.y),
+                    bumpMapUrl: description.tunnel.maps.bump.url,
+                    bumpScale: description.tunnel.maps.bump.scale,
+                    roughnessMapUrl: description.tunnel.maps.roughness.url,
+                    roughness: description.tunnel.maps.roughness.rough,
+                    wrapS: wrappingModes[description.tunnel.wrapS],
+                    wrapT: wrappingModes[description.tunnel.wrapT],
+                    repeat: new THREE.Vector2(description.tunnel.repeat.u, description.tunnel.repeat.v),
+                    magFilter: magnificationFilters[description.tunnel.magFilter],
+                    minFilter: minificationFilters[description.tunnel.minFilter]
+                },
+                secondaryColor: new THREE.Color(parseInt(description.tunnel.secondaryColor, 16))
+            });
+
+
+            // Create a door
             const door = new Door({
                 groundHeight: description.ground.size.height,
                 segments: {
@@ -121,6 +152,7 @@ export default class Maze extends THREE.Group {
             // Build the maze
             let clonedWall;
             let clonedDoor;
+            let clonedTunnel;
             this.doorClones = {};
             this.aabb = [];
             for (let i = 0; i <= this.size.depth; i++) { // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
@@ -128,14 +160,20 @@ export default class Maze extends THREE.Group {
                 for (let j = 0; j <= this.size.width; j++) { // In order to represent the eastmost walls, the map width is one column greater than the actual maze width
                     this.aabb[i][j] = [];
                     /*
-                     *  this.map[][] | North wall | West wall | North door | West door
-                     * --------------+------------+-----------+------------+-----------
-                     *       0       |     No     |     No    |     No     |     No
-                     *       1       |     No     |    Yes    |     No     |     No
-                     *       2       |    Yes     |     No    |     No     |     No
-                     *       3       |    Yes     |    Yes    |     No     |     No
-                     *       4       |     No     |     No    |    Yes     |     No
-                     *       5       |     No     |     No    |     No     |    Yes
+                     *  this.map[][] | North wall | West wall |    Door    |  Elevator  |   Tunnel   |
+                     * --------------+------------+-----------+------------+------------+------------+
+                     *       0       |     No     |     No    |     -      |     -      |     -      |
+                     *       1       |     No     |    Yes    |     -      |     -      |     -      |
+                     *       2       |    Yes     |     No    |     -      |     -      |     -      |
+                     *       3       |    Yes     |    Yes    |     -      |     -      |     -      |
+                     *       4       |     -      |     -     |    North   |     -      |     -      |
+                     *       5       |     -      |     -     |    West    |     -      |     -      |
+                     *       6       |     -      |     -     |     -      |    North   |     -      |
+                     *       7       |     -      |     -     |     -      |    West    |     -      |
+                     *       8       |     -      |     -     |     -      |    South   |     -      |
+                     *       9       |     -      |     -     |     -      |    East    |     -      |
+                     *       10      |     -      |     -     |     -      |     -      |    North   |
+                     *       11      |     -      |     -     |     -      |     -      |    West    |
                      */
                     if (this.map[i][j] == 2 || this.map[i][j] == 3) {
                         clonedWall = wall.clone();
@@ -170,6 +208,23 @@ export default class Maze extends THREE.Group {
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
                         this.doorClones[`${i}_${j}`] = clonedDoor;
+                    }
+                    if (this.map[i][j] == 10) {
+                        console.log("tunnel norte");
+                        clonedTunnel = tunnel.clone("North");
+                        clonedTunnel.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
+                        this.add(clonedTunnel);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedTunnel).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
+                    }
+                    if (this.map[i][j] == 11) {
+                        console.log("tunnel oeste");
+                        clonedTunnel = tunnel.clone("West");
+                        clonedTunnel.rotateY(-Math.PI / 2.0);
+                        clonedTunnel.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth + 0.5);
+                        this.add(clonedTunnel);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
                     }
                 }
             }
@@ -213,18 +268,25 @@ export default class Maze extends THREE.Group {
             error => onError(this.url, error)
         );
     }
-}
+
+    clearMaze() {
+        // Remove existing objects and helpers
+        this.children.length = 0;
+        this.helper.children.length = 0;
+    }
 
     updateMaze(parameters) {
         merge(this, parameters);
-        console.log('Update maze called with parameters:', parameters);
         this.loaded = false;
-        this.onLoad = function (description) {
+        let description = JSON.parse(this.url);
+        this.description = description;
+        
+            this.clearMaze();
             const normalMapTypes = [THREE.TangentSpaceNormalMap, THREE.ObjectSpaceNormalMap];
             const wrappingModes = [THREE.ClampToEdgeWrapping, THREE.RepeatWrapping, THREE.MirroredRepeatWrapping];
             const magnificationFilters = [THREE.NearestFilter, THREE.LinearFilter];
             const minificationFilters = [THREE.NearestFilter, THREE.NearestMipmapNearestFilter, THREE.NearestMipmapLinearFilter, THREE.LinearFilter, THREE.LinearMipmapNearestFilter, THREE.LinearMipmapLinearFilter];
-
+            
             // Store the maze's size, map and exit location
             this.size = description.maze.size;
             this.halfSize = { width: this.size.width / 2.0, depth: this.size.depth / 2.0 };
@@ -408,7 +470,6 @@ export default class Maze extends THREE.Group {
             error => onError(this.url, error)
         );
 
-        }
     }
 
 
