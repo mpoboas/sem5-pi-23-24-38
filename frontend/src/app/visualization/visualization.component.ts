@@ -5,7 +5,6 @@ import * as THREE from 'three';
 import * as _ from 'lodash';
 
 import { FloorService } from '../floor/floor.service';
-import Maze from '../domain/maze';
 
 @Component({
   selector: 'app-visualization',
@@ -14,19 +13,10 @@ import Maze from '../domain/maze';
 })
 export class VisualizationComponent implements AfterViewInit {
   constructor(private floorService: FloorService) { }
-  @Input() public maze: string='../../assets/3d/mazes/demonstration.json';
+  @Input() public maze: string;
   private thumbRaiser: ThumbRaiser;
-  floors: any[] = [];
   selectedFloor: string = '';
-  floorMaze: Maze = {
-    size: {
-      width: 0,
-      height: 0
-    },
-    "map": [[]],
-    initialPosition: [0, 0],
-    initialDirection: 0.0,
-  };
+  floors: any[] = [];
 
   ngOnInit(): void {
     this.fetchFloors();
@@ -42,6 +32,7 @@ export class VisualizationComponent implements AfterViewInit {
           // Load the default floor or the first floor initially
           const defaultFloorNumber = _.get(this.floors, '[12].floorNumber', 'defaultFloorNumber');
           console.log("the default floor number is: ", defaultFloorNumber);
+          this.selectedFloor = defaultFloorNumber;
           this.loadFloor(defaultFloorNumber);
         } else {
           console.warn("No floors found.");
@@ -70,6 +61,7 @@ export class VisualizationComponent implements AfterViewInit {
   onFloorSelected(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement)?.value;
     if (selectedValue !== undefined && selectedValue !== null) {
+      console.log("Selected floor:", selectedValue);
       this.loadFloor(selectedValue);
     }
   }
@@ -78,20 +70,19 @@ export class VisualizationComponent implements AfterViewInit {
     if (!this.thumbRaiser) {
       this.createScene();
     } else {
-      console.log("Updating scene...");
       // Update existing instance with new parameters
+      console.log("updating scene");
       this.thumbRaiser.updateScene({ url: this.maze, scale: new THREE.Vector3(1.0, 1.0, 1.0) });
     }
   }
 
-  // Criar a cena
+
   private createScene(): void {
-    console.log("[createScene()]");
     this.thumbRaiser = new ThumbRaiser(
       {}, // General Parameters
       {}, // Audio parameters
       {}, // Cube texture parameters
-      { url: this.maze, maze: this.floorMaze, scale: new THREE.Vector3(1.0, 1.0, 1.0) }, // Maze parameters
+      { url: this.maze, scale: new THREE.Vector3(1.0, 1.0, 1.0) }, // Maze parameters
       { scale: new THREE.Vector3(0.1, 0.1, 0.1) }, // Player parameters
       {}, // Ambient Light parameters
       {}, // Directional Light parameters

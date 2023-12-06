@@ -93,14 +93,14 @@
         "secondaryColor": "0x6b554b"
     },
     "tunnel": {
-        "segments": { "width": 1, "height": 2 },
+        "segments": { "width": 1, "height": 1 },
         "primaryColor": "0xffffff",
         "maps": {
             "color": {
-                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_color_2k.jpg"
+                "url": "../../assets/3d/textures/tunnel/tunnel.png"
             },
             "ao": {
-                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_ao_2k.jpg",
+                "url": "../../assets/3d/textures/tunnel/tunnel.png",
                 "intensity": 1.0
             },
             "displacement": {
@@ -109,7 +109,7 @@
                 "bias": 0.0
             },
             "normal": {
-                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_normal_opengl_2k.png",
+                "url": "../../assets/3d/textures/tunnel/tunnel.png",
                 "type": 0,
                 "scale": { "x": 2.0, "y": 2.0 }
                 },
@@ -118,13 +118,13 @@
                 "scale": 1.0
             },
             "roughness": {
-                "url": "../../assets/3d/textures/concrete_0007_2k_xtGY5J/concrete_0007_roughness_2k.jpg",
+                "url": "../../assets/3d/textures/tunnel/tunnel.png",
                 "rough": 1.0
             }
         },
         "wrapS": 1,
         "wrapT": 0,
-        "repeat": { "u": 2.0, "v": 1.0 },
+        "repeat": { "u": 1.0, "v": 1.0 },
         "magFilter": 1,
         "minFilter": 5,
         "secondaryColor": "0x6b554b"

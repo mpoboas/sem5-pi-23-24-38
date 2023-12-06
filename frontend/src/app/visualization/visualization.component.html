@@ -8,7 +8,7 @@
                         <label for="select-floor">Select floor</label>
                     </td>
                     <td>
-                        <select id="select-floor" [(ngModel)]="selectedFloor" (ngModelChange)="onFloorSelected($event)">
+                        <select id="select-floor" [(ngModel)]="selectedFloor" (change)="onFloorSelected($event)">
                             <option *ngFor="let floor of floors" [value]="floor.floorNumber">{{ floor.floorNumber }}</option>
                         </select>
                     </td>

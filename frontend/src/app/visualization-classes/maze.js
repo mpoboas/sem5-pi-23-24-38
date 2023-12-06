@@ -221,7 +221,7 @@ export default class Maze extends THREE.Group {
                         console.log("tunnel oeste");
                         clonedTunnel = tunnel.clone("West");
                         clonedTunnel.rotateY(-Math.PI / 2.0);
-                        clonedTunnel.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth + 0.5);
+                        clonedTunnel.position.set(j - this.halfSize.width, 0.25, i - this.halfSize.depth + 0.5);
                         this.add(clonedTunnel);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
