@@ -6,6 +6,7 @@ import { TunnelId } from './tunnelId';
 
 import { Guard } from '../../core/logic/Guard';
 import { Floor } from '../floor/floor';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Coordinates } from '../coordinates';
 
 interface TunnelProps {

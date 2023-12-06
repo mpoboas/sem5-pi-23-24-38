@@ -11,6 +11,7 @@ import { Elevator } from '../../domain/elevator/elevator';
 import { ElevatorMap } from '../../mappers/ElevatorMap';
 import IFloorRepo from '../IRepos/IFloorRepo';
 import IFloorDTO from '../../dto/IFloorDTO';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Floor } from '../../domain/floor/floor';
 import { FloorMap } from '../../mappers/FloorMap';
 
