@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { merge } from "./merge.js";
 import MultiTexturedMaterial from "./material.js";
-import * as TWEEN from "../three.js-master/examples/jsm/libs/tween.module.js";
+
 
 export default class Door extends THREE.Group {
     constructor(parameters) {
