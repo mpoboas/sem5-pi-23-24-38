@@ -1,7 +1,9 @@
 export interface IUserDTO {
-  firstName: string;
-  lastName: string;
+  id: string;
+  name: string;
   email: string;
   password: string;
   role: string;
+  phoneNumber: string;
+  nif: string;
 }
