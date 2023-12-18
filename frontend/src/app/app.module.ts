@@ -71,6 +71,7 @@ import { TaskManagerComponent } from './task-manager/task-manager.component';
 import { PlaneamentoComponent } from './planeamento/planeamento.component';
 import { GetTrajetoriaComponent } from './get-trajetoria/get-trajetoria.component';
 import { PlaneamentoService } from './planeamento/planeamento.service';
+import { AnimationComponent } from './animation/animation.component';
 
 
 
@@ -115,7 +116,8 @@ import { PlaneamentoService } from './planeamento/planeamento.service';
     AdminManagerComponent,
     TaskManagerComponent,
     PlaneamentoComponent,
-    GetTrajetoriaComponent
+    GetTrajetoriaComponent,
+    AnimationComponent
   ],
   imports: [
     BrowserModule,
