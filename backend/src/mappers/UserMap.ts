@@ -1,4 +1,3 @@
-import { Container } from 'typedi';
 
 import { Mapper } from '../core/infra/Mapper';
 
@@ -9,7 +8,6 @@ import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
 
 
-import RoleRepo from '../repos/roleRepo';
 import { Document, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 

@@ -1,11 +1,8 @@
 import { AggregateRoot } from '../../core/domain/AggregateRoot';
 import { UniqueEntityID } from '../../core/domain/UniqueEntityID';
 import { Result } from '../../core/logic/Result';
-import { UserId } from './userId';
 import { UserEmail } from './userEmail';
-import { Role } from '../role';
 import { UserPassword } from './userPassword';
-import { Guard } from '../../core/logic/Guard';
 import { IUserDTO } from '../../dto/IUserDTO';
 import { UserPhoneNumber } from './userPhoneNumber';
 import { UserNif } from './userNif';
