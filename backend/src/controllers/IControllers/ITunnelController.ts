@@ -6,4 +6,6 @@ export default interface ITunnelController {
   patchTunnel(req: Request, res: Response, next: NextFunction);
   listAllTunnels(req: Request, res: Response, next: NextFunction);
   listTunnels2B(req: Request, res: Response, next: NextFunction);
+  getTunnelsAlgav(req: Request, res: Response, next: NextFunction);
+  getTunnelsAlgav2(req: Request, res: Response, next: NextFunction);
 }
