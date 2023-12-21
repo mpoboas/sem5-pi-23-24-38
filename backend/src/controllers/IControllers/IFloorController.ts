@@ -8,4 +8,5 @@ export default interface IFloorController {
   listAllFloorsInBuilding(req: Request, res: Response, next: NextFunction);
   findFloorByNumber(req: Request, res: Response, next: NextFunction);
   findFloorNum(req: Request, res: Response, next: NextFunction);
+  getAlgavInfo(req: Request, res: Response, next: NextFunction);
 }

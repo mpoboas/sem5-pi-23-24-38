@@ -214,4 +214,27 @@ export default class FloorService implements IFloorService {
       throw e;
     }
   }
+
+  public async getAlgavInfo(): Promise<Result<any[]>> {
+    try {
+      const info: any[] = [];
+      const buildings = await this.buildingRepo.getAllBuildings();
+      for(const building of buildings) {
+        const floors: any[] = [];
+        const buildingFloors = await this.floorRepo.findFloorsByBuildingId(building.id.toString());
+        for(const floor of buildingFloors){
+          floors.push(floor.id.toString());
+        }
+        info.push({building: building.id.toString(), floors: floors});
+      }
+      if(info.length == 0){
+        return Result.fail('No buildings found');
+      }else{
+        return Result.ok(info);
+      }
+      
+    } catch (error) {
+      throw new Error(`Error listing floors: ${error.message}`);
+    }
+  }
 }

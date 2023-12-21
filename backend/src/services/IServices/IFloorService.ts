@@ -11,4 +11,5 @@ export default interface IFloorService {
   getFloor(floorId: string): Promise<Result<IFloorDTO>>;
   findFloorsByBuildingId(buildingCode: string): Result<IFloorDTO[]> | Promise<IFloorDTO[]>;
   getFloorByNumber(floorNumber: string): Promise<Result<IFloorDTO>>;
+  getAlgavInfo(): Promise<Result<any[]>>;
 }

@@ -65,11 +65,13 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchFloor(req, res, next),
   );
 
-  route.get('', (req, res, next) => ctrl.listAllFloors(req, res, next));
-
-  route.get('/:buildingId', (req, res, next) => ctrl.listAllFloorsInBuilding(req, res, next));
+  route.get('', (req,res,next) => ctrl.listAllFloors(req,res,next));
+  
+  route.get('/getFloors/:buildingId', (req, res, next) => ctrl.listAllFloorsInBuilding(req, res, next));
 
   route.get('/byNumber/:floorNumber', (req, res, next) => ctrl.findFloorByNumber(req, res, next));
 
   route.get('/getFloorNum/:id', (req, res, next) => ctrl.findFloorNum(req, res, next));
+
+  route.get('/getAlgavInfo', (req, res, next) => ctrl.getAlgavInfo(req, res, next));
 };
