@@ -15,7 +15,7 @@ import { InfoManagerComponent } from './info-manager/info-manager.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
 import { PlaneamentoComponent } from './planeamento/planeamento.component';
-
+import { AnimationComponent } from './animation/animation.component';
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
   { path: 'info-manager', component: InfoManagerComponent },
@@ -32,7 +32,8 @@ const routes: Routes = [
     { path: 'classrooms', component: ClassroomComponent},
     { path: 'tunnels', component: TunnelComponent },
     { path: 'elevators', component: ElevatorComponent },
-    { path: 'visualization', component: VisualizationComponent }
+    { path: 'visualization', component: VisualizationComponent },
+    { path: 'animation', component: AnimationComponent}
   ]},
   { path: '**', redirectTo: '' },
 ];

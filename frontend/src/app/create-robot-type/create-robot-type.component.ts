@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { RobotTypeService } from '../robot-type/robot-type.service';
@@ -11,7 +11,6 @@ export interface RobotTypeData {
 
 
 }
-
 @Component({
   selector: 'app-create-robot-type',
   templateUrl: './create-robot-type.component.html',
@@ -29,7 +28,7 @@ export class CreateRobotTypeComponent {
     @Inject(MAT_DIALOG_DATA) public data: RobotTypeData,
     public dialogRef: MatDialogRef<CreateRobotTypeComponent>,
     private fb: FormBuilder,
-    private robotTypeService: RobotTypeService,
+    public robotTypeService: RobotTypeService,
   ) {
     this.form = this.fb.group({
       brand: ['', Validators.required],
