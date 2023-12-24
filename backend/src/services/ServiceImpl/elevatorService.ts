@@ -180,14 +180,34 @@ export default class ElevatorService implements IElevatorService {
           return floorDTOResult;
         }));
 
-      return floorsDTO;
-
-    }
-  } catch (e) {
+        return floorsDTO;
+      }
+    } catch (e) {
       throw e;
+    }
   }
 
-
+  public async getElevatorAlgav(): Promise<Result<any[]>> {
+    try{
+      const info: any[] = [];
+      const elevators = await this.elevatorRepo.getAllElevators();
+      for (const elevator of elevators) {
+        const x = elevator.cordx;
+        const y = elevator.cordy;
+        const floors = elevator.floors;
+        for (const floor of floors){
+          const name = "e"+floor.floorNumber;
+          const floorId = floor.id.toString();
+          info.push({name, x, y, floorId});
+        }
+      }
+      if(info.length == 0){
+        return Result.fail('No buildings found');
+      }else{
+        return Result.ok(info);
+      }
+    } catch (error) {
+      throw new Error(`Error listing elevators: ${error.message}`);
+    }
   }
-
 }

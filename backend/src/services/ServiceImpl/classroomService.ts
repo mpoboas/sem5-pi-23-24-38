@@ -95,4 +95,28 @@ export default class ClassroomService implements IClassroomService {
       throw new Error(`Error listing classrooms: ${error.message}`);
     }
   }
+
+  public async getClassroomsAlgav(): Promise<Result<any[]>> {
+    try {
+      const info: any[] = [];
+      const classrooms = await this.classroomRepo.getAllClassrooms();
+
+      for(const classroom of classrooms){
+        const id = classroom.id.toString();
+        const floorId = classroom.floorId;
+        const cordx = classroom.cordx;
+        const cordy = classroom.cordy;
+        info.push({id, cordx, cordy, floorId});
+      }
+    
+      if(info.length > 0){
+        console.log(info);
+        return Result.ok(info);
+      } else {
+        return Result.fail("No classrooms found");
+      }
+    }catch (error) {
+      throw new Error(`Error listing classrooms: ${error.message}`);
+    }
+  }
 }

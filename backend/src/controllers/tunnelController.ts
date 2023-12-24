@@ -78,4 +78,22 @@ export default class TunnelController implements ITunnelController /* TODO: exte
       return next(e);
     }
   }
+
+  public async getTunnelsAlgav(req: Request, res: Response, next: NextFunction) {
+    try {
+      const tunnels = await this.tunnelServiceInstance.getTunnelsAlgav();
+      return res.json(tunnels).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getTunnelsAlgav2(req: Request, res: Response, next: NextFunction) {
+    try {
+      const tunnels = await this.tunnelServiceInstance.getTunnelsAlgav2();
+      return res.json(tunnels).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }

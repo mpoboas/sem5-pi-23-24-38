@@ -9,4 +9,5 @@ export default interface IElevatorService {
   getElevator(elevatorId: string): Promise<Result<IElevatorDTO>>;
   patchElevator(elevatorId: string, elevatorUpdate: IElevatorDTO): Promise<Result<IElevatorDTO>>;
   findFloorsElevator(elevatorId: string): Promise<IFloorDTO[]>;
+  getElevatorAlgav(): Promise<Result<any[]>>;
 }

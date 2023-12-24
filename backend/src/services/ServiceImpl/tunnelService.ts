@@ -8,12 +8,15 @@ import { TunnelMap } from '../../mappers/TunnelMap';
 import IFloorService from '../IServices/IFloorService';
 import { FloorMap } from '../../mappers/FloorMap';
 import IFloorDTO from '../../dto/IFloorDTO';
+import IBuildingService from '../IServices/IBuildingService';
+import { floor } from 'lodash';
 
 @Service()
 export default class TunnelService implements ITunnelService {
   constructor(
     @Inject(config.repos.tunnel.name) private tunnelRepo: ITunnelRepo,
     @Inject(config.services.floor.name) private floorService: IFloorService,
+    @Inject(config.services.building.name) private buildingService: IBuildingService,
   ) {}
 
   public async getTunnel(tunnelId: string): Promise<Result<ITunnelDTO>> {
@@ -170,4 +173,47 @@ export default class TunnelService implements ITunnelService {
       throw e;
     }
   }
+
+  public async getTunnelsAlgav(): Promise<any[]> {
+    try {
+      const tunnelsResult: any[] = [];
+      const tunnels = await this.tunnelRepo.getAllTunnels();
+      for(const tunnel of tunnels) {
+        const floor1 = await TunnelMap.getFloor(tunnel.floor1.id.toString());
+        const floor2 = await TunnelMap.getFloor(tunnel.floor2.id.toString());
+      
+        tunnelsResult.push({building1: floor1.buildingId.toString(), building2: floor2.buildingId.toString(), floor1: floor1.id.toString(), floor2: floor2.id.toString()});
+      }
+    
+      return tunnelsResult
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getTunnelsAlgav2(): Promise<any[]> {
+    try {
+      const tunnelsResult: any[] = [];
+      const tunnels = await this.tunnelRepo.getAllTunnels();
+      for(const tunnel of tunnels) {
+        const floor1 = await TunnelMap.getFloor(tunnel.floor1.id.toString());
+        const floor2 = await TunnelMap.getFloor(tunnel.floor2.id.toString());
+        const location1 = tunnel.location1;
+        const location2 = tunnel.location2;
+        const tunnel1 = floor1.id.toString()+floor2.id.toString();
+        const tunnel2 = floor2.id.toString()+floor1.id.toString();
+        console.log(tunnel1);
+        console.log(tunnel2);
+
+        tunnelsResult.push({tunnel1: tunnel1, x1: location1[0], y1: location1[1], floor1: floor1.id.toString()});
+        tunnelsResult.push({tunnel2: tunnel2, x2: location2[0], y2: location2[1], floor2: floor2.id.toString()});
+      }
+    
+      return tunnelsResult
+    }catch(e) {
+      throw e;  
+    }
+  }
 }
+
+

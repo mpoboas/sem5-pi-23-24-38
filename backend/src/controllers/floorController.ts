@@ -5,6 +5,7 @@ import IFloorController from './IControllers/IFloorController';
 import IFloorService from '../services/IServices/IFloorService';
 import IFloorDTO from '../dto/IFloorDTO';
 import { Result } from '../core/logic/Result';
+import { forEach } from 'lodash';
 
 @Service()
 export default class FloorController implements IFloorController /* TODO: extends ../core/infra/BaseController */ {
@@ -105,6 +106,15 @@ export default class FloorController implements IFloorController /* TODO: extend
       }
 
       return res.json(floor.getValue().floorNumber).status(200);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getAlgavInfo(req: Request, res: Response, next: NextFunction) {
+    try {
+      const floors = await this.floorServiceInstance.getAlgavInfo();
+      return res.json(floors.getValue()).status(200);
     } catch (e) {
       return next(e);
     }

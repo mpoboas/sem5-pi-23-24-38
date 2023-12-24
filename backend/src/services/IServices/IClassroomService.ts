@@ -5,4 +5,5 @@ export default interface IClassroomService {
   createClassroom(classroomDTO: IClassroomDTO): Promise<Result<IClassroomDTO>>;
   updateClassroom(classroomDTO: IClassroomDTO): Promise<Result<IClassroomDTO>>;
   getAllClassrooms(): Promise<IClassroomDTO[]>;
+  getClassroomsAlgav(): Promise<Result<any[]>>;
 }

@@ -73,13 +73,20 @@ export default class ElevatorController
     }
   }
 
-
-
   public async findFloorsElevator(req: Request, res: Response, next: NextFunction) {
     try {
       const elevatorId = req.params.id;
       const floors = await this.elevatorServiceInstance.findFloorsElevator(elevatorId);
       return res.status(200).json(floors);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async getElevatorAlgav(req: Request, res: Response, next: NextFunction) {
+    try {
+      const elevators = await this.elevatorServiceInstance.getElevatorAlgav();
+      return res.json(elevators.getValue()).status(200);
     } catch (e) {
       return next(e);
     }

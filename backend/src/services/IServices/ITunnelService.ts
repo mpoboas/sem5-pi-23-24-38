@@ -9,4 +9,6 @@ export default interface ITunnelService {
   getTunnel(tunnelId: string): Promise<Result<ITunnelDTO>>;
   getAllTunnelsFloors(): Promise<IFloorDTO[]>;
   getTunnels2B(): Promise<ITunnelDTO[]>;
+  getTunnelsAlgav(): Promise<any[]>;
+  getTunnelsAlgav2(): Promise<any[]>;
 }

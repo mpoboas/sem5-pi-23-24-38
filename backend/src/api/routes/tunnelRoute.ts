@@ -64,4 +64,6 @@ export default (app: Router) => {
 
   route.get('/getFloorsTunnel', (req, res, next) => ctrl.listAllTunnels(req, res, next));
   route.get('', (req, res, next) => ctrl.listTunnels2B(req, res, next));
+  route.get('/getTunnelsAlgav', (req, res, next) => ctrl.getTunnelsAlgav(req, res, next));
+  route.get('/getTunnelsAlgav2', (req, res, next) => ctrl.getTunnelsAlgav2(req, res, next));
 };
