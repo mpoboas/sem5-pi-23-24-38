@@ -132,7 +132,7 @@ export class AnimationComponent implements OnDestroy{
     requestAnimationFrame(() => this.animate());
     if (this.thumbRaiser.maze.tunnelTp) {
         this.thumbRaiser.maze.tunnelTp = false;
-        this.selectedFloor = "A1";
+        this.selectedFloor = this.thumbRaiser.maze.tunnelToGo;
         this.loadFloor(this.selectedFloor);
     }
     this.thumbRaiser.update();

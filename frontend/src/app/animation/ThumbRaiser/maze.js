@@ -41,9 +41,10 @@ export default class Maze extends THREE.Group {
             this.map = description.maze.map;
             this.exitLocation = this.cellToCartesian(description.maze.exitLocation);
             this.tunnelTp = false;
+            this.tunnelToGo = "";
             // Create the helpers
             this.helper = new THREE.Group();
-
+            this.tunnelPortal = description.maze.tunnelexit;
             // Create the ground
             const ground = new Ground({
                 size: new THREE.Vector3(description.ground.size.width, description.ground.size.height, description.ground.size.depth),
@@ -405,6 +406,8 @@ export default class Maze extends THREE.Group {
         const row = indices[0] + offsets[0];
         const column = indices[1] + offsets[1];
         if (this.map[row][column] == 2 - orientation || this.map[row][column] == 3) {
+
+
             if (orientation != 0) {
                 if (Math.abs(position.x - (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)) < radius) {
                     console.log("Collision with " + name + ".");
@@ -531,9 +534,17 @@ export default class Maze extends THREE.Group {
              const row = indices[0] + offsets[0];
              const column = indices[1] + offsets[1];
         
-             if (this.map[row][column] == 10 || this.map[row][column] == 11) {
-                console.log("tunnel collision",row,column);
+             if (this.map[row][column] == 11 || this.map[row][column] == 10) {
+                //console.log("tunnel collision",row,column);
                 //this.tunnelTp = true;
+                this.tunnelPortal.forEach(element => {
+                    //console.log("element",element.x);
+                    if(element.z == row && element.x == column){
+                        this.tunnelToGo = element.portal;
+                        console.log("tunnelToGo",this.tunnelToGo);
+                        //console.log("tunnelToGo",this.tunnelToGo);
+                    }
+                });
                   if (orientation != 0) {
                       if (Math.abs(position.x - (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)) < radius) {
                           console.log("Collision with " + name + ".");
@@ -570,10 +581,10 @@ export default class Maze extends THREE.Group {
                 this.doorCollision(indices, [0, 0], "4", position, { x: 0.0, z: -0.475 }, halfSize, "north door",) || // Collision with north wall
                 this.doorCollision(indices, [0, 0], "5", position, { x: -0.475, z: 0.0 }, halfSize, "west door") || // Collision with west wall
                 this.doorCollision(indices, [1, 0], "4", position, { x: 0.0, z: -0.525 }, halfSize, "south door") || // Collision with south wall
-                this.tunnelCollision(indices, [0, 0], "10", position, { x: 0.0, z: -0.475 }, halfSize, "north tunnel") || // Collision with north wall
-                this.tunnelCollision(indices, [0, 0], "11", position, { x: -0.475, z: 0.0 }, halfSize, "west tunnel") || // Collision with west wall
-                this.tunnelCollision(indices, [1, 0], "10", position, { x: 0.0, z: -0.525 }, halfSize, "south tunnel") || // Collision with south wall
-                this.tunnelCollision(indices, [0, 1], "11", position, { x: -0.525, z: 0.0 }, halfSize, "east tunnel") || // Collision with east wall
+                this.tunnelCollision(indices, [0, 0], 0, position, { x: 0.0, z: -0.475 }, halfSize, "north tunnel") || // Collision with north wall
+                this.tunnelCollision(indices, [0, 0], 1, position, { x: -0.475, z: 0.0 }, halfSize, "west tunnel") || // Collision with west wall
+                this.tunnelCollision(indices, [1, 0], 0, position, { x: 0.0, z: -0.525 }, halfSize, "south tunnel") || // Collision with south wall
+                this.tunnelCollision(indices, [0, 1], 1, position, { x: -0.525, z: 0.0 }, halfSize, "east tunnel") || // Collision with east wall
 
 
                 indices[0] > 0 && (
