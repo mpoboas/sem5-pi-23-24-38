@@ -13,17 +13,6 @@
                             <option value="top">Top</option>
                         </select>
                     </td>
-                    <td>
-                        Orientation (h):
-                        <input type="number" id="horizontal" required>
-                    </td>
-                    <td>
-                        Orientation (v):
-                        <input type="number" id="vertical" required>
-                    </td>
-                    <td>
-                        <input type="button" id="reset" value="Reset view">
-                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -33,14 +22,47 @@
                             <option value="orthographic">Orthographic</option>
                         </select>
                     </td>
-                    <td>
+                    <td style="display: none;">
                         Distance:
                         <input type="number" id="distance" required>
                     </td>
-                    <td>
+                    <td style="display: none;">
                         Zoom:
                         <input type="number" id="zoom" required>
                     </td>
+                </tr>
+                <tr>    
+                    <td>
+                        Robot:
+                        <select id="select-robot" [(ngModel)]="selectedRobot" (change)="onRobotSelected($event)">
+                            <option *ngFor="let robot of robots" [value]="robot.nickname">{{ robot.nickname }}</option>
+                        </select>
+                    </td>
+                    <td style="display: none;">
+                        Orientation (h):
+                        <input type="number" id="horizontal" required>
+                    </td>
+                    <td style="display: none;">
+                        Orientation (v):
+                        <input type="number" id="vertical" required>
+                    </td>
+
+                </tr>
+                <tr>    
+                    <td>
+                        Floor:
+                        <select id="select-floor" [(ngModel)]="selectedFloor" (change)="onFloorSelected($event)">
+                            <option *ngFor="let floor of floors" [value]="floor.floorNumber">{{ floor.floorNumber }}</option>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr>                        
+                    <td>
+                        <input type="button" id="reset" value="Reset view">
+                    </td>
+                </tr>
+                <tr>    
                     <td>
                         <input type="button" id="reset-all" value="Reset all views">
                     </td>

@@ -99,7 +99,6 @@ export default class Audio {
     }
 
     stopAll() {
-        console.log("Stopping all audio clips");
         this.types.forEach(type => {
             this.stop(type);
         });

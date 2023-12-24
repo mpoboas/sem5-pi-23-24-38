@@ -1,27 +1,130 @@
-import { Component,AfterViewInit } from '@angular/core';
+import { Component,AfterViewInit, Input, OnDestroy } from '@angular/core';
 import ThumbRaiser from './ThumbRaiser/thumb_raiser';
 import Orientation from './ThumbRaiser/orientation';
 import * as THREE from 'three';
 import * as _ from 'lodash';
+import { RobotService } from '../robot/robot.service';
+import { FloorService } from '../floor/floor.service';
 
 const defaultUrl = "../../assets/3d/"
+const robots = ["../../assets/3d/models/gltf/RobotExpressive/RobotExpressive.glb",
+"../../assets/3d/models/gltf/RobotExpressive/Robot.glb",  
+"../../assets/3d/models/gltf/RobotExpressive/Alien.glb",];
+
 @Component({
   selector: 'app-animation',
   templateUrl: './animation.component.html',
   styleUrls: ['./animation.component.scss']
 })
 
-
-export class AnimationComponent {
-  constructor() { }
+export class AnimationComponent implements OnDestroy{
+  constructor(private robotService:RobotService,private floorService: FloorService) { }
+  @Input() public robot: string;
+  @Input() public maze: string;
   private thumbRaiser: ThumbRaiser;
+  selectedRobot: string = '';
+  robots: any[] = [];
+  selectedFloor: string = '';
+  floors: any[] = [];
 
   ngOnInit(): void {
-    this.createScene();
+    this.fetchFloors();
+    // this.fetchRobots();
+
+  }
+  ngOnDestroy() {
+    window.location.reload();
+  }
+ // ngAfterViewInit(): void {
+  //  this.animate();
+ // }
+
+  private fetchRobots(): void {
+    this.robotService.getRobots().subscribe(
+        (robots) => {
+            this.robots = robots;
+            console.log("the robots are: ", this.robots);
+            if (this.robots.length > 0) {
+            // Load the default robot or the first robot initially
+            const defaultRobot = _.get(this.robots, '[0].nickname', 'defaultRobot');
+            console.log("the default robot number is: ", defaultRobot);
+            this.selectedRobot = defaultRobot;
+            this.loadRobot(defaultRobot);
+            }else {
+            console.warn("No robots found.");
+            }
+        
+        },
+        (error) => {
+            console.error('Error fetching robots:', error);
+        }
+        );
+
+    }
+
+    private loadRobot(nickname: string): void {
+        //const randomNumber = Math.floor(Math.random() * 3);//random number between 0 and 2
+        this.robot = robots[0];
+        this.createScene();
+    }
+
+    onRobotSelected(event: Event): void {
+    console.log("the event is: ", event);
+
+    }
+
+  private fetchFloors(): void {
+    this.floorService.getFloors().subscribe(
+      (floors) => {
+        this.floors = floors;
+        console.log("the floors are: ", this.floors);
+        
+        if (this.floors.length > 0) {
+          // Load the default floor or the first floor initially
+          const defaultFloorNumber = _.get(this.floors, '[12].floorNumber', 'defaultFloorNumber');
+          console.log("the default floor number is: ", defaultFloorNumber);
+          this.selectedFloor = defaultFloorNumber;
+          this.loadFloor(defaultFloorNumber);
+        } else {
+          console.warn("No floors found.");
+        }
+      },
+      (error) => {
+        console.error('Error fetching floors:', error);
+      }
+    );
   }
 
-  ngAfterViewInit(): void {
-    this.animate();
+  private loadFloor(floorNumber: string): void {
+    this.floorService.findFloorByNumber(floorNumber).subscribe(
+      (floorData) => {
+        console.log("Fetched floor data: ", floorData);
+        this.maze = floorData.json;
+        this.createOrUpdateScene();
+      },
+      (error) => {
+        console.error('Error loading floor:', error);
+      }
+    );
+  }
+
+  onFloorSelected(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement)?.value;
+    if (selectedValue !== undefined && selectedValue !== null) {
+      console.log("Selected floor:", selectedValue);
+      this.loadFloor(selectedValue);
+    }
+  }
+  
+  private createOrUpdateScene(): void {
+    if (!this.thumbRaiser) {
+      this.createScene();
+      this.animate();
+    } else {
+      // Update existing instance with new parameters
+      console.log("updating scene");
+      this.thumbRaiser.updateScene({ url: this.maze, scale: new THREE.Vector3(1.0, 1.0, 1.0) });
+    }
   }
 
 
@@ -219,24 +322,24 @@ export class AnimationComponent {
                         { // Calm Day
                             name: "Calm Day",
                             texturePath: defaultUrl+"cube_textures/xonotic-skyboxes/skyboxes/background/",
-                            texturePositiveXUrl: "px.png",
-                            textureNegativeXUrl: "nx.png",
-                            texturePositiveYUrl: "py.png",
-                            textureNegativeYUrl: "ny.png",
-                            texturePositiveZUrl: "pz.png",
-                            textureNegativeZUrl: "nz.png",
+                            texturePositiveXUrl: "px.jpg",
+                            textureNegativeXUrl: "nx.jpg",
+                            texturePositiveYUrl: "py.jpg",
+                            textureNegativeYUrl: "ny.jpg",
+                            texturePositiveZUrl: "pz.jpg",
+                            textureNegativeZUrl: "nz.jpg",
                             credits: "Me"
                         }
                     ],
-                    selected: 3
+                    selected: 8
                 }, // Cube texture parameters
                 {
-                    url: defaultUrl+"mazes/Loquitas_20x20.json",
+                    url: this.maze,
                     designCredits: "Maze designed by Cecília Fernandes and Nikita.",
                     texturesCredits: "Maze textures downloaded from <a href='https://www.texturecan.com/' target='_blank' rel='noopener'>TextureCan</a>.",
                     helpersColor: new THREE.Color(0xff0077)
                 }, // Maze parameters
-                { helpersColor: new THREE.Color(0x0055ff) }, // Player parameters
+                { url:this.robot,helpersColor: new THREE.Color(0x0055ff) }, // Player parameters
                 {
                     intensity: 0.1
                 }, // Ambient light parameters

@@ -459,11 +459,11 @@ export default class ThumbRaiser {
         this.realisticViewMode = { checkBox: document.getElementById("realistic") };
         this.realisticViewMode.checkBox.checked = false;
         this.fixedViewCamera.checkBox = document.getElementById("fixed");
-        this.fixedViewCamera.checkBox.checked = true;
+        this.fixedViewCamera.checkBox.checked = false;
         this.firstPersonViewCamera.checkBox = document.getElementById("first-person");
         this.firstPersonViewCamera.checkBox.checked = false;
         this.thirdPersonViewCamera.checkBox = document.getElementById("third-person");
-        this.thirdPersonViewCamera.checkBox.checked = false;
+        this.thirdPersonViewCamera.checkBox.checked = true;
         this.topViewCamera.checkBox = document.getElementById("top");
         this.topViewCamera.checkBox.checked = false;
         this.miniMapCamera.checkBox = document.getElementById("mini-map");
@@ -480,7 +480,7 @@ export default class ThumbRaiser {
         this.visibleViewportCameras = [this.fixedViewCamera, this.firstPersonViewCamera, this.thirdPersonViewCamera, this.topViewCamera];
 
         // Set the active view camera (first-person view)
-        this.setActiveViewCamera(this.fixedViewCamera);
+        this.setActiveViewCamera(this.thirdPersonViewCamera);
 
         // Set the mouse related information
         this.mouse = {
@@ -525,6 +525,15 @@ export default class ThumbRaiser {
                 cell.innerHTML = element;
             }
         });
+    }
+
+    updateScene(mazeParameters){
+        this.exit = null;
+        this.scene.remove(this.maze);
+        this.userInterface.removeUserInterface();
+        this.mazeParameters = merge({}, mazeData, mazeParameters);
+        this.maze = new Maze(this.mazeParameters);
+        this.gameRunning = false;
     }
 
     updateViewsPanel() {
@@ -1288,6 +1297,7 @@ export default class ThumbRaiser {
             // Update the player
             if (!this.animations.actionInProgress) {
                 // Check if the player found the exit
+                //console.log(this.player.position);
                 if (this.maze.foundExit(this.player.position)) {
                     this.finalSequence();
                 }

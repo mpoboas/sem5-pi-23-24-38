@@ -175,6 +175,13 @@ export default class UserInterface extends GUI {
         this.close();
     }
 
+    removeUserInterface() {
+        // Remove the user interface from the DOM
+        const parentElement = this.domElement.parentElement;
+        if (parentElement) {
+            parentElement.removeChild(this.domElement);
+        }
+    }
     setVisibility(visible) {
         if ("show" in this && "hide" in this) {
             if (visible) {
