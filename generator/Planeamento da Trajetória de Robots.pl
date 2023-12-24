@@ -14,152 +14,141 @@
 % Base de conhecimento
 %dados Campus
 
-pisos(a, [a1,a2]).
-pisos(b, [b1,b2,b3]).
-pisos(c, [c1,c2,c3,c4]).
-pisos(d, [d1,d2,d3]).
+%guardar (a,[a1,a2]) e (a)
+%ou seja guarda o edificio e os seus pisos
 
-corredor(a,b,a2,b2).
-corredor(b,c,b2,c3).
-corredor(b,c,b3,c4).
-corredor(b,d,b2,d3).
-corredor(c,d,c2,d2).
-corredor(c,d,c3,d3).
+request_edificios_pisos():-
+    apagar_edificios_pisos(),
+    http_open('http://localhost:3000/api/floors/getAlgavInfo', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON,ResObj),
+    write(ResObj),
+    criar_edificio(ResObj)
+    criar_edificios_pisos(ResObj).
 
-%
-elevador(a, [a1,a2]).
-elevador(b, [b1,b2,b3]).
-elevador(c, [c1,c2,c3,c4]).
-elevador(d, [d1,d2,d3]).
+apagar_edificios_pisos():-
+    findall(pisos(X,Y), pisos(X,Y), Pisos),
+    apagar(Pisos).
 
-%ligacão
-liga(a,b).
-liga(b,c).
-liga(b,d).
-liga(c,d).
+criar_edificios_pisos([_,[]]).
+criar_edificios_pisos([E,[Floors]|T]):-
+    assertz(pisos(E,Floors)),
+        criar_edificios_pisos(T).
+
+
+%guardar (a,h,a1,h2) e (a,h)
+%ou seja guarda a passagem entre dois pisos e liga os Edificios
+
+request_tuneis():-
+    apagar_tuneis(),
+    http_open('http://localhost:3000/api/tunnels/getTunnelsAlgav', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON, ResObj),
+
+    retira_tuneis(ResObj, ResVal),
+      write(ResVal),
+
+    criar_tunel(ResObj).
+    criar_ligacao(ResVal).
+
+apagar_tuneis():-
+    findall(tuneis(X,Y,X1,Y1), tuneis(X,Y,X1,Y1), Tuneis),
+    apagar(Tuneis).
+
+retira_tuneis([], []).
+retira_tuneis([H|T], [[H.building1, H.building2]| T2]):-
+    retira_tuneis(T,T2).
+
+criar_tunel([]).
+criar_tunel([H|T]):-
+    assertz(corredor(H)),
+    criar_tunel(T).
+
+criar_ligacao([]).
+criar_ligacao([Building1, Building2|T]):-
+    assertz(liga(Building1, Building2));
+    criar_ligacao(T).
+
+
+%guardar (a,[a1,a2])
+%ou seja guarda o edificio e pisos servidos por elevador
+
+request_elevador():-
+    apagar_elevador(),
+    http_open('http://localhost:3000/api/elevators', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON,ResObj),
+    retira_elevador(ResObj,ResVal),
+    write(ResVal),
+    criar_elevador(ResVal).
+
+apagar_elevador():-
+    findall(elevador(X,Y), elevador(X,Y), Elevador),
+    apagar(Elevador).
+
+retira_elevador([], []).
+retira_elevador([H|T], [(H.buildingId,H.floors)|L]):-
+    retira_elevador(T,L).
+
+criar_elevador([]).
+criar_elevador([(Edificio, Floors)|T]):-
+    assertz(elevador(Edificio, Floors)),
+    criar_elevador(T).
+
 
 %Dados Pisos
-%salas
-sala(auditorio,11,6,a1).
+%guardar (a201,5,6,a2)
+%ou seja guarda a sala, as coordenadas da porta e o piso
 
-sala(a201,5,6,a2).
-sala(a202,7,7,a2).
-sala(a203,7,5,a2).
-sala(a204,10,7,a2).
-sala(a205,10,5,a2).
-sala(a206,14,7,a2).
-sala(a207,14,5,a2).
-sala(a207B,18,9,a2).
-sala(a209,18,3,a2).
+request_salas():-
+    apagar_salas(),
+    http_open('http://localhost:3000/api/classrooms/getClassroomsAlgav', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON,ResObj),
+    write(ResObj),
+    criar_salas(ResObj).
 
-sala(b101,3,5,b1).
-sala(b103,6,5,b1).
-sala(b105,13,5,b1).
-sala(b106,20,5,b1).
-sala(b102,3,7,b1).
-sala(b106,17,7,b1).
-sala(b104,7,9,b1).
-sala(b106B,20,9,b1).
-sala(b106C,20,5,b1).
+apagar_salas():-
+    findall(sala(S,X,Y,P), sala(S,X,Y,P), Salas),
+    apagar(Salas).
 
-sala(b203,7,7,b2).
-sala(b202,13,4,b2).
-sala(b205,19,7,b2).
-sala(b207,20,5,b2).
+criar_salas([]).
+criar_salas([H|T]):-
+    assertz(sala(H)),
+    criar_salas(T).
 
-sala(b301,5,2,b3).
-sala(b303,7,2,b3).
-sala(b205,13,2,b3).
-sala(b302,14,8,b3).
+%guardar (a2b2,23,6,a2)
+%ou seja guarda a posição do corredor no piso
+request_tunel_location():-
+    apagar_tunel_location(),
+    http_open('http://localhost:3000/api/tunnels/getTunnelsAlgav2', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON,ResObj),
+    write(ResObj),
+    criar_tunel_location(ResObj).
 
-sala(c101,6,3,c1).
-sala(c103,6,7,c1).
-sala(c105,6,19,c1).
-sala(c102,8,3,c1).
-sala(c104,8,7,c1).
-sala(c106,8,11,c1).
-sala(c108,8,15,c1).
-sala(c110,8,19,c1).
+apagar_tunel_location():-
+    findall(corr_pos(T,X,Y,P), corr_pos(T,X,Y,P), Tunel_location),
+    apagar(Tunel_location).
 
-sala(c201,5,3,c2).
-sala(c203,5,6,c2).
-sala(c205,10,11,c2).
-sala(c207,5,12,c2).
-sala(c209,3,17,c2).
-sala(c202,8,5,c2).
-sala(c204,7,15,c2).
-sala(c206,10,13,c2).
+criar_tunel_location([]).
+criar_tunel_location([H|T]):-
+    assertz(corr_pos(H)),
+    criar_tunel_location(T).
 
-sala(c301,5,7,c3).
-sala(c303,3,17,c3).
-sala(c305,6,17,c3).
-sala(c302,6,5,c3).
-sala(c304,8,7,c3).
-sala(c306,11,11,c3).
-sala(c308,11,15,c3).
-sala(c310,10,17,c3).
+%guardar (ec1,1,14,c1)
+%ou seja guarda as coordenadas do elevador e o respetivo piso
 
-sala(c401,7,7,c4).
-sala(c403,6,15,c4).
-sala(c402,11,6,c4).
-sala(c404,11,13,c4).
+request_elevador_location():-
+    apagar_elevador_location(),
+    http_open('http://localhost:3000/api/elevators/getElevatorAlgav', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON,ResObj),
+    write(ResObj),
+    criar_elevador_location(ResObj).
 
-sala(d101,3,5,d1).
-sala(d103,5,11,d1).
-sala(d105,5,16,d1).
-sala(d108,7,19,d1).
-sala(d106,7,13,d1).
-sala(d104,7,8,d1).
-sala(d102,11,3,d1).
+apagar_elevador_location():-
+    findall(elev_pos(E,X,Y,P), elev_pos(E,X,Y,P), Elevador_location),
+    apagar(Elevador_location).
 
-sala(d201,5,4,d2).
-sala(d203,5,11,d2).
-sala(d205,5,16,d2).
-sala(d206,7,18,d2).
-sala(d204,9,16,d2).
-sala(d202,8,11,d2).
-
-sala(d301,5,9,d3).
-sala(d303,5,12,d3).
-sala(d305,7,18,d3).
-sala(d304,9,12,d3).
-sala(d302,9,9,d3).
-
-%posição corredores
-corr_pos(a2b2,23,6,a2).
-corr_pos(b2a2,1,6,b2).
-
-corr_pos(b2c3,23,9,b2).
-corr_pos(c3b2,1,10,c3).
-
-corr_pos(b2d3,21,11,b2).
-corr_pos(d3b2,11,1,d3).
-
-corr_pos(c2d2,1,16,c2).
-corr_pos(d2c2,13,2,d2).
-
-corr_pos(c3d3,1,16,c3).
-corr_pos(d3c3,13,2,d3).
-
-corr_pos(b3c4,23,9,b3).
-corr_pos(c4b3,1,10,c4).
-
-%posição elevadores
-elev_pos(ea1,22,1,a1).
-elev_pos(ea2,22,1,a2).
-
-elev_pos(eb1,22,8,b1).
-elev_pos(eb2,22,8,b2).
-elev_pos(eb3,22,8,b3).
-
-elev_pos(ec1,1,14,c1).
-elev_pos(ec2,1,14,c2).
-elev_pos(ec3,1,14,c3).
-elev_pos(ec4,1,14,c4).
-
-elev_pos(ed1,1,1,d1).
-elev_pos(ed2,1,1,d2).
-elev_pos(ed3,1,1,d3).
+criar_elevador_location([]).
+criar_elevador_location([H|T]):-
+    assertz(elev_pos(H)),
+    criar_elevador_location(T).
 
 :- dynamic node/5.
 :- dynamic m/4.
@@ -170,270 +159,26 @@ elev_pos(ed3,1,1,d3).
 :-set_prolog_flag(report_error,true).
 :-set_prolog_flag(unknown,error).
 
-matrizA1([
-          [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 3, 8, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 1, 0, 0, 0, 3, 2, 2, 2, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
+request_mapa_piso():-
+    apagar_mapa_piso(),
+    http_open('http://localhost:3000/api/floors/getMapAlgav', ResJSON, [cert_verify_hook(cert_accept_any)]),
+    json_read_dict(ResJSON,ResObj),
+    retira_mapa_piso(ResObj,ResVal),
+    write(ResVal),
+    criar_mapa_piso(ResVal).
 
-matrizA2([
-          [3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 8, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 4, 2, 2, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 3, 2, 4, 2, 2, 4, 2, 2, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-          [3, 2, 2, 2, 2, 2, 4, 2, 3, 4, 2, 2, 3, 4, 2, 2, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 4, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-          [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-        ]).
+apagar_mapa_piso():-
+    findall(converter_matriz(X,Y), converter_matriz(X,Y), Mapa_piso),
+    apagar(Mapa_piso).
 
-matrizB1([
-            [3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [3, 2, 4, 2, 2, 4, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 4, 2, 2, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [3, 2, 4, 2, 1, 0, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 4, 2, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 6, 1],
-            [1, 0, 0, 0, 1, 0, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 3, 4, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
+retira_mapa_piso([], []).
+retira_mapa_piso([H|T], [(H.id,H.map)|L]):-
+    retira_mapa_piso(T,L).
 
-matrizB2([
-            [3, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 1],
-            [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 0, 1, 0, 3, 2, 2, 2, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 5, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [3, 2, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 3, 4, 2, 2, 1],
-            [10, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 0, 5, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 5, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 6, 1],
-            [1, 0, 2, 2, 2, 2, 0, 0, 1, 0, 0, 0, 1, 0, 2, 2, 2, 2, 0, 0, 0, 0, 10],
-            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 0]
-          ]).
-
-matrizB3([
-            [3, 2, 2, 2, 3, 2, 3, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 5, 0, 5, 0, 0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 3, 4, 2, 2, 2, 2, 1, 0, 0, 6, 1],
-            [1, 0, 0, 0, 1, 0, 2, 2, 2, 2, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 10],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
-
-matrizC1([
-            [3, 2, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 5, 0, 5, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 2, 1, 0, 3, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 5, 0, 5, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 2, 0, 0, 3, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 1],
-            [9, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 2, 1, 0, 3, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 5, 0, 5, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
-          
-matrizC2([
-            [3, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 1, 0, 2, 4, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 3, 2, 2, 2, 2, 2, 1, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-            [3, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-            [1, 0, 0, 0, 3, 2, 2, 2, 2, 4, 0, 0, 1],
-            [1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 0, 0, 0, 0, 3, 4, 2, 2, 1],
-            [9, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 3, 2, 4, 2, 1, 0, 0, 0, 1],
-            [10, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [3, 2, 4, 2, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
-
-
-matrizC3([
-            [3, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 3, 4, 2, 3, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 1],
-            [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 3, 2, 2, 4, 2, 1],
-            [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 1],
-            [9, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 2, 2, 2, 4, 2, 1],
-            [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [3, 2, 4, 2, 3, 4, 2, 2, 3, 4, 2, 2, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
-          
-matrizC4([
-            [3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 3, 2, 2, 2, 4, 2, 1],
-            [1, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 2, 2, 0, 0, 3, 2, 2, 2, 1],
-            [10, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 2, 2, 4, 2, 1],
-            [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [3, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
-
-matrizD1([
-          [9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [3, 2, 1, 0, 0, 0, 3, 2, 2, 2, 4, 2, 1],
-          [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-          [3, 2, 2, 2, 1, 0, 3, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 3, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 1],
-          [3, 2, 2, 2, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 3, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 5, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-          [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-        ]).
-
-matrizD2([
-          [9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-          [3, 2, 2, 2, 1, 0, 0, 3, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 5, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [3, 2, 2, 2, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-          [3, 2, 2, 2, 1, 0, 0, 2, 3, 2, 2, 2, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 3, 2, 4, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-          [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-        ]).
-
-matrizD3([
-          [9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-          [3, 2, 2, 2, 1, 0, 0, 0, 3, 2, 2, 2, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [3, 2, 2, 2, 1, 0, 0, 0, 3, 2, 2, 2, 1],
-          [1, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-          [3, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0]
-          ]).
-
-fazer_matrizes() :-
-    remove_nodes_edges(),
-    matrizA1(MatrizA1),
-    converter_matriz(MatrizA1,a1),
-    matrizA2(MatrizA2),
-    converter_matriz(MatrizA2,a2),
-    matrizB1(MatrizB1),
-    converter_matriz(MatrizB1,b1),
-    matrizB2(MatrizB2),
-    converter_matriz(MatrizB2,b2),
-    matrizB3(MatrizB3),
-    converter_matriz(Matrizb3,b3),
-    matrizC1(MatrizC1),
-    converter_matriz(MatrizC1,c1),
-    matrizC2(MatrizC2),
-    converter_matriz(MatrizC2,c2),
-    matrizC3(MatrizC3),
-    converter_matriz(MatrizC3,c3),
-    matrizC4(MatrizC4),
-    converter_matriz(MatrizC4,c4),
-    matrizD1(MatrizD1),
-    converter_matriz(MatrizD1,d1),
-    matrizD2(MatrizD2),
-    converter_matriz(MatrizD2,d2),
-    matrizD3(MatrizD3),
-    converter_matriz(MatrizD3,d3).
+criar_mapa_piso([]).
+criar_mapa_piso([(Map,Piso)|T]):-
+    assertz(converter_matriz(Map,Piso)),
+    criar_mapa_piso(T).
 
 
 % Convers�o de c�lulas da matriz para Nodes.
@@ -767,128 +512,14 @@ estimativa(Nodo1,Nodo2,Estimativa,Piso):-
 %server(Port):-
  %http_server(http_dispatch, [port(Port)]).
 
-%Fazer GET para os tuneis
 
-%request_tuneis():-
- %   apagar_tuneis(),
-  %  http_open('http://localhost:3000/api/tunnels', ResJSON, [cert_verify_hook(cert_accept_any)]),
- %   json_read_dict(ResJSON, ResObj),
-
-  %  retira_tuneis(ResObj, ResVal),
-   %   write(ResVal),
-
-    %criar_tuneis(ResVal).
-
-%apagar_tuneis():-
- %   findall(tuneis(X,Y), tuneis(X,Y), Tuneis),
-  %  apagar(Tuneis).
-
-%retira_tuneis([], []).
-%retira_tuneis([H|T], [[H.floor1Id, H.floor2Id]| T2]):-
- %   retira_tuneis(T,T2).
-
-%criar_tuneis([]).
-%criar_tuneis([[Floor1, Floor2|_]|T]):-
- %   assertz(tuneis(Floor1, Floor2));
-  %  criar_tuneis(T).
-
-%Fazer GET para todos os pisos do edificios
-
-%request_andares_por_edificios(Edificio):-
-
-%    string_concat('http://localhost:3000/api/floors/', Edificio, URL),
- %   http_open(URL, ResJSON, [cert_verify_hook(cert_accept_any)]),
-  %  json_read_dict(ResJSON,ResObj),
-   % retira_pisos2(ResObj,ResVal),
-    %writeln(Edificio), write(ResVal),
-    %criar_pisos2(Edificio,ResVal).
-
-%retira_pisos2([], []).
-%retira_pisos2([H|T], [H.floorNumber|L]):-
- %   retira_pisos2(T,L).
-
-%criar_pisos2(_,[]).
-%criar_pisos2(E,[Floors|T]):-
- %   assertz(edificio_piso(E,Floors)),
-  %      criar_pisos2(E,T).
-
-
-%Fazer GET para os pisos
-
-%request_pisos():-
- %   apagar_pisos(),
-  %  http_open('http://localhost:3000/api/floors', ResJSON, [cert_verify_hook(cert_accept_any)]),
- %   json_read_dict(ResJSON, ResObj),
-  %  retira_pisos(ResObj, ResVal),
-   % write(ResVal),
-    %criar_pisos(ResVal).
-
-%apagar_pisos():-
- %   findall(pisos(X), pisos(X), Pisos),
-  %  apagar(Pisos).
-%retira_pisos([], []).
-%retira_pisos([H|T], [(H.buildingId,H.map)|L]):-
- %   retira_pisos(T,L).
-
-%criar_pisos([]).
-%criar_pisos([(Edificio,Map)|T]):-
- %   assertz(pisos(Edificio,Map)),
-  %  criar_pisos(T).
-
-%Fazer GET para os edificios
-
-%request_edificios():-
-
- %   apagar_edificios(),
-  %  http_open('http://localhost:3000/api/buildings/list', ResJSON, [cert_verify_hook(cert_accept_any)]),
-   % json_read_dict(ResJSON, ResObj),
-    %retira_edificios(ResObj, ResVal),
-    %write(ResVal),
-    %criar_edificio(ResVal).
-
-%apagar_edificios():-
- %   findall(edificio(X,Y), edificio(X,Y), Edificios),
-  %  apagar(Edificios).
-
-%retira_edificios([],[]).
-% retira_edificios([H|T], [(H.id,request_andares_por_edificios(H.id))|L]):-
-  %  retira_edificios(T,L).
-
-%criar_edificio([]).
-%criar_edificio([(Code, Pisos)|T]):-
- %   assertz(edificio(Code,Pisos)),
-  %  criar_edificio(T).
-
-%Fazer GET para os elevadores
-
-%request_elevadores():-
- %   apagar_elevadores(),
-  %  http_open('http://localhost:3000/api/elevators', ResJSON, [cert_verify_hook(cert_accept_any)]),
-  %  json_read_dict(ResJSON, ResObj),
-   % retira_elevadores(ResObj, ResVal),
-   % write(ResVal),
-
-    %criar_elevadores(ResVal).
-
-%apagar_elevadores():-
- %   findall(elevador(X,Y), elevador(X,Y), Elevador),
-  %  apagar(Elevador).
-
-%retira_elevadores([], []).
-%retira_elevadores([H|T], [[H.buildingId,H.floors]|T2]):-
-  %  retira_elevadores(T,T2).
-
-%criar_elevadores([]).
-%criar_elevadores([[Edificio, PisosServidos|_]|T]):-
- %   assertz(elevador(Edificio, PisosServidos)),
-  %  criar_elevadores(T).
 
 %Metodo apagar
 
-%apagar([]).
-%apagar([H|T]):-
- %   retract(H),
-  %  apagar(T).
+apagar([]).
+apagar([H|T]):-
+   retract(H),
+   apagar(T).
 
 
 
