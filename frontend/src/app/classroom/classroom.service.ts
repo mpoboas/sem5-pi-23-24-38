@@ -26,4 +26,8 @@ export class ClassroomService {
     return this.http.get(this.baseUrl);
   }
 
+  getFloorClassrooms(floorId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/getClassrooms/${floorId}`);
+  }
+
 }

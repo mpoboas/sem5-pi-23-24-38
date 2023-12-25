@@ -6,4 +6,5 @@ export default interface IClassroomRepo extends Repo<Classroom> {
   save(classroom: Classroom): Promise<Classroom>;
   findByDomainId(classroomId: ClassroomId | string): Promise<Classroom>;
   getAllClassrooms(): Promise<Classroom[]>;
+  findClassroomsByFloorId(floorId: string): Promise<Classroom[]>;
 }
