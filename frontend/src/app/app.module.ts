@@ -72,6 +72,8 @@ import { PlaneamentoComponent } from './planeamento/planeamento.component';
 import { GetTrajetoriaComponent } from './get-trajetoria/get-trajetoria.component';
 import { PlaneamentoService } from './planeamento/planeamento.service';
 import { AnimationComponent } from './animation/animation.component';
+import { SignupComponent } from './signup/signup.component';
+import { SigninComponent } from './signin/signin.component';
 
 
 
@@ -117,7 +119,9 @@ import { AnimationComponent } from './animation/animation.component';
     TaskManagerComponent,
     PlaneamentoComponent,
     GetTrajetoriaComponent,
-    AnimationComponent
+    AnimationComponent,
+    SignupComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,

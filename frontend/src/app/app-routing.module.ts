@@ -16,8 +16,13 @@ import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
 import { PlaneamentoComponent } from './planeamento/planeamento.component';
 import { AnimationComponent } from './animation/animation.component';
+import { SignupComponent } from './signup/signup.component';
+import { SigninComponent } from './signin/signin.component';
+
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'signin', component: SigninComponent },
   { path: 'info-manager', component: InfoManagerComponent },
   { path: 'task-manager', component: AdminManagerComponent },
   { path: 'admin-manager', component: TaskManagerComponent },

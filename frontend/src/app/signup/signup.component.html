@@ -1,0 +1,36 @@
+<div class="container">
+    <h2>Sign Up</h2>
+    <form class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" class="form-control" [(ngModel)]="user.name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" [(ngModel)]="user.email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" [(ngModel)]="user.password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" class="form-control" [(ngModel)]="user.role" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nif">NIF:</label>
+            <input type="text" id="nif" name="nif" class="form-control" [(ngModel)]="user.nif" pattern="[0-9]{9}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+</div>
