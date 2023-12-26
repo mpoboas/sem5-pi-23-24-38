@@ -121,7 +121,7 @@ import { AnimationComponentDialog } from './animation/animation.component';
     GetTrajetoriaComponent,
     AnimationComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
     AnimationComponent,
     AnimationComponentDialog
   ],
