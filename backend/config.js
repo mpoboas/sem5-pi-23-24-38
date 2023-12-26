@@ -73,6 +73,10 @@ export default {
       name: 'TunnelController',
       path: '../controllers/tunnelController',
     },
+    user: {
+      name: 'UserController',
+      path: '../controllers/userController',
+    },
   },
 
   repos: {
@@ -112,6 +116,10 @@ export default {
       name: 'TunnelRepo',
       path: '../repos/tunnelRepo',
     },
+    user: {
+      name: 'UserRepo',
+      path: '../repos/userRepo',
+    },
   },
 
   services: {
@@ -146,6 +154,10 @@ export default {
     tunnel: {
       name: 'TunnelService',
       path: '../services/ServiceImpl/tunnelService',
+    },
+    user: {
+      name: 'UserService',
+      path: '../services/ServiceImpl/userService',
     },
   },
 };

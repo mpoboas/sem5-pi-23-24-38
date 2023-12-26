@@ -78,15 +78,15 @@ export class User extends AggregateRoot<UserProps> {
     const userPassword = UserPassword.create({ value: userDTO.password });
     const userPhoneNumber = UserPhoneNumber.create(userDTO.phoneNumber);
     const userNif = UserNif.create(userDTO.nif);
-    
+
     if(userEmail.isFailure) { 
-      return Result.fail<User>(userEmail.error.toString());
+      return Result.fail<User>("Error in user email: " + userEmail.error.toString());
     } else if(userPassword.isFailure) {
-      return Result.fail<User>(userPassword.error.toString());
+      return Result.fail<User>("Error in user passowrd: " + userPassword.error.toString());
     } else if(userPhoneNumber.isFailure) {
-      return Result.fail<User>(userPhoneNumber.error.toString());
+      return Result.fail<User>("Error in user phone number: " + userPhoneNumber.error.toString());
     } else if(userNif.isFailure) {
-      return Result.fail<User>(userNif.error.toString());
+      return Result.fail<User>("Error in user NIF: " + userNif.error.toString());
     } else {
       const user = new User(
         {

@@ -1,24 +1,49 @@
-import { Response } from 'express';
-
-import { Container } from 'typedi';
-
+import { Request, Response, NextFunction } from 'express';
+import { Inject, Service } from 'typedi';
 import config from '../../config';
 
-import IUserRepo from '../services/IRepos/IUserRepo';
+import IUserController from './IControllers/IUserController';
+import IUserService from '../services/IServices/IUserService';
 
-import { UserMap } from '../mappers/UserMap';
-import { IUserDTO } from '../dto/IUserDTO';
+@Service()
+export default class UserController
+  implements IUserController {
+  constructor(@Inject(config.services.user.name) private userServiceInstance: IUserService) {}
 
-exports.getMe = async function(req, res: Response) {
-  // NB: a arquitetura ONION não está a ser seguida aqui
+  public async signUp(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userDTO = req.body;
 
-  const userRepo = Container.get(config.repos.user.name) as IUserRepo;
+      const userOrError = await this.userServiceInstance.signUp(userDTO);
 
-  if (!req.token || req.token == undefined) return res.json(new Error('Token inexistente ou inválido')).status(401);
+      if (userOrError.isFailure) {
+        return res.status(400).send("Failed to sign up user: " + userOrError.errorValue());
+      }
 
-  const user = await userRepo.findById(req.token.id);
-  if (!user) return res.json(new Error('Utilizador não registado')).status(401);
+      const createdUserDTO = userOrError.getValue();
 
-  const userDTO = UserMap.toDTO(user) as IUserDTO;
-  return res.json(userDTO).status(200);
-};
+      return res.json(createdUserDTO).status(201);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async signIn(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userDTO = req.body;
+
+      const userOrError = await this.userServiceInstance.signIn(userDTO.email, userDTO.password);
+
+      if (userOrError.isFailure) {
+        return res.status(404).send("Failed to sign in user: " + userOrError.errorValue());
+      }
+
+      const createdUserDTO = userOrError.getValue();
+
+      return res.status(201).json(createdUserDTO);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+}

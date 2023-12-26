@@ -21,10 +21,10 @@ export class UserNif extends ValueObject<UserNifProps> {
     private static validateNif(nif: string): Result<string> {
         const regex: RegExp = /^\d{9}$/;
         if (nif == null) {
-            return Result.fail<string>("Nif can't be empty");
+            return Result.fail<string>("NIF can't be empty");
         }
         if (!regex.test(nif)) {
-            return Result.fail<string>('Invalid Nif');
+            return Result.fail<string>('Invalid NIF');
         }
         return Result.ok<string>(nif);
     }

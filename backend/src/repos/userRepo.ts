@@ -18,14 +18,8 @@ export default class UserRepo implements IUserRepo {
     @Inject('logger') private logger,
   ) {}
 
-  private createBaseQuery(): any {
-    return {
-      where: {},
-    };
-  }
-
-  public async exists(userId: UserId | string): Promise<boolean> {
-    const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
+  public async exists(user: User): Promise<boolean> {
+    const idX = user.id instanceof UserId ? (<UserId>user.id).toValue() : user.id;
 
     const query = { domainId: idX };
     const userDocument = await this.userSchema.findOne(query);
@@ -46,8 +40,12 @@ export default class UserRepo implements IUserRepo {
 
         return UserMap.toDomain(userCreated);
       } else {
-        userDocument.firstName = user.firstName;
-        userDocument.lastName = user.lastName;
+        userDocument.name = user.name;
+        userDocument.email = user.email;
+        userDocument.password = user.password;
+        userDocument.role = user.role;
+        userDocument.phoneNumber = user.phoneNumber;
+        userDocument.nif = user.nif;
         await userDocument.save();
 
         return user;
@@ -66,10 +64,10 @@ export default class UserRepo implements IUserRepo {
     } else return null;
   }
 
-  public async findById(userId: UserId | string): Promise<User> {
-    const idX = userId instanceof UserId ? (<UserId>userId).id.toValue() : userId;
+  
 
-    const query = { domainId: idX };
+  public async findById(id: UserId | string): Promise<User> {
+    const query = { domainId: id.toString() };
     const userRecord = await this.userSchema.findOne(query);
 
     if (userRecord != null) {

