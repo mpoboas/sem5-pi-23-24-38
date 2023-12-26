@@ -6,6 +6,7 @@ import Ground from "./ground.js";
 import Wall from "./wall.js";
 import Door from "./door.js";
 import Tunnel from "./tunnel.js";
+import Elevator from "./elevator.js";
 
 /*
  * parameters = {
@@ -18,6 +19,7 @@ import Tunnel from "./tunnel.js";
  */
 
 export default class Maze extends THREE.Group {
+    
     constructor(parameters) {
         super();
         merge(this, parameters);
@@ -42,6 +44,10 @@ export default class Maze extends THREE.Group {
             this.exitLocation = this.cellToCartesian(description.maze.exitLocation);
             this.tunnelTp = false;
             this.tunnelToGo = "";
+            this.elevatorTp = false;
+            this.elevatorToGo = "";
+            this.elevatorfloors = [];
+            this.elevatorfloors = description.maze.elevator;
             // Create the helpers
             this.helper = new THREE.Group();
             this.tunnelPortal = description.maze.tunnelexit;
@@ -152,36 +158,21 @@ export default class Maze extends THREE.Group {
                 }
             });
 
-
-            //  // Create a tunnel
-            //  const tunnel = new Tunnel({
-            //     groundHeight: description.ground.size.height,
-            //     segments: new THREE.Vector2(description.tunnel.segments.width, description.tunnel.segments.height),
-            //     materialParameters: {
-            //         color: new THREE.Color(parseInt(description.tunnel.primaryColor, 16)),
-            //         mapUrl: description.tunnel.maps.color.url,
-            //         aoMapUrl: description.tunnel.maps.ao.url,
-            //         aoMapIntensity: description.tunnel.maps.ao.intensity,
-            //         displacementMapUrl: description.tunnel.maps.displacement.url,
-            //         displacementScale: description.tunnel.maps.displacement.scale,
-            //         displacementBias: description.tunnel.maps.displacement.bias,
-            //         normalMapUrl: description.tunnel.maps.normal.url,
-            //         normalMapType: normalMapTypes[description.tunnel.maps.normal.type],
-            //         normalScale: new THREE.Vector2(description.tunnel.maps.normal.scale.x, description.tunnel.maps.normal.scale.y),
-            //         bumpMapUrl: description.tunnel.maps.bump.url,
-            //         bumpScale: description.tunnel.maps.bump.scale,
-            //         roughnessMapUrl: description.tunnel.maps.roughness.url,
-            //         roughness: description.tunnel.maps.roughness.rough,
-            //         wrapS: wrappingModes[description.tunnel.wrapS],
-            //         wrapT: wrappingModes[description.tunnel.wrapT],
-            //         repeat: new THREE.Vector2(description.tunnel.repeat.u, description.tunnel.repeat.v),
-            //         magFilter: magnificationFilters[description.tunnel.magFilter],
-            //         minFilter: minificationFilters[description.tunnel.minFilter]
-            //     },
-            //     secondaryColor: new THREE.Color(parseInt(description.tunnel.secondaryColor, 16))
-            // });
-
-
+            console.log("1elevator");
+            const elevator = new Elevator({
+                
+                segments: {
+                    elevatorWidth: description.elevator.segments.elevatorSize.width,
+                    elevatorHeight: description.elevator.segments.elevatorSize.height,
+                    elevatorDepth: description.elevator.segments.elevatorSize.depth
+                },
+                materialParameters: {
+                    color: new THREE.Color(parseInt(description.elevator.color, 16)),
+                    elevatorClosed: description.elevator.mapElevator.elevator_closed.url,
+                    elevatorOpen: description.elevator.mapElevator.elevator_open.url
+                }
+            });
+            console.log("2elevator");
 
             // Build the maze
             let clonedTunnel;
@@ -191,7 +182,9 @@ export default class Maze extends THREE.Group {
             geometries[0] = [];
             geometries[1] = [];
             let clonedDoor;
-            this.doorClones = {}; 
+            this.doorClones = {};
+            let clonedElevator;
+            this.elevatorClones = {}; 
             //this.doorLocation = [];
             this.aabb = [];
             for (let i = 0; i <= this.size.depth; i++) { // In order to represent the southmost walls, the map depth is one row greater than the actual maze depth
@@ -282,48 +275,43 @@ export default class Maze extends THREE.Group {
                         this.doorClones[`${i}_${j}`] = clonedDoor;
                         //this.doorLocation.push( { x: j , z: i}); 
                     }
-                    // if (this.map[i][j] == 10 ) {
-                    //     this.aabb[i][j][0] = new THREE.Box3();
-                    //     for (let k = 0; k < 2; k++) {
-                    //         geometry = tunnel.geometries[k].clone();
-                    //         geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth));
-                    //         geometry.computeBoundingBox();
-                    //         geometry.boundingBox.applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
-                    //         geometries[k].push(geometry);
-                    //         this.aabb[i][j][0].union(geometry.boundingBox);
-                    //     }
-                    //     this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
-                    // }
-                    // if (this.map[i][j] == 11) {
-                    //     this.aabb[i][j][1] = new THREE.Box3();
-                    //     for (let k = 0; k < 2; k++) {
-                    //         geometry = tunnel.geometries[k].clone();
-                    //         geometry.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.PI / 2.0));
-                    //         geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(j - this.halfSize.width, 0.25, i - this.halfSize.depth + 0.5));
-                    //         geometry.computeBoundingBox();
-                    //         geometry.boundingBox.applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
-                    //         geometries[k].push(geometry);
-                    //         this.aabb[i][j][1].union(geometry.boundingBox);
-                    //     }
-                    //     this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
-                    // }
-                    // if (this.map[i][j] == 10) {
-                    //     console.log("tunnel norte");
-                    //     clonedTunnel = tunnel.clone("North");
-                    //     clonedTunnel.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
-                    //     this.add(clonedTunnel);
-                    //     this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedTunnel).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
-                    //     this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
-                    // }
-                    // if (this.map[i][j] == 11) {
-                    //     console.log("tunnel oeste");
-                    //     clonedTunnel = tunnel.clone("West");
-                    //     clonedTunnel.rotateY(-Math.PI / 2.0);
-                    //     clonedTunnel.position.set(j - this.halfSize.width, 0.25, i - this.halfSize.depth + 0.5);
-                    //     this.add(clonedTunnel);
-                    //     this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedWall).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
-                    //     this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
-                    // }
+                    if (this.map[i][j] == 6) { 
+                        console.log("elevador norte");
+                        clonedElevator = elevator.clone("North");
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    if (this.map[i][j] == 7) {
+                        console.log("elevador oeste");
+                        clonedElevator = elevator.clone("West");                        
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    if (this.map[i][j] == 8) {
+                        console.log("elevador sul");
+                        clonedElevator = elevator.clone("South");
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    if (this.map[i][j] == 9) {
+                        console.log("elevador este");
+                        clonedElevator = elevator.clone("East");
+                        clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
+                        this.add(clonedElevator);
+                        this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
+                        this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
+                        this.elevatorClones[`${i}_${j}`] = clonedElevator;
+                    }
+                    
                 }
             }
 
@@ -375,7 +363,7 @@ export default class Maze extends THREE.Group {
             error => onError(this.url, error)
         );
     }
-
+    
     // Convert cell [row, column] coordinates to cartesian (x, y, z) coordinates
     cellToCartesian(position) {
         return new THREE.Vector3((position[1] - this.halfSize.width + 0.5) * this.scale.x, 0.0, (position[0] - this.halfSize.depth + 0.5) * this.scale.z)
@@ -529,37 +517,49 @@ export default class Maze extends THREE.Group {
         return false;
     }
 
-         // Detect collision with tunnels (method: BC/AABB)
-         tunnelCollision(indices, offsets, orientation, position, delta, radius, name) {
-             const row = indices[0] + offsets[0];
-             const column = indices[1] + offsets[1];
+    // Detect collision with tunnels (method: BC/AABB)
+    tunnelCollision(indices, offsets, orientation, position, delta, radius, name) {
+        const row = indices[0] + offsets[0];
+        const column = indices[1] + offsets[1];
+    
+        if (this.map[row][column] == 11 || this.map[row][column] == 10) {
+            //console.log("tunnel collision",row,column);
+            //this.tunnelTp = true;
+            this.tunnelPortal.forEach(element => {
+                //console.log("element",element.x);
+                if(element.z == row && element.x == column){
+                    this.tunnelToGo = element.portal;
+                    console.log("tunnelToGo",this.tunnelToGo);
+                    //console.log("tunnelToGo",this.tunnelToGo);
+                }
+            });
+            if (orientation != 0) {
+                if (Math.abs(position.x - (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)) < radius) {
+                    console.log("Collision with " + name + ".");
+                    this.tunnelTp = true;
+                }
+            }
+            else {
+                if (Math.abs(position.z - (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)) < radius) {
+                    console.log("Collision with " + name + ".");
+                    this.tunnelTp = true;
+                }
+            }
+        }
+        return false;
+    }
+
+        // Detect collision with elevators (method: BC/AABB)
+        elevatorCollision(indices, offsets, orientation, position, delta, radius, name) {
+            const row = indices[0] + offsets[0];
+            const column = indices[1] + offsets[1];
         
-             if (this.map[row][column] == 11 || this.map[row][column] == 10) {
-                //console.log("tunnel collision",row,column);
-                //this.tunnelTp = true;
-                this.tunnelPortal.forEach(element => {
-                    //console.log("element",element.x);
-                    if(element.z == row && element.x == column){
-                        this.tunnelToGo = element.portal;
-                        console.log("tunnelToGo",this.tunnelToGo);
-                        //console.log("tunnelToGo",this.tunnelToGo);
-                    }
-                });
-                  if (orientation != 0) {
-                      if (Math.abs(position.x - (this.cellToCartesian([row, column]).x + delta.x * this.scale.x)) < radius) {
-                          console.log("Collision with " + name + ".");
-                          this.tunnelTp = true;
-                      }
-                  }
-                  else {
-                      if (Math.abs(position.z - (this.cellToCartesian([row, column]).z + delta.z * this.scale.z)) < radius) {
-                          console.log("Collision with " + name + ".");
-                          this.tunnelTp = true;
-                      }
-                  }
-             }
-             return false;
-         }
+            if (this.map[row][column] == 6 || this.map[row][column] == 7 ||this.map[row][column] == 8 || this.map[row][column] == 9) {
+                this.elevatorfloors = this.elevatorfloors;
+                this.elevatorTp = true;
+            }
+            return false;
+        }
     
 
 
@@ -585,6 +585,10 @@ export default class Maze extends THREE.Group {
                 this.tunnelCollision(indices, [0, 0], 1, position, { x: -0.475, z: 0.0 }, halfSize, "west tunnel") || // Collision with west wall
                 this.tunnelCollision(indices, [1, 0], 0, position, { x: 0.0, z: -0.525 }, halfSize, "south tunnel") || // Collision with south wall
                 this.tunnelCollision(indices, [0, 1], 1, position, { x: -0.525, z: 0.0 }, halfSize, "east tunnel") || // Collision with east wall
+                this.elevatorCollision(indices, [0, 0], 0, position, { x: 0.0, z: -0.475 }, halfSize, "north elevator") || // Collision with north wall
+                this.elevatorCollision(indices, [0, 0], 0, position, { x: -0.475, z: 0.0 }, halfSize, "west elevator") || // Collision with west wall
+                this.elevatorCollision(indices, [0, 0], 0, position, { x: 0.0, z: -0.525 }, halfSize, "south elevator") || // Collision with south wall
+                this.elevatorCollision(indices, [0, 0], 0, position, { x: -0.525, z: 0.0 }, halfSize, "east elevator") || // Collision with east wall
 
 
                 indices[0] > 0 && (

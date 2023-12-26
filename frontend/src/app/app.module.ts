@@ -72,7 +72,7 @@ import { PlaneamentoComponent } from './planeamento/planeamento.component';
 import { GetTrajetoriaComponent } from './get-trajetoria/get-trajetoria.component';
 import { PlaneamentoService } from './planeamento/planeamento.service';
 import { AnimationComponent } from './animation/animation.component';
-
+import { AnimationComponentDialog } from './animation/animation.component';
 
 
 @NgModule({
@@ -117,7 +117,8 @@ import { AnimationComponent } from './animation/animation.component';
     TaskManagerComponent,
     PlaneamentoComponent,
     GetTrajetoriaComponent,
-    AnimationComponent
+    AnimationComponent,
+    AnimationComponentDialog
   ],
   imports: [
     BrowserModule,

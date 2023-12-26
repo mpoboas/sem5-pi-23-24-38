@@ -5,7 +5,14 @@ import * as THREE from 'three';
 import * as _ from 'lodash';
 import { RobotService } from '../robot/robot.service';
 import { FloorService } from '../floor/floor.service';
-
+import { MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Inject } from '@angular/core';
 const defaultUrl = "../../assets/3d/"
 const robots = ["../../assets/3d/models/gltf/RobotExpressive/RobotExpressive.glb",
 "../../assets/3d/models/gltf/RobotExpressive/Robot.glb",  
@@ -18,7 +25,7 @@ const robots = ["../../assets/3d/models/gltf/RobotExpressive/RobotExpressive.glb
 })
 
 export class AnimationComponent implements OnDestroy{
-  constructor(private robotService:RobotService,private floorService: FloorService) { }
+  constructor(private robotService:RobotService,private floorService: FloorService,public dialog:MatDialog) { }
   @Input() public robot: string;
   @Input() public maze: string;
   private thumbRaiser: ThumbRaiser;
@@ -30,7 +37,6 @@ export class AnimationComponent implements OnDestroy{
   ngOnInit(): void {
     this.fetchFloors();
     // this.fetchRobots();
-
   }
   ngOnDestroy() {
     window.location.reload();
@@ -114,6 +120,7 @@ export class AnimationComponent implements OnDestroy{
       console.log("Selected floor:", selectedValue);
       this.loadFloor(selectedValue);
     }
+    
   }
   
   private createOrUpdateScene(): void {
@@ -128,17 +135,36 @@ export class AnimationComponent implements OnDestroy{
   }
 
 
-  private animate(): void {
+  private async animate(): Promise<void> {
     requestAnimationFrame(() => this.animate());
     if (this.thumbRaiser.maze.tunnelTp) {
         this.thumbRaiser.maze.tunnelTp = false;
         this.selectedFloor = this.thumbRaiser.maze.tunnelToGo;
         this.loadFloor(this.selectedFloor);
     }
+    if (this.thumbRaiser.maze.elevatorTp) {
+        this.thumbRaiser.gamePaused = true;
+        this.thumbRaiser.gameRunning = false;
+        this.thumbRaiser.maze.elevatorTp = false;
+        await this.openDialog();
+        this.loadFloor(this.selectedFloor);
+        this.thumbRaiser.gamePaused = false;
+    }
     this.thumbRaiser.update();
   }
 
-
+    async openDialog(): Promise<string> {
+        const dialogRef = this.dialog.open(AnimationComponentDialog,{data: this.thumbRaiser.maze.elevatorfloors});
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+            if (result!=null){
+                this.selectedFloor = result;
+            }
+            
+        });
+        await dialogRef.afterClosed().toPromise();
+        return this.selectedFloor;
+    }
   
 
   private createScene(): void {
@@ -407,6 +433,42 @@ export class AnimationComponent implements OnDestroy{
   }
 
 
+
+
+}
+
+@Component({
+    selector: 'app-animation',
+    templateUrl: './animation-dialog.component.html',
+  })
+export class AnimationComponentDialog {
+    floorOptions: any[] = []; 
+    constructor(@Inject(MAT_DIALOG_DATA) public data: [],public dialogRef: MatDialogRef<AnimationComponentDialog>,private floorService: FloorService) {}
+    ngOnInit(): void {
+        this.loadFloorOptions();
+        console.log(this.data);
+      }
+    
+      loadFloorOptions(): void {
+        this.data.forEach((element: any) => {
+            this.floorService.findFloorByNumber(element).subscribe(
+                async (floor: any) => {
+                await this.floorOptions.push(floor);
+                },
+                (error: any) => {
+                console.error('Error fetching floor', error);
+                }
+            );
+            }
+      );}
+
+      onClick(floorNumber): void {
+        this.dialogRef.close(floorNumber);
+      }
+      onCancel(): void {
+        this.dialogRef.close();
+      }
+    
 
 
 }

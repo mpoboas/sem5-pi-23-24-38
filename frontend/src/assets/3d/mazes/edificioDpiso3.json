@@ -2,7 +2,7 @@
     "maze": {
         "size": { "width": 12, "depth": 20 },
         "map": [
-            [3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 1],
+            [9, 2, 2, 2, 2, 2, 2, 2, 2, 2, 11, 2, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
             [3, 2, 2, 2, 1, 0, 0, 0, 3, 2, 2, 2, 1],
             [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
@@ -26,7 +26,9 @@
         ],
         "exitLocation": [21.5, 6.0],
         "tunnelexit":[{"x":20,"z":1,"portal":"C3"},
-        {"x":18,"z":0,"portal":"B2"}]
+        {"x":18,"z":0,"portal":"B2"}],
+        "elevator": ["D1","D2","D3"]
+
         
     },
     "ground": {
@@ -168,5 +170,19 @@
         "magFilter": 1,
         "minFilter": 5,
         "secondaryColor": "0x683a22"
+    },
+    "elevator": {
+        "segments": {
+            "elevatorSize": {"width": 0.95, "height": 1.686, "depth": 0.95 }
+        },
+        "color": "929196",
+        "mapElevator": {
+            "elevator_open": {
+                "url": "../../assets/3d/textures/elevator/elevator_open.jpg"
+            },
+            "elevator_closed": {
+                "url": "../../assets/3d/textures/elevator/elevator_closed.jpg"
+            }
+        }
     }
 }

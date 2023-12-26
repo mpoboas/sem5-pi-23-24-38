@@ -1,0 +1,12 @@
+<mat-dialog-actions>
+    <div class="button-gap" style="overflow: auto; white-space: nowrap; padding: 5px;">
+        <!-- BEGIN: for-loop -->
+        <ng-container *ngFor="let floor of floorOptions">
+            <button type="button" class="btn btn-secondary" mat-button (click)="onClick(floor.floorNumber)" style="display: block; margin: auto; margin-bottom: 5px;">{{ floor.floorNumber }}<i style="background-color: none; height: 12px; padding-left: 5px;"></i></button>
+        </ng-container>
+        <!-- END: for-loop -->
+    
+
+        <button class="btn btn-secondary" mat-button (click)="onCancel()"style=" margin: auto; margin-top: 10px;">Cancel</button>
+    </div>
+</mat-dialog-actions>

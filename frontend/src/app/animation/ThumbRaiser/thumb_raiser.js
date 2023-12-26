@@ -367,7 +367,7 @@ export default class ThumbRaiser {
 
         // Set the game state
         this.gameRunning = false;
-
+        this.gamePaused = false;
         // Create the audio listener, the audio sources and load the sound clips
         this.audio = new Audio(this.audioParameters);
         
@@ -1163,7 +1163,7 @@ export default class ThumbRaiser {
     }
 
     update() {
-        if (!this.gameRunning) {
+        if (!this.gameRunning && !this.gamePaused) {
             if (this.audio.loaded() && this.maze.loaded && this.player.loaded) { // If all resources have been loaded
                 // Add positional audio sources to objects
                 const types = [this.audio.introductionClips, this.audio.idleClips, this.audio.jumpClips, this.audio.deathClips, this.audio.danceClips, this.audio.endClips];
@@ -1289,7 +1289,7 @@ export default class ThumbRaiser {
                 this.gameRunning = true;
             }
         }
-        else {
+        else if (!this.gamePaused) {
             // Update the model animations
             const deltaT = this.clock.getDelta();
             this.animations.update(deltaT);

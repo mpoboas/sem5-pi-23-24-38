@@ -2,7 +2,7 @@
     "maze": {
         "size": { "width": 22, "depth": 10 },
         "map": [
-            [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 3, 2, 1 ],
+            [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 3, 8, 1 ],
             [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1 ],
             [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 1 ],
             [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
@@ -15,7 +15,9 @@
             [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0 ]
         ],
         "exitLocation": [21.5, 6.0],
-        "tunnelexit":[]
+        "tunnelexit":[],
+        "elevator": ["A1","A2"]
+
     },
     "ground": {
         "size": { "width": 22.0, "height": 0.125, "depth": 10.0 },
@@ -156,5 +158,19 @@
         "magFilter": 1,
         "minFilter": 5,
         "secondaryColor": "0x683a22"
+    },
+    "elevator": {
+        "segments": {
+            "elevatorSize": {"width": 0.95, "height": 1.686, "depth": 0.95 }
+        },
+        "color": "929196",
+        "mapElevator": {
+            "elevator_open": {
+                "url": "../../assets/3d/textures/elevator/elevator_open.jpg"
+            },
+            "elevator_closed": {
+                "url": "../../assets/3d/textures/elevator/elevator_closed.jpg"
+            }
+        }
     }
 }
