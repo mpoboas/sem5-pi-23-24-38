@@ -84,4 +84,22 @@ export default class ClassroomRepo implements IClassroomRepo {
       throw new Error(`Error fetching classrooms: ${error.message}`);
     }
   }
+
+  public async findClassroomsByFloorId(floorId: string): Promise<Classroom[]> {
+    try {
+      const query = { floorId: floorId };
+      const classroomRecord = await this.classroomSchema.find(query as FilterQuery<IClassroomPersistence & Document>);
+
+      if (!classroomRecord) {
+        return [];
+      }
+
+      const classroomPromises = classroomRecord.map(classroomRecord => ClassroomMap.toDomain(classroomRecord));
+      const classrooms = await Promise.all(classroomPromises);
+
+      return classrooms;
+    } catch (error) {
+      throw new Error(`Error fetching classrooms: ${error.message}`);
+    }
+  }
 }

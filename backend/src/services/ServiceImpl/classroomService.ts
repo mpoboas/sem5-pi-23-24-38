@@ -119,4 +119,17 @@ export default class ClassroomService implements IClassroomService {
       throw new Error(`Error listing classrooms: ${error.message}`);
     }
   }
+
+  public async findClassroomsByFloorId(floorId: string): Promise<IClassroomDTO[]> {
+    try {
+      const classrooms = await this.classroomRepo.findClassroomsByFloorId(floorId);
+
+      return classrooms.map(floor => {
+        const classroomDTOResult = ClassroomMap.toDTO(floor) as IClassroomDTO;
+        return classroomDTOResult;
+      });
+    } catch (error) {
+      throw new Error(`Error listing classrooms: ${error.message}`);
+    }
+  }
 }

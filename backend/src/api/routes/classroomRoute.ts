@@ -50,4 +50,5 @@ export default (app: Router) => {
 
   route.get('', (req, res, next) => ctrl.listAllClassrooms(req, res, next));
   route.get('/getClassroomsAlgav', (req, res, next) => ctrl.getClasssroomsAlgav(req, res, next));
+  route.get('/getClassrooms/:floorId', (req, res, next) => ctrl.listAllClassroomsInFloor(req, res, next));
 };

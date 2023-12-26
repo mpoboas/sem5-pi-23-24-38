@@ -2,21 +2,41 @@
 <h1 mat-dialog-title>Get shortest path</h1>
 <div mat-dialog-content>
   <form [formGroup]="form">
-    <div mat-dialog-content>
-      <form [formGroup]="form">
-        <mat-form-field style="width: auto; padding-right: 5px;">
-          <mat-label>Begining</mat-label>
-          <input matInput placeholder="Ex: 2" formControlName="piso1">
-        </mat-form-field>
-        <mat-form-field style="width: auto; padding-right: 5px;">
-            <mat-label>End</mat-label>
-            <input matInput placeholder="Ex: 4" formControlName="piso2">
-        </mat-form-field>
-        <button class="btn btn-primary" mat-button="!form.valid" (click)="getTrajeto()">Get path</button>
-      </form>
-    </div>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Starting Floor</mat-label>
+      <mat-select formControlName="startingFloor" (selectionChange)="onStartingFloorSelect()">
+        <mat-option *ngFor="let floor of floorOptions" [value]="floor">
+          {{ floor.floorNumber }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Starting Classroom</mat-label>
+      <mat-select formControlName="startingClassroom" >
+        <mat-option *ngFor="let classroom of startingClassroomOptions" [value]="classroom">
+          {{ classroom.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Ending Floor</mat-label>
+      <mat-select formControlName="endingFloor" (selectionChange)="onEndingFloorSelect()">
+        <mat-option *ngFor="let floor of floorOptions" [value]="floor">
+          {{ floor.floorNumber }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;">
+      <mat-label>Ending Classroom</mat-label>
+      <mat-select formControlName="endingClassroom">
+        <mat-option *ngFor="let classroom of endingClassroomOptions" [value]="classroom">
+          {{ classroom.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     {{ trajeto }}
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
   <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSend()">Send</button>
 </div>
 

@@ -5,4 +5,5 @@ export default interface IBuildingController {
   updateClassroom(req: Request, res: Response, next: NextFunction);
   listAllClassrooms(req: Request, res: Response, next: NextFunction);
   getClasssroomsAlgav(req: Request, res: Response, next: NextFunction);
+  listAllClassroomsInFloor(req: Request, res: Response, next: NextFunction);
 }

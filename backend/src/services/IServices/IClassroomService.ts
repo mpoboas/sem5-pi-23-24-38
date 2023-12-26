@@ -6,4 +6,5 @@ export default interface IClassroomService {
   updateClassroom(classroomDTO: IClassroomDTO): Promise<Result<IClassroomDTO>>;
   getAllClassrooms(): Promise<IClassroomDTO[]>;
   getClassroomsAlgav(): Promise<Result<any[]>>;
+  findClassroomsByFloorId(floorId: string): Promise<IClassroomDTO[]>;
 }
