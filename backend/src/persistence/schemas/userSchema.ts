@@ -8,17 +8,12 @@ const User = new mongoose.Schema(
       unique: true,
     },
 
-    firstName: {
+    name: {
       type: String,
-      required: [true, 'Please enter first name'],
+      required: [true, 'Please enter a name'],
       index: true,
     },
 
-    lastName: {
-      type: String,
-      required: [true, 'Please enter last name'],
-      index: true,
-    },
 
     email: {
       type: String,
@@ -29,7 +24,17 @@ const User = new mongoose.Schema(
 
     password: String,
 
-    salt: String,
+    phoneNumber: {
+      type: String,
+      required: [true, 'Please enter a phone number'],
+      index: true,
+    },
+
+    nif: {
+      type: String,
+      required: true,
+      index: true,
+    },
 
     role: {
       type: String,

@@ -6,8 +6,6 @@ import { IUserDTO } from '../dto/IUserDTO';
 import { User } from '../domain/user/user';
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 
-
-
 import { Document, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
@@ -24,7 +22,7 @@ export class UserMap extends Mapper<User> {
     } as IUserDTO;
   }
 
-  public static async toDomain(user: any | Model<IUserPersistence & Document>): User {
+  public static toDomain(user: any | Model<IUserPersistence & Document>): User {
     const userOrError = User.create(user, new UniqueEntityID(user.domainId));
 
     userOrError.isFailure ? console.log(userOrError.error) : '';
@@ -34,6 +32,7 @@ export class UserMap extends Mapper<User> {
 
   public static toPersistence(user: User): any {
     return {
+      domainId: user.id.toString(),
       name: user.name,
       email: user.email,
       password: user.password,
