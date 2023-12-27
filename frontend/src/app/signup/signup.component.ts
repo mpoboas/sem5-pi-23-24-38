@@ -1,6 +1,6 @@
-// signup.component.ts
 import { Component } from '@angular/core';
-import { SignupService } from './signup.service';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -15,18 +15,16 @@ export class SignupComponent {
     role: '',
     phoneNumber: '',
     nif: '',
-    // Add more fields if needed
   };
-  
 
-  constructor(private signupService: SignupService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     console.log('User:', this.user);
-    this.signupService.signup(this.user).subscribe(
+    this.authService.signup(this.user).subscribe(
       (response) => {
         console.log('User registered successfully:', response);
-        // Redirect to login page or perform other actions
+        this.router.navigate(['/signin']);
       },
       (error) => {
         console.error('Error during user registration:', error);

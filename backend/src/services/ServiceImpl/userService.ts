@@ -2,9 +2,7 @@ import { Service, Inject } from 'typedi';
 
 import jwt from 'jsonwebtoken';
 import config from '../../../config';
-import argon2 from 'argon2';
 import bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto';
 
 //import MailerService from './mailer.ts.bak';
 
@@ -16,14 +14,8 @@ import IUserRepo from '../IRepos/IUserRepo';
 import IRoleRepo from '../IRepos/IRoleRepo';
 
 import { User } from '../../domain/user/user';
-import { UserPassword } from '../../domain/user/userPassword';
-import { UserEmail } from '../../domain/user/userEmail';
-
-import { Role } from '../../domain/role/role';
-
 import { Result } from '../../core/logic/Result';
-import { UserPhoneNumber } from '../../domain/user/userPhoneNumber';
-import { UserNif } from '../../domain/user/userNif';
+import { Role } from '../../domain/role/role.enum';
 
 @Service()
 export default class UserService implements IUserService {
@@ -43,9 +35,9 @@ export default class UserService implements IUserService {
       }
 
       // Check if role id is valid
-      const isRoleValid = await this.getRole(userDTO.role);
-      if (isRoleValid.isFailure) {
-        return Result.fail<{ userDTO: IUserDTO; token: string }>(isRoleValid.error);
+      const isRoleValid = this.isValidRole(userDTO.role);
+      if (!isRoleValid) {
+        return Result.fail<{ userDTO: IUserDTO; token: string }>("Role '" + userDTO.role + "' is not a valid role");
       }
 
       // Hash the password
@@ -54,7 +46,6 @@ export default class UserService implements IUserService {
       const userOrError = await User.create({ ...userDTO, password: hashedPassword });
 
       if (userOrError.isFailure) {
-        console.log('[USER SERVICE] Error creating user');
         throw Result.fail<IUserDTO>(userOrError.errorValue());
       }
 
@@ -108,18 +99,7 @@ export default class UserService implements IUserService {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-
-    /**
-     * A JWT means JSON Web Token, so basically it's a json that is _hashed_ into a string
-     * The cool thing is that you can add custom properties a.k.a metadata
-     * Here we are adding the userId, role and name
-     * Beware that the metadata is public and can be decoded without _the secret_
-     * but the client cannot craft a JWT to fake a userId
-     * because it doesn't have _the secret_ to sign it
-     * more information here: https://softwareontheroad.com/you-dont-need-passport
-     */
-    this.logger.silly(`Sign JWT for userId: ${user._id}`);
-
+    
     const id = user.id;
     const email = user.email;
     const name = user.name;
@@ -141,14 +121,7 @@ export default class UserService implements IUserService {
     );
   }
 
-  private async getRole(roleId: string): Promise<Result<Role>> {
-    const role = await this.roleRepo.findByDomainId(roleId);
-    const found = !!role;
-
-    if (found) {
-      return Result.ok<Role>(role);
-    } else {
-      return Result.fail<Role>("Couldn't find role with id: " + roleId);
-    }
+  private isValidRole(role: string): boolean {
+    return Object.values(Role).includes(role as Role);
   }
 }

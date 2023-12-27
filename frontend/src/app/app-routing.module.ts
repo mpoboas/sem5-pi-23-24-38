@@ -18,20 +18,21 @@ import { PlaneamentoComponent } from './planeamento/planeamento.component';
 import { AnimationComponent } from './animation/animation.component';
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
-  { path: 'info-manager', component: InfoManagerComponent },
-  { path: 'task-manager', component: AdminManagerComponent },
-  { path: 'admin-manager', component: TaskManagerComponent },
-  { path: 'fleet-manager', component: FleetManagerComponent , children: [
+  { path: 'info-manager', component: InfoManagerComponent, canActivate: [AuthGuard] },
+  { path: 'task-manager', component: AdminManagerComponent, canActivate: [AuthGuard] },
+  { path: 'admin-manager', component: TaskManagerComponent, canActivate: [AuthGuard] },
+  { path: 'fleet-manager', component: FleetManagerComponent, canActivate: [AuthGuard], children: [
     { path: 'robot-type', component: RobotTypeComponent },
     { path: 'robot', component: RobotComponent },
     { path: 'planning', component: PlaneamentoComponent }
   ]},
-  { path: 'campus-manager', component: CampusManagerComponent, children: [
+  { path: 'campus-manager', component: CampusManagerComponent, canActivate: [AuthGuard], children: [
     { path: 'buildings', component: BuildingComponent },
     { path: 'floors', component: FloorComponent },
     { path: 'classrooms', component: ClassroomComponent},

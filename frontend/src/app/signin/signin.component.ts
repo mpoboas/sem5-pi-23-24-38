@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { SigninService } from '../signin/signin.service';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -12,13 +13,13 @@ export class SigninComponent {
     password: '',
   };
 
-  constructor(private signinService: SigninService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    this.signinService.login(this.user).subscribe(
+    this.authService.signin(this.user.email, this.user.password).subscribe(
       (response) => {
         console.log('Login successful:', response);
-        // Store the token, redirect, or perform other actions
+        this.router.navigate(['']);
       },
       (error) => {
         console.error('Error during login:', error);

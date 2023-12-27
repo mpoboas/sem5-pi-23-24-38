@@ -75,6 +75,7 @@ import { AnimationComponent } from './animation/animation.component';
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { AnimationComponentDialog } from './animation/animation.component';
+import { AuthService } from './auth/auth.service';
 
 
 @NgModule({
@@ -144,7 +145,7 @@ import { AnimationComponentDialog } from './animation/animation.component';
     MatSlideToggleModule,
     MatCheckboxModule,
   ],
-  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService, PlaneamentoService] ,
+  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService, PlaneamentoService, AuthService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
