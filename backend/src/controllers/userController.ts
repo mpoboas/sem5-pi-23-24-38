@@ -54,7 +54,7 @@ export default class UserController
       if (trueOrFalse === false) {
         return res.status(404).send("Failed to delete user" );
       }
-      return res.status(201).json(trueOrFalse);
+      return res.status(201).json("User deleted");
     } catch (e) {
       return next(e);
     }
