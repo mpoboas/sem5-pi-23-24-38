@@ -43,6 +43,8 @@ export default (app: Router) => {
     (req, res, next) => ctrl.signIn(req, res, next),
   );
 
+  route.delete('/:userId', (req, res, next) => ctrl.delete(req, res, next));
+
   /**
    * @TODO Let's leave this as a place holder for now
    * The reason for a logout route could be deleting a 'push notification token'

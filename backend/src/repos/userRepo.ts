@@ -74,4 +74,13 @@ export default class UserRepo implements IUserRepo {
       return UserMap.toDomain(userRecord);
     } else return null;
   }
+
+  public async delete(id: UserId | string): Promise<boolean> {
+    const query = { domainId: id.toString() };
+    const userRecord = await this.userSchema.findOne(query);
+    if(userRecord != null) {
+      await userRecord.remove();
+      return true;
+    }else return false;
+  }
 }

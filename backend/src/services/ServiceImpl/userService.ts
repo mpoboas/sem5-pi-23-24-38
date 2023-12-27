@@ -124,4 +124,13 @@ export default class UserService implements IUserService {
   private isValidRole(role: string): boolean {
     return Object.values(Role).includes(role as Role);
   }
+
+  public async delete(id: UserId | string): Promise<boolean> {
+    const userDeleted = await this.userRepo.delete(id);
+    if (userDeleted === false) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

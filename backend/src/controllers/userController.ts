@@ -46,4 +46,18 @@ export default class UserController
     }
   }
 
+  public async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.params.userId
+      const trueOrFalse = await this.userServiceInstance.delete(userId);
+
+      if (trueOrFalse === false) {
+        return res.status(404).send("Failed to delete user" );
+      }
+      return res.status(201).json(trueOrFalse);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
 }
