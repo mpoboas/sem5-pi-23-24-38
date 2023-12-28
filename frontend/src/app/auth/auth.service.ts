@@ -12,7 +12,7 @@ interface LoginResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:3000/api/';
+  private readonly apiUrl = 'http://localhost:3000/api';
   private readonly tokenKey = 'authToken';
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
@@ -67,5 +67,25 @@ export class AuthService {
       return decodedToken.name || null;
     }
     return null;
+  }
+
+  getUserId(): string | null { 
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      return decodedToken.id || null;
+    }
+    return null;
+  }
+
+  deleteAccount(): Observable<any> {
+    const userId = this.getUserId();
+    console.log("user id:" ,userId);
+    return this.http.delete(`${this.apiUrl}/auth/${userId}`).pipe(
+      tap(() => {
+        this.removeToken();
+        this.updateAuthStatus(false);
+      })
+    );
   }
 }

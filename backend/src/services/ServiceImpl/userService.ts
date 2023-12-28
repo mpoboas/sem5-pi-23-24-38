@@ -16,6 +16,7 @@ import IRoleRepo from '../IRepos/IRoleRepo';
 import { User } from '../../domain/user/user';
 import { Result } from '../../core/logic/Result';
 import { Role } from '../../domain/role/role.enum';
+import { UserId } from '../../domain/user/userId';
 
 @Service()
 export default class UserService implements IUserService {
@@ -127,6 +128,7 @@ export default class UserService implements IUserService {
 
   public async delete(id: UserId | string): Promise<boolean> {
     const userDeleted = await this.userRepo.delete(id);
+    console.log("user deleted (service):", userDeleted);
     if (userDeleted === false) {
       return false;
     } else {

@@ -48,8 +48,9 @@ export default class UserController
 
   public async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.params.userId
+      const userId = req.params.userId;
       const trueOrFalse = await this.userServiceInstance.delete(userId);
+      console.log(trueOrFalse);
 
       if (trueOrFalse === false) {
         return res.status(404).send("Failed to delete user" );

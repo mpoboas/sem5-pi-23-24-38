@@ -1,6 +1,6 @@
 import { Service, Inject } from 'typedi';
 
-import { Document, Model } from 'mongoose';
+import { Document, FilterQuery, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
 import IUserRepo from '../services/IRepos/IUserRepo';
@@ -76,8 +76,13 @@ export default class UserRepo implements IUserRepo {
   }
 
   public async delete(id: UserId | string): Promise<boolean> {
-    const query = { domainId: id.toString() };
-    const userRecord = await this.userSchema.findOne(query);
+    if(id == null){
+      console.log("id is null (repo):", id);
+    }
+    const query = { id: id };
+    console.log("query:", query);
+    const userRecord = await this.userSchema.findOne(query as FilterQuery<IUserPersistence & Document>);
+    console.log("userRecord (repo):", userRecord);
     if(userRecord != null) {
       await userRecord.remove();
       return true;

@@ -49,6 +49,9 @@
             <li class="nav-item">
               <a style="cursor: pointer;" class="nav-link" (click)="authService.signout()" *ngIf="isAuthenticated"><i class="icon_logout" style="vertical-align: middle;"></i> Logout</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/delete-user" routerLinkActive="active"><i class="icon_signin" style="vertical-align: middle;"></i> Delete Account</a>
+            </li>
           </ng-container>
         </ul>
       </div>

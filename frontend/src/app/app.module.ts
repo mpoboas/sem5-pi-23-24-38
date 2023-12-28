@@ -76,6 +76,7 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { AnimationComponentDialog } from './animation/animation.component';
 import { AuthService } from './auth/auth.service';
+import { DeleteUserComponent } from './delete-user/delete-user.component';
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import { AuthService } from './auth/auth.service';
     SignupComponent,
     SigninComponent,
     AnimationComponent,
-    AnimationComponentDialog
+    AnimationComponentDialog,
+    DeleteUserComponent
   ],
   imports: [
     BrowserModule,
