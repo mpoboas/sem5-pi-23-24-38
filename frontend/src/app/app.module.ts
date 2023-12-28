@@ -77,6 +77,9 @@ import { SigninComponent } from './signin/signin.component';
 import { AnimationComponentDialog } from './animation/animation.component';
 import { AuthService } from './auth/auth.service';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { CreateUserDialogComponent } from './create-user-dialog/create-user-dialog.component';
+import { GetUsersComponent } from './get-users/get-users.component';
 
 
 @NgModule({
@@ -126,7 +129,11 @@ import { DeleteUserComponent } from './delete-user/delete-user.component';
     SigninComponent,
     AnimationComponent,
     AnimationComponentDialog,
-    DeleteUserComponent
+    DeleteUserComponent,
+    UserManagerComponent,
+    CreateUserDialogComponent,
+    GetUsersComponent
+    
   ],
   imports: [
     BrowserModule,

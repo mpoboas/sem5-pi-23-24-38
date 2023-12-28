@@ -88,4 +88,19 @@ export default class UserRepo implements IUserRepo {
       return true;
     }else return false;
   }
+  
+  public async findAll(): Promise<User[]> {
+    try{
+      const userDocuments = await this.userSchema.find().exec();
+
+      if(!userDocuments){
+        return [];
+      }
+
+      const users = userDocuments.map(userDocument => UserMap.toDomain(userDocument));
+      return users;
+    } catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  }
 }

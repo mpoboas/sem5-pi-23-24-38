@@ -61,4 +61,13 @@ export default class UserController
     }
   }
 
+  public async getAllUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = await this.userServiceInstance.getAllUsers();
+      return res.status(200).json(users);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
 }

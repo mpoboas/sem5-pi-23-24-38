@@ -1,7 +1,7 @@
 import { Service, Inject } from 'typedi';
 import config from '../../../config';
 import IRoleDTO from '../../dto/IRoleDTO';
-import { Role } from '../../domain/role/role';
+import { rolesArray } from '../../domain/role/role.enum';
 import IRoleRepo from '../IRepos/IRoleRepo';
 import IRoleService from '../IServices/IRoleService';
 import { Result } from '../../core/logic/Result';
@@ -26,38 +26,9 @@ export default class RoleService implements IRoleService {
     }
   }
 
-  public async createRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
+  public async getAllRoles(): Promise<string[]> {
     try {
-      const roleOrError = await Role.create(roleDTO);
-
-      if (roleOrError.isFailure) {
-        return Result.fail<IRoleDTO>(roleOrError.errorValue());
-      }
-
-      const roleResult = roleOrError.getValue();
-
-      await this.roleRepo.save(roleResult);
-
-      const roleDTOResult = RoleMap.toDTO(roleResult) as IRoleDTO;
-      return Result.ok<IRoleDTO>(roleDTOResult);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  public async updateRole(roleDTO: IRoleDTO): Promise<Result<IRoleDTO>> {
-    try {
-      const role = await this.roleRepo.findByDomainId(roleDTO.id);
-
-      if (role === null) {
-        return Result.fail<IRoleDTO>('Role not found');
-      } else {
-        role.name = roleDTO.name;
-        await this.roleRepo.save(role);
-
-        const roleDTOResult = RoleMap.toDTO(role) as IRoleDTO;
-        return Result.ok<IRoleDTO>(roleDTOResult);
-      }
+      return rolesArray;
     } catch (e) {
       throw e;
     }

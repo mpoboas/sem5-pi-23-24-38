@@ -96,6 +96,25 @@ export default class UserService implements IUserService {
     }
   }
 
+  public async getAllUsers(): Promise<any[]> {
+    try {
+      const info: any[] = [];
+      const users = await this.userRepo.findAll();
+      for(const user of users) {
+        const name = user.name;
+        const email = user.email;
+        const role = user.role;
+        const phoneNumber = user.phoneNumber;
+        const nif = user.nif;
+        info.push({name, email, role, phoneNumber, nif});
+      }
+      return info;
+    } catch (e) {
+      this.logger.error(e);
+      throw new Error(`Error getting all users:  ${e.message}`);
+    }
+  }
+
   private generateToken(user) {
     const today = new Date();
     const exp = new Date(today);

@@ -20,6 +20,7 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { AuthGuard } from './auth/auth.guard';
 import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
@@ -27,8 +28,10 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   {path: 'delete-user', component: DeleteUserComponent, canActivate: [AuthGuard] },
   { path: 'info-manager', component: InfoManagerComponent, canActivate: [AuthGuard] },
-  { path: 'task-manager', component: AdminManagerComponent, canActivate: [AuthGuard] },
-  { path: 'admin-manager', component: TaskManagerComponent, canActivate: [AuthGuard] },
+  { path: 'task-manager', component: TaskManagerComponent, canActivate: [AuthGuard] },
+  { path: 'admin-manager', component: AdminManagerComponent, canActivate: [AuthGuard], children: [
+    { path: 'user-manager', component: UserManagerComponent }
+  ]},
   { path: 'fleet-manager', component: FleetManagerComponent, canActivate: [AuthGuard], children: [
     { path: 'robot-type', component: RobotTypeComponent },
     { path: 'robot', component: RobotComponent },

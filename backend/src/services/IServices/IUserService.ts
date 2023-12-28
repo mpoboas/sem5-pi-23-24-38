@@ -6,4 +6,5 @@ export default interface IUserService {
   signUp(userDTO: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>>;
   signIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>>;
   delete(id : UserId | string): Promise<boolean>;
+  getAllUsers(): Promise<any[]>;
 }

@@ -4,3 +4,5 @@ export enum Role {
     STUDENT = "student",
     TEACHER = "teacher",
 }
+
+export const rolesArray: string[] = Object.values(Role);

@@ -88,4 +88,13 @@ export class AuthService {
       })
     );
   }
+  
+  getUsers(): Observable<any> {
+    console.log('Fetching users');
+    return this.http.get(`${this.apiUrl}/auth/users`);
+  }
+
+  getRoles(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/roles`);
+  }
 }
