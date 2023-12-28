@@ -43,7 +43,21 @@ export default (app: Router) => {
     (req, res, next) => ctrl.signIn(req, res, next),
   );
 
-  route.delete('/:userId', (req, res, next) => ctrl.delete(req, res, next));
+  route.put('/user/edit/:userId', celebrate({
+    params: Joi.object({
+      userId: Joi.string().required(),
+    }),
+    body: Joi.object({
+      name: Joi.string(),
+      email: Joi.string(),
+      password: Joi.string(),
+      role: Joi.string(),
+      phoneNumber: Joi.string(),
+      nif: Joi.string(),
+    }),
+  }), (req, res, next) => ctrl.editUser(req, res, next));
+
+  route.delete('/user/delete/:userId', (req, res, next) => ctrl.delete(req, res, next));
 
   /**
    * @TODO Let's leave this as a place holder for now

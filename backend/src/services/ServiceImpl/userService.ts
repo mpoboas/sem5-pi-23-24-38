@@ -17,6 +17,9 @@ import { User } from '../../domain/user/user';
 import { Result } from '../../core/logic/Result';
 import { Role } from '../../domain/role/role.enum';
 import { UserId } from '../../domain/user/userId';
+import { UserEmail } from '../../domain/user/userEmail';
+import { UserPhoneNumber } from '../../domain/user/userPhoneNumber';
+import { UserNif } from '../../domain/user/userNif';
 
 @Service()
 export default class UserService implements IUserService {
@@ -115,6 +118,45 @@ export default class UserService implements IUserService {
     }
   }
 
+  public async editUser(userId: string, userEdit: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+    try {
+      const user = await this.userRepo.findById(userId);
+
+      if (user === null) {
+        return Result.fail<{ userDTO: IUserDTO; token: string }>('User not found');
+      } else {
+        user.name = userEdit.name;
+        if (user.email !== userEdit.email) {
+          if (await this.userRepo.findByEmail(userEdit.email)) {
+            return Result.fail<{ userDTO: IUserDTO; token: string }>('User with this email already exists');
+          }
+        } else { user.email = UserEmail.create(userEdit.email).getValue().email; }
+        user.password = await bcrypt.hash(userEdit.password, 10);
+        user.role = userEdit.role;
+        user.phoneNumber = UserPhoneNumber.create(userEdit.phoneNumber).getValue().phoneNumber;
+        user.nif = UserNif.create(userEdit.nif).getValue().nif;
+
+        await this.userRepo.save(user);
+
+        const token = this.generateToken(user) as string;
+        const userDTO = UserMap.toDTO(user) as IUserDTO;
+  
+        return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO, token });
+      }
+    } catch (e) {
+      return Result.fail<{ userDTO: IUserDTO; token: string }>('Unexpected error editing user: ' + e.message);
+    }
+  }
+  
+  public async delete(id: UserId | string): Promise<boolean> {
+    const userDeleted = await this.userRepo.delete(id);
+    if (userDeleted === false) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   private generateToken(user) {
     const today = new Date();
     const exp = new Date(today);
@@ -123,7 +165,7 @@ export default class UserService implements IUserService {
     const id = user.id;
     const email = user.email;
     const name = user.name;
-    const role = user.role.id;
+    const role = user.role;
     const phoneNumber = user.phoneNumber;
     const nif = user.nif;
 
@@ -145,13 +187,18 @@ export default class UserService implements IUserService {
     return Object.values(Role).includes(role as Role);
   }
 
-  public async delete(id: UserId | string): Promise<boolean> {
-    const userDeleted = await this.userRepo.delete(id);
-    console.log("user deleted (service):", userDeleted);
-    if (userDeleted === false) {
-      return false;
-    } else {
-      return true;
+
+  public async getUser(userId: string): Promise<Result<IUserDTO>> {
+    try {
+      const user = await this.userRepo.findById(userId);
+      if (user === null) {
+        return Result.fail<IUserDTO>('User not found');
+      } else {
+        const userDTOResult = UserMap.toDTO(user) as IUserDTO;
+        return Result.ok<IUserDTO>(userDTOResult);
+      }
+    } catch (e) {
+      throw new Error(`Error getting user:  ${e.message}`);
     }
   }
 }
