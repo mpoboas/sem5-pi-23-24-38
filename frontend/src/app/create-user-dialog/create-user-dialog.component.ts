@@ -21,6 +21,8 @@ export interface UserData {
 export class CreateUserDialogComponent {
   form: FormGroup;
   roleOptions: any[] = [];
+  errorMessage: string | null = null;
+  hide = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: UserData,
@@ -72,6 +74,7 @@ export class CreateUserDialogComponent {
         },
         (error: any) => {
           console.error('Error creating user', error);
+          this.errorMessage = error.error;
         }
       );
     }

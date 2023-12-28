@@ -1,0 +1,70 @@
+<div class="container mt-5" style="width: 30%;" *ngIf="!editMode">
+        <h2 class="text-center" style="margin-bottom: 30px;">User Profile</h2>
+        <div class="form-group">
+            <mat-form-field class="w-100">
+                <mat-label>Name:</mat-label>
+                <input matInput id="name" type="text" readonly [(ngModel)]="userData.name">
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field class="w-100">
+                <mat-label>Email:</mat-label>
+                <input matInput id="email" type="text" readonly [(ngModel)]="userData.email">
+            </mat-form-field>
+        </div>
+        
+        <div class="form-group">
+            <mat-form-field class="w-100">
+                <mat-label>Phone Number:</mat-label>
+                <input matInput id="phoneNumber" type="text" readonly [(ngModel)]="userData.phoneNumber">
+            </mat-form-field>
+        </div>
+    
+        <div class="form-group">
+            <mat-form-field class="w-100">
+                <mat-label>NIF:</mat-label>
+                <input matInput id="nif" type="text" readonly [(ngModel)]="userData.nif">
+            </mat-form-field>
+        </div>
+    
+        <button class="btn btn-primary" (click)="toggleEditMode()">Edit Profile</button>
+    </div>
+    
+    <div class="container mt-5" style="width: 30%;" *ngIf="editMode">
+        <h2 class="text-center" style="margin-bottom: 30px;">Edit User Profile</h2>
+        <form [formGroup]="form">
+            <mat-form-field class="w-100">
+                <mat-label>Name:</mat-label>
+                <input matInput id="name" type="text" formControlName="name" />
+            </mat-form-field>
+    
+            <mat-form-field class="w-100">
+                <mat-label>Email:</mat-label>
+                <input matInput id="email" type="text" formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field class="w-100">
+                <mat-label>Password:</mat-label>
+                <input matInput id="password" type="password" formControlName="password" />
+            </mat-form-field>
+    
+            <mat-form-field class="w-100">
+                <mat-label>Phone Number:</mat-label>
+                <input matInput id="phoneNumber" type="text" formControlName="phoneNumber" />
+            </mat-form-field>
+    
+            <mat-form-field class="w-100">
+                <mat-label>NIF:</mat-label>
+                <input matInput id="nif" type="text" formControlName="nif" />
+            </mat-form-field>
+    
+            <div class="d-flex justify-content-end mt-3 button-gap">
+                <button class="btn btn-primary" (click)="onSave()">Save</button>
+                <button class="btn btn-secondary ml-2" (click)="toggleEditMode()">Cancel</button>
+            </div>
+            <div class="d-flex justify-content-center mt-3 button-gap">
+                <button class="btn btn-danger ml-2 float-right" (click)="confirmDelete()">Delete Account</button>
+            </div>
+        </form>
+</div>

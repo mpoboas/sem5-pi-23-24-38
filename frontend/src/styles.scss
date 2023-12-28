@@ -113,6 +113,46 @@ $angular-three-theme: mat.define-light-theme((
     height: 20px;
 }
 
+// User icons
+.icon_userW {
+    content: url('assets/icons/users/user_white.svg');
+    height: 20px;
+}
+.icon_userB {
+    content: url('assets/icons/users/user_black.svg');
+    height: 20px;
+}
+
+.icon_signinW {
+    content: url('assets/icons/users/sign-in_white.svg');
+    height: 20px;
+}
+
+.icon_signoutW {
+    content: url('assets/icons/users/sign-out_white.svg');
+    height: 20px;
+}
+
+.icon_userApproveB {
+    content: url('assets/icons/users/user-approve_black.svg');
+    height: 20px;
+}
+
+.icon_userDenyB {
+    content: url('assets/icons/users/user-deny_black.svg');
+    height: 20px;
+}
+
+.icon_userRemoveB {
+    content: url('assets/icons/users/user-remove_black.svg');
+    height: 20px;
+}
+
+.icon_userAddB {
+    content: url('assets/icons/users/user-add_black.svg');
+    height: 20px;
+}
+
 // Request icons
 .icon_get {
     content: url('assets/icons/requests/get.svg');
