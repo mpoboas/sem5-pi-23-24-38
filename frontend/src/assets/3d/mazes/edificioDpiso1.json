@@ -26,7 +26,14 @@
         ],
         "exitLocation": [21.5, 6.0],
         "tunnelexit":[],
-        "elevator": ["D1","D2","D3"]
+        "elevator": ["D1","D2","D3"],
+        "doornames":[{"x":2,"z":4,"name":"D101"},
+        {"x":10,"z":2,"name":"D102"},
+        {"x":4,"z":10,"name":"D103"},
+        {"x":6,"z":7,"name":"D104"},
+        {"x":4,"z":15,"name":"D105"},
+        {"x":6,"z":12,"name":"D106"},
+        {"x":6,"z":18,"name":"D107"}]
 
     },
     "ground": {

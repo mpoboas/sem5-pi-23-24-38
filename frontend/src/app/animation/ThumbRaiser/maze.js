@@ -49,6 +49,7 @@ export default class Maze extends THREE.Group {
             this.elevatorfloors = [];
             this.elevatorfloors = description.maze.elevator;
             // Create the helpers
+            this.doornames = description.maze.doornames;
             this.helper = new THREE.Group();
             this.tunnelPortal = description.maze.tunnelexit;
             // Create the ground
@@ -253,19 +254,36 @@ export default class Maze extends THREE.Group {
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][1], this.helpersColor));
                         this.tunnelClones[`${i}_${j}`] = clonedTunnel;
                     }
-                    if (this.map[i][j] == 4) {
+                    if (this.map[i][j] == 4) { 
                         console.log("door norte");
-                        clonedDoor = door.clone("North");
+                        let name = "";
+              
+                        this.doornames.forEach(element => {
+                            if(element.x == j && element.z == i){
+                                name = element.name;
+                            }
+                        });
+
+                       
+                        clonedDoor = door.clone("North", name);
                         clonedDoor.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth);
                         this.add(clonedDoor);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedDoor).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
                         this.helper.add(new THREE.Box3Helper(this.aabb[i][j][0], this.helpersColor));
                         this.doorClones[`${i}_${j}`] = clonedDoor;
+                        //clonedDoor.makeLabelvisable();
                         //this.doorLocation.push( { x: j , z: i}); 
                     }
                     if (this.map[i][j] == 5) {
                         console.log("door oeste");
-                        clonedDoor = door.clone("West");
+                        let name = "";
+                
+                        this.doornames.forEach(element => {
+                            if(element.x == j && element.z == i){
+                                name = element.name;
+                            }
+                        });
+                        clonedDoor = door.clone("West", name);
                         clonedDoor.rotateY(-Math.PI / 2.0);
                         clonedDoor.position.set(j - this.halfSize.width + 0.5, 0.25, i - this.halfSize.depth + 0.5);
                         this.add(clonedDoor);
@@ -277,7 +295,7 @@ export default class Maze extends THREE.Group {
                     }
                     if (this.map[i][j] == 6) { 
                         console.log("elevador norte");
-                        clonedElevator = elevator.clone("North");
+                        clonedElevator = elevator.clone("North","Elevator");
                         clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
                         this.add(clonedElevator);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
@@ -286,7 +304,7 @@ export default class Maze extends THREE.Group {
                     }
                     if (this.map[i][j] == 7) {
                         console.log("elevador oeste");
-                        clonedElevator = elevator.clone("West");                        
+                        clonedElevator = elevator.clone("West","Elevator");                        
                         clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
                         this.add(clonedElevator);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
@@ -295,7 +313,7 @@ export default class Maze extends THREE.Group {
                     }
                     if (this.map[i][j] == 8) {
                         console.log("elevador sul");
-                        clonedElevator = elevator.clone("South");
+                        clonedElevator = elevator.clone("South","Elevator");
                         clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
                         this.add(clonedElevator);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
@@ -304,7 +322,7 @@ export default class Maze extends THREE.Group {
                     }
                     if (this.map[i][j] == 9) {
                         console.log("elevador este");
-                        clonedElevator = elevator.clone("East");
+                        clonedElevator = elevator.clone("East","Elevator");
                         clonedElevator.position.set(j - this.halfSize.width + 0.5, -0.20, i - this.halfSize.depth+0.5);
                         this.add(clonedElevator);
                         this.aabb[i][j][0] = new THREE.Box3().setFromObject(clonedElevator).applyMatrix4(new THREE.Matrix4().makeScale(this.scale.x, this.scale.y, this.scale.z));
@@ -364,6 +382,27 @@ export default class Maze extends THREE.Group {
         );
     }
     
+    changeLabelVisibility(visablility){
+        if(visablility){
+            Object.keys(this.doorClones).forEach(key => {
+                this.doorClones[key].makeLabelvisable(visablility);
+            });
+            Object.keys(this.elevatorClones).forEach(key => {
+                this.elevatorClones[key].makeLabelvisable(visablility);
+            });
+        }else{
+            Object.keys(this.doorClones).forEach(key => {
+                this.doorClones[key].makeLabelvisable(visablility);
+            });
+            Object.keys(this.elevatorClones).forEach(key => {
+                this.elevatorClones[key].makeLabelvisable(visablility);
+            });
+
+        }
+        
+    
+    }
+
     // Convert cell [row, column] coordinates to cartesian (x, y, z) coordinates
     cellToCartesian(position) {
         return new THREE.Vector3((position[1] - this.halfSize.width + 0.5) * this.scale.x, 0.0, (position[0] - this.halfSize.depth + 0.5) * this.scale.z)

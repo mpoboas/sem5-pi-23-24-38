@@ -18,8 +18,11 @@
         "tunnelexit":[{"x":0,"z":5,"portal":"A2"},
                         {"x":22,"z":8,"portal":"C3"},
                         {"x":20,"z":10,"portal":"D3"}],
-        "elevator": ["B1","B2","B3"]
-
+        "elevator": ["B1","B2","B3"],
+        "doornames":[{"x":6,"z":6,"name":"B201"},
+                    {"x":12,"z":3,"name":"B202"},
+                    {"x":18,"z":6,"name":"B203"},
+                    {"x":19,"z":4,"name":"B204"}]
     },
     "ground": {
         "size": { "width": 22.0, "height": 0.125, "depth": 10.0 },

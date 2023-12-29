@@ -268,6 +268,12 @@
             <table class="subwindows">
                 <tr>
                     <td>
+                        Show Tips:
+                        <input type="checkbox" id="show-tips" [(ngModel)]="showTipsChecked" (change)="onShowTipsChange()">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         Realistic view mode:
                         <input type="checkbox" id="realistic">
                     </td>

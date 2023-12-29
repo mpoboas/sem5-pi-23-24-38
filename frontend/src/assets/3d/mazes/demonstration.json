@@ -20,7 +20,9 @@
                         {"x":10,"z":5,"portal":"B1"},
                         {"x":0,"z":5,"portal":"C1"},
                         {"x":4,"z":10,"portal":"D1"}],
-        "elevator": ["A1","A2","B1","B2","B3","C1","C2","C3","C4","D1","D2","D3"]
+        "elevator": ["A1","A2","B1","B2","B3","C1","C2","C3","C4","D1","D2","D3"],
+        "doornames":[{"x":6,"z":2,"name":"Teste1"},
+                    {"x":8,"z":3,"name":"Teste2"}]
     },
     "ground": {
         "size": { "width": 10.0, "height": 0.125, "depth": 10.0 },

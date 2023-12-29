@@ -14,7 +14,21 @@ export default class Door extends THREE.Group {
         // Create the materials
         const sideMaterial = new THREE.MeshBasicMaterial({ color: this.materialParameters.secondaryColor });
 
+        //label
+        const canvas = this.makeLabelCanvas(100, 24, this.materialParameters.name);
+        const labelTexture = new THREE.CanvasTexture(canvas);
+        labelTexture.minFilter = THREE.LinearFilter;
+        labelTexture.wrapS = THREE.ClampToEdgeWrapping;
+        labelTexture.wrapT = THREE.ClampToEdgeWrapping;
 
+        const labelMaterial = new THREE.SpriteMaterial({
+            map: labelTexture,
+            transparent: true,
+            //visible: false,
+            
+        });
+
+        const label = new THREE.Sprite(labelMaterial);
         // Create a frame (box)
 
         let geometry = new THREE.BoxGeometry(frameSize.width+0.1, (frameSize.height/2)-0.17, frameSize.depth);
@@ -44,7 +58,16 @@ export default class Door extends THREE.Group {
         }
 
         this.add(mesh);
+        this.add(label);
 
+        label.position.y = 0.8;
+        if(this.materialParameters.direction == "West"){
+            label.position.z = 0.5;}else{
+        label.position.z = 0.0;}
+        const labelBaseScale = 0.01;
+        label.scale.x = canvas.width * labelBaseScale;
+        label.scale.y = canvas.height * labelBaseScale;
+        label.visible = false;
         // Create a door (box)
 
         geometry = new THREE.BoxGeometry(doorSize.width-0.05, (doorSize.height/2)-0.15, doorSize.depth);
@@ -71,7 +94,7 @@ export default class Door extends THREE.Group {
                 mesh.position.set(0.0, -(0.20) + ((doorSize.height / 2.0)-0.15)/2.0, 0.5);
                 break;
         }
-
+        //this.materialParameters.name;
         mesh.translateX(doorSize.width / 2.0);
         mesh.translateY(-doorSize.gap);
 
@@ -116,7 +139,7 @@ export default class Door extends THREE.Group {
         };
     }
 
-    clone(direction) {
+    clone(direction, name) {
         
         const door = new Door({
             groundHeight: this.groundHeight,
@@ -130,6 +153,7 @@ export default class Door extends THREE.Group {
                 doorGap: this.segments.doorGap
             },
             materialParameters: {
+                name: name,
                 direction: direction,
                 primaryColor: this.materialParameters.primaryColor.clone(),
                 frontFrameUrl: this.materialParameters.frontFrameUrl,
@@ -140,5 +164,45 @@ export default class Door extends THREE.Group {
             },
          });
         return door;
+    }
+
+    makeLabelCanvas(baseWidth, size, name) {
+        const borderSize = 2;
+        const ctx = document.createElement('canvas').getContext('2d');
+        const font = `${size}px bold sans-serif`;
+        ctx.font = font;
+        // measure how long the name will be
+        const textWidth = ctx.measureText(name).width;
+
+        const doubleBorderSize = borderSize * 2;
+        const width = baseWidth + doubleBorderSize;
+        const height = size + doubleBorderSize;
+        ctx.canvas.width = width;
+        ctx.canvas.height = height;
+
+        // need to set font again after resizing canvas
+        ctx.font = font;
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+
+        ctx.fillStyle = 'transparent';
+        ctx.fillRect(0, 0, width, height);
+
+        // scale to fit but don't stretch
+        const scaleFactor = Math.min(1, baseWidth / textWidth);
+        ctx.translate(width / 2, height / 2);
+        ctx.scale(scaleFactor, 1);
+        ctx.fillStyle = 'white';
+        ctx.fillText(name, 0, 0);
+
+        return ctx.canvas;
+    }      
+
+    makeLabelvisable(tipvalue){
+        if(tipvalue){
+            this.children[1].visible = true;
+        }else{
+            this.children[1].visible = false;
+        }
     }
 }

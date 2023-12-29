@@ -16,7 +16,8 @@
         ],
         "exitLocation": [21.5, 6.0],
         "tunnelexit":[],
-        "elevator": ["A1","A2"]
+        "elevator": ["A1","A2"],
+        "doornames":[{"x":10,"z":5,"name":"Auditorio Prof Nunes"}]
 
     },
     "ground": {

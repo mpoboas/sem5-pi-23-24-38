@@ -33,6 +33,7 @@ export class AnimationComponent implements OnDestroy{
   robots: any[] = [];
   selectedFloor: string = '';
   floors: any[] = [];
+  showTipsChecked: boolean = false;
 
   ngOnInit(): void {
     this.fetchFloors();
@@ -104,6 +105,7 @@ export class AnimationComponent implements OnDestroy{
   private loadFloor(floorNumber: string): void {
     this.floorService.findFloorByNumber(floorNumber).subscribe(
       (floorData) => {
+        this.showTipsChecked = false;
         console.log("Fetched floor data: ", floorData);
         this.maze = floorData.json;
         this.createOrUpdateScene();
@@ -153,7 +155,7 @@ export class AnimationComponent implements OnDestroy{
     this.thumbRaiser.update();
   }
 
-    async openDialog(): Promise<string> {
+  async openDialog(): Promise<string> {
         const dialogRef = this.dialog.open(AnimationComponentDialog,{data: this.thumbRaiser.maze.elevatorfloors});
         dialogRef.afterClosed().subscribe(result => {
             console.log(`Dialog result: ${result}`);
@@ -164,12 +166,15 @@ export class AnimationComponent implements OnDestroy{
         });
         await dialogRef.afterClosed().toPromise();
         return this.selectedFloor;
-    }
+  }
   
+  onShowTipsChange(){
+    this.thumbRaiser.showTips(this.showTipsChecked);
+  }
 
   private createScene(): void {
     // Create the game
-            this.thumbRaiser = new ThumbRaiser(
+        this.thumbRaiser = new ThumbRaiser(
                 {}, // General Parameters
                 {
                     enabled: false,

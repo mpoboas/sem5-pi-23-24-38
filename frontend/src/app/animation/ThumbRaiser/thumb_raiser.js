@@ -428,7 +428,7 @@ export default class ThumbRaiser {
         this.statistics.dom.style.left = "0.5vw";
         this.statistics.dom.style.top = "1.0vh";
         document.body.appendChild(this.statistics.dom);
-
+        //this.raycaster = new THREE.Raycaster();
         // Create a renderer and turn on shadows in the renderer
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         if (this.generalParameters.setDevicePixelRatio) {
@@ -478,7 +478,7 @@ export default class ThumbRaiser {
         // The first element in the list corresponds to the topmost visible viewport; it will be the first viewport being selected (with the mouse pointer) and the last being rendered
         // The list applies to the primary viewports only; the secondary (mini-map) viewport will be selected and rendered separately
         this.visibleViewportCameras = [this.fixedViewCamera, this.firstPersonViewCamera, this.thirdPersonViewCamera, this.topViewCamera];
-
+        
         // Set the active view camera (first-person view)
         this.setActiveViewCamera(this.thirdPersonViewCamera);
 
@@ -976,6 +976,8 @@ export default class ThumbRaiser {
                 this.mouse.currentPosition = new THREE.Vector2(event.clientX, window.innerHeight-120 - event.clientY - 1);
                 if (event.buttons == 0) { // No button down
                     this.getPointedViewport(this.mouse);
+                    //console.log(this.maze.children);
+                    //this.checkIntersection(this.mouse.currentPosition, this.mouse.camera);
                 }
                 else if (this.mouse.actionInProgress) { // Primary or secondary button down and action in progress
                     if (this.mouse.camera != "none") { // Mouse action in progress
@@ -1012,6 +1014,30 @@ export default class ThumbRaiser {
             this.setCursor("auto");
         }
     }
+
+
+
+
+
+/*
+    checkIntersection(mousePosition, camera) {
+        console.log();
+        this.raycaster.setFromCamera(mousePosition, camera);
+        this.raycaster.helper;
+        const intersects = this.raycaster.intersectObjects(this.maze, true);
+        if (intersects.length > 0) {
+            console.log(intersects[0].object.name);
+        }
+
+    }
+*/
+    showTips(tipsbolean) {
+        console.log("what");
+        this.maze.changeLabelVisibility(tipsbolean);
+    }
+
+
+
 
     mouseUp(event) {
         if (event.button == 0 || event.button == 2) { // Primary or secondary button up (do not confuse event.button with event.buttons: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button and https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons)

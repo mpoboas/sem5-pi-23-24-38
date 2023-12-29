@@ -27,7 +27,15 @@
         "exitLocation": [21.5, 6.0],
         "tunnelexit":[{"x":0,"z":9,"portal":"B2"},
         {"x":0,"z":15,"portal":"D3"}],
-        "elevator": ["C1","C2","C3","C4"]
+        "elevator": ["C1","C2","C3","C4"],
+        "doornames":[{"x":4,"z":6,"name":"C301"},
+        {"x":5,"z":4,"name":"C302"},
+        {"x":2,"z":16,"name":"C303"},
+        {"x":7,"z":6,"name":"C304"},
+        {"x":5,"z":16,"name":"C305"},
+        {"x":10,"z":10,"name":"C306"},
+        {"x":10,"z":14,"name":"C307"},
+        {"x":9,"z":16,"name":"C308"}]
 
     },
     "ground": {
