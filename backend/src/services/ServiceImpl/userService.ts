@@ -104,12 +104,13 @@ export default class UserService implements IUserService {
       const info: any[] = [];
       const users = await this.userRepo.findAll();
       for(const user of users) {
+        const id = user.id.toString();
         const name = user.name;
         const email = user.email;
         const role = user.role;
         const phoneNumber = user.phoneNumber;
         const nif = user.nif;
-        info.push({name, email, role, phoneNumber, nif});
+        info.push({id, name, email, role, phoneNumber, nif});
       }
       return info;
     } catch (e) {

@@ -65,7 +65,7 @@ export class CreateUserDialogComponent {
     if (this.form.valid) {
       const userData = this.form.value;
       
-      // Call the createBuilding method from your BuildingService
+      // Call the signup method from your AuthService
       this.authService.signup(userData).subscribe(
         (response: any) => {
           console.log('User created successfully', response);

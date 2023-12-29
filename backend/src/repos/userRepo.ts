@@ -79,10 +79,8 @@ export default class UserRepo implements IUserRepo {
     if(id == null){
       console.log("id is null (repo):", id);
     }
-    const query = { id: id };
-    console.log("query:", query);
-    const userRecord = await this.userSchema.findOne(query as FilterQuery<IUserPersistence & Document>);
-    console.log("userRecord (repo):", userRecord);
+    const query = { domainId: id.toString() };
+    const userRecord = await this.userSchema.findOne(query);
     if(userRecord != null) {
       await userRecord.remove();
       return true;

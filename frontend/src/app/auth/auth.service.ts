@@ -61,6 +61,10 @@ export class AuthService {
     const userId = this.getUserId();
     return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO);
   }
+
+  editUserByAdmin(userDTO: any, userId: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO);
+  }
   
   
   signout(): void {
@@ -106,9 +110,12 @@ export class AuthService {
       })
     );
   }
+
+  deleteAccountByAdmin(userId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`);
+  }
   
   getUsers(): Observable<any> {
-    console.log('Fetching users');
     return this.http.get(`${this.apiUrl}/auth/users`);
   }
 
