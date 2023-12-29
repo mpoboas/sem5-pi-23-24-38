@@ -21,11 +21,13 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
+  { path: 'terms-conditions', component: TermsConditionsComponent },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'info-manager', component: InfoManagerComponent, canActivate: [AuthGuard] },
   { path: 'task-manager', component: TaskManagerComponent, canActivate: [AuthGuard] },

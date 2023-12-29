@@ -17,6 +17,7 @@ export class SignupComponent {
     role: 'user',
     phoneNumber: '',
     nif: '',
+    terms: false,
   };
 
   errorMessage: string | null = null;
@@ -25,7 +26,15 @@ export class SignupComponent {
 
   onSubmit(signupForm: NgForm) {
     if (signupForm.valid) {
-      this.authService.signup(this.user).subscribe(
+      const userData = { 
+        name: this.user.name,
+        email: this.user.email,
+        password: this.user.password,
+        role: this.user.role,
+        phoneNumber: this.user.phoneNumber,
+        nif: this.user.nif,
+      };
+      this.authService.signup(userData).subscribe(
         (response) => {
           console.log('User registered successfully:', response);
           this.router.navigate(['/signin']);
@@ -36,5 +45,9 @@ export class SignupComponent {
         }
       );
     }
+  }
+
+  openTermsConditions() {
+    this.router.navigate(['/terms-conditions']);
   }
 }
