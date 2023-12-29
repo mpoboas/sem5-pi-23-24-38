@@ -81,6 +81,7 @@ export class GetUsersComponent {
     console.log('User:', userData);
     const result = window.confirm('This option is nuclear, are you sure you want to continue?');
 
+
     if (result) {
       this.authService.getUsers().subscribe(
         (data: any[]) => {
@@ -92,6 +93,7 @@ export class GetUsersComponent {
             this.authService.deleteAccountByAdmin(userId).subscribe(
               (response) => {
                 console.log('Delete successful:', response);
+                window.location.reload();
               },
               (error) => {
                 console.error('Error during delete:', error);
