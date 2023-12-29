@@ -14,10 +14,10 @@
           <!-- Display when user is not authenticated -->
           <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
             <li class="nav-item">
-              <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="icon_signup" style="vertical-align: middle;"></i> Sign Up</a>
+              <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="icon_signupW" style="vertical-align: middle;"></i> Sign Up</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="icon_signin" style="vertical-align: middle;"></i> Sign In</a>
+              <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="icon_signinW" style="vertical-align: middle;"></i> Sign In</a>
             </li>
           </ng-container>
 
@@ -44,13 +44,10 @@
               &nbsp;
             </li>
             <li class="nav-item">
-              <span style="cursor: default;" class="nav-link" *ngIf="authService.isAuthenticated$">Hello, {{ authService.getUserName() }}</span>
+              <a class="nav-link" routerLink="/user-profile" routerLinkActive="active" *ngIf="authService.isAuthenticated$"><i class="icon_userW" style="vertical-align: middle;"></i> Hello, {{ authService.getUserName() }}</a>
             </li>
             <li class="nav-item">
-              <a style="cursor: pointer;" class="nav-link" (click)="authService.signout()" *ngIf="isAuthenticated"><i class="icon_logout" style="vertical-align: middle;"></i> Logout</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/delete-user" routerLinkActive="active"><i class="icon_signin" style="vertical-align: middle;"></i> Delete Account</a>
+              <a style="cursor: pointer;" class="nav-link" (click)="authService.signout()" *ngIf="isAuthenticated"><i class="icon_signoutW" style="vertical-align: middle;"></i> Logout</a>
             </li>
           </ng-container>
         </ul>

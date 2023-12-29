@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
+import { EditUserComponent } from '../edit-user/edit-user.component';
 
 @Component({
   selector: 'app-get-users',
@@ -11,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./get-users.component.scss']
 })
 export class GetUsersComponent {
-  displayedColumns: string[] = ['name', 'email', 'role', 'phoneNumber', 'nif'];
+  displayedColumns: string[] = ['name', 'email', 'role', 'phoneNumber', 'nif', 'actions'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -48,6 +49,63 @@ export class GetUsersComponent {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+
+  editUser(user: any) {
+    // Open the edit user dialog
+    const dialogRef = this.dialog.open(EditUserComponent, {
+      width: '500px',
+      data: user
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Update the user in the database
+        this.authService.editUser(result).subscribe(
+          (data: any) => {
+            // Update the user in the table
+            const index = this.dataSource.data.findIndex(b => b.id === data.id);
+            this.dataSource.data[index] = data;
+            this.dataSource._updateChangeSubscription();
+          },
+          (error: any) => {
+            console.error('Error updating user', error);
+          }
+        );
+      }
+    });
+  }
+
+  deleteUser(userData: any) {
+    console.log('User:', userData);
+    const result = window.confirm('This option is nuclear, are you sure you want to continue?');
+
+    if (result) {
+      this.authService.getUsers().subscribe(
+        (data: any[]) => {
+          const user = data.find(user => user.email === userData.email);
+          console.log('Userrrr:', user);
+          if (user) {
+            const userId = user.id.toString();
+            // Call the signup method from your AuthService
+            this.authService.deleteAccountByAdmin(userId).subscribe(
+              (response) => {
+                console.log('Delete successful:', response);
+              },
+              (error) => {
+                console.error('Error during delete:', error);
+                // Handle error, display error message, etc.
+              }
+            );
+          } else {
+            console.error('User not found');
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching users', error);
+        }
+      );
     }
   }
 }

@@ -1,36 +1,60 @@
-<div class="container">
-    <h2>Sign Up</h2>
-    <form class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
-        <div class="form-group">
+<div class="container mt-5" style="width: 30%;">
+    <h2 class="text-center">Sign Up</h2>
+    <form class="needs-validation" (ngSubmit)="onSubmit(signupForm)" novalidate #signupForm="ngForm">
+        <div class="form-group" style="margin-top: 10px;">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" class="form-control" [(ngModel)]="user.name" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 10px;">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" class="form-control" [(ngModel)]="user.email" required>
+            <input type="email" id="email" name="email" class="form-control"
+                   [(ngModel)]="user.email" required pattern=".+@isep\.ipp\.pt"
+                   #emailField="ngModel"  
+                   [ngClass]="{ 'is-invalid': !emailField.valid && emailField.touched, 'is-valid': emailField.valid }">
+            <div class="invalid-feedback">
+                Please enter a valid email address ending with '@isep.ipp.pt'.
+            </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 10px;">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="form-control" [(ngModel)]="user.password" required>
+            <input type="password" id="password" name="password" class="form-control"
+                   [(ngModel)]="user.password" required
+                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                   #passwordField="ngModel"
+                   [ngClass]="{ 'is-invalid': !passwordField.valid && passwordField.touched, 'is-valid': passwordField.valid }">
+            <div class="invalid-feedback">
+                Password must contain at least one lowercase letter, one uppercase letter, one symbol, and be at least 8 characters long.
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="role">Role:</label>
-            <input type="text" id="role" name="role" class="form-control" [(ngModel)]="user.role" required>
-        </div>
-
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 10px;">
             <label for="phoneNumber">Phone Number:</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" required>
+            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control"
+                   [(ngModel)]="user.phoneNumber" required pattern="[0-9]{9}"
+                   #phoneNumberField="ngModel"
+                   [ngClass]="{ 'is-invalid': !phoneNumberField.valid && phoneNumberField.touched, 'is-valid': phoneNumberField.valid }">
+            <div class="invalid-feedback">
+                Please enter a valid phone number exactly with nine digits.
+            </div>
         </div>
-
-        <div class="form-group">
+        
+        <div class="form-group" style="margin-top: 10px;">
             <label for="nif">NIF:</label>
-            <input type="text" id="nif" name="nif" class="form-control" [(ngModel)]="user.nif" pattern="[0-9]{9}" required>
+            <input type="text" id="nif" name="nif" class="form-control"
+                   [(ngModel)]="user.nif" pattern="[0-9]{9}" required
+                   #nifField="ngModel"
+                   [ngClass]="{ 'is-invalid': !nifField.valid && nifField.touched, 'is-valid': nifField.valid }">
+            <div class="invalid-feedback">
+                Please enter a valid NIF with exactly nine digits.
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <div style="margin-top: 10px;" *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 20px;" [disabled]="!signupForm.valid">Sign Up</button>
     </form>
 </div>

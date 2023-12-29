@@ -46,12 +46,31 @@ export default class UserController
     }
   }
 
+  public async editUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.params.userId;
+      const userDTO = req.body;
+      
+      const existingUser = await this.userServiceInstance.getUser(userId);
+      if (existingUser.isFailure) {
+        return res.status(404).send("Failed to edit user: " + existingUser.errorValue());
+      }
+
+      const userOrError = await this.userServiceInstance.editUser(userId, userDTO);
+      if (userOrError.isFailure) {
+        return res.status(404).send("Failed to edit user: " + userOrError.errorValue());
+      }
+
+      return res.status(201).json(userOrError);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
   public async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
       const trueOrFalse = await this.userServiceInstance.delete(userId);
-      console.log(trueOrFalse);
-
       if (trueOrFalse === false) {
         return res.status(404).send("Failed to delete user" );
       }

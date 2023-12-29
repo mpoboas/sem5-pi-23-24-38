@@ -13,6 +13,8 @@ export class SigninComponent {
     password: '',
   };
 
+  errorMessage: string | null = null;
+
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
@@ -23,7 +25,7 @@ export class SigninComponent {
       },
       (error) => {
         console.error('Error during login:', error);
-        // Handle error, display error message, etc.
+        this.errorMessage = error.error;
       }
     );
   }

@@ -202,8 +202,6 @@ export default class TunnelService implements ITunnelService {
         const location2 = tunnel.location2;
         const tunnel1 = floor1.id.toString()+floor2.id.toString();
         const tunnel2 = floor2.id.toString()+floor1.id.toString();
-        console.log(tunnel1);
-        console.log(tunnel2);
 
         tunnelsResult.push({tunnel: tunnel1, x: location1[0], y: location1[1], floor: floor1.id.toString()});
         tunnelsResult.push({tunnel: tunnel2, x: location2[0], y: location2[1], floor: floor2.id.toString()});

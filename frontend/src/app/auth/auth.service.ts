@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 interface LoginResponse {
   userDTO: any;
@@ -19,7 +21,7 @@ export class AuthService {
 
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   private hasToken(): boolean {
     return !!localStorage.getItem(this.tokenKey);
@@ -29,7 +31,7 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  private setToken(token: string): void {
+  public setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
@@ -55,9 +57,20 @@ export class AuthService {
     );
   }
 
+  editUser(userDTO: any): Observable<any> {
+    const userId = this.getUserId();
+    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO);
+  }
+
+  editUserByAdmin(userDTO: any, userId: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO);
+  }
+  
+  
   signout(): void {
-    this.removeToken();
-    this.updateAuthStatus(false);
+      this.removeToken();
+      this.updateAuthStatus(false);
+      this.router.navigate(['/']);
   }
 
   getUserName(): string | null {
@@ -73,24 +86,36 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      return decodedToken.id || null;
+      return decodedToken.id.value || null;
+    }
+    return null;
+  } 
+
+  getUserData(): any {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      return decodedToken || null;
     }
     return null;
   }
 
   deleteAccount(): Observable<any> {
     const userId = this.getUserId();
-    console.log("user id:" ,userId);
-    return this.http.delete(`${this.apiUrl}/auth/${userId}`).pipe(
+    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`).pipe(
       tap(() => {
         this.removeToken();
         this.updateAuthStatus(false);
+        this.router.navigate(['/']);
       })
     );
   }
+
+  deleteAccountByAdmin(userId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`);
+  }
   
   getUsers(): Observable<any> {
-    console.log('Fetching users');
     return this.http.get(`${this.apiUrl}/auth/users`);
   }
 

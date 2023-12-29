@@ -76,10 +76,11 @@ import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { AnimationComponentDialog } from './animation/animation.component';
 import { AuthService } from './auth/auth.service';
-import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 import { CreateUserDialogComponent } from './create-user-dialog/create-user-dialog.component';
 import { GetUsersComponent } from './get-users/get-users.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 
 @NgModule({
@@ -129,11 +130,12 @@ import { GetUsersComponent } from './get-users/get-users.component';
     SigninComponent,
     AnimationComponent,
     AnimationComponentDialog,
-    DeleteUserComponent,
     UserManagerComponent,
     CreateUserDialogComponent,
-    GetUsersComponent
-    
+    GetUsersComponent,
+    UserProfileComponent,
+    UserManagerComponent,
+    EditUserComponent,
   ],
   imports: [
     BrowserModule,
