@@ -34,7 +34,7 @@ export class AnimationComponent implements OnDestroy{
   selectedFloor: string = '';
   floors: any[] = [];
   showTipsChecked: boolean = false;
-
+  autoPath: string = '';
   ngOnInit(): void {
     this.fetchFloors();
     // this.fetchRobots();
@@ -144,6 +144,11 @@ export class AnimationComponent implements OnDestroy{
         this.selectedFloor = this.thumbRaiser.maze.tunnelToGo;
         this.loadFloor(this.selectedFloor);
     }
+    if(this.thumbRaiser.autoElevator){
+      this.selectedFloor = this.thumbRaiser.autoElevatorToGo;
+      this.loadFloor(this.thumbRaiser.autoElevatorToGo);
+      this.thumbRaiser.autoElevator = false;
+    }
     if (this.thumbRaiser.maze.elevatorTp) {
         this.thumbRaiser.gamePaused = true;
         this.thumbRaiser.gameRunning = false;
@@ -170,6 +175,28 @@ export class AnimationComponent implements OnDestroy{
   
   onShowTipsChange(){
     this.thumbRaiser.showTips(this.showTipsChecked);
+  }
+
+  async automateRobot(){
+    await this.openDialogAuto();
+    if (this.autoPath.includes('cel(')){
+      const path =this.autoPath.split(';');
+      console.log (path);
+      this.thumbRaiser.automaticPath(path);
+      this.autoPath = '';
+    }
+   
+  }
+  async openDialogAuto(): Promise<string> {
+    const dialogRef = this.dialog.open(AnimationComponentDialogAuto);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result!=null){
+        this.autoPath = result;
+      }
+    });
+    await dialogRef.afterClosed().toPromise();
+    return this.autoPath;
   }
 
   private createScene(): void {
@@ -447,33 +474,53 @@ export class AnimationComponent implements OnDestroy{
     templateUrl: './animation-dialog.component.html',
   })
 export class AnimationComponentDialog {
-    floorOptions: any[] = []; 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: [],public dialogRef: MatDialogRef<AnimationComponentDialog>,private floorService: FloorService) {}
-    ngOnInit(): void {
-        this.loadFloorOptions();
-        console.log(this.data);
-      }
-    
-      loadFloorOptions(): void {
-        this.data.forEach((element: any) => {
-            this.floorService.findFloorByNumber(element).subscribe(
-                async (floor: any) => {
-                await this.floorOptions.push(floor);
-                },
-                (error: any) => {
-                console.error('Error fetching floor', error);
-                }
-            );
+  floorOptions: any[] = []; 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: [],public dialogRef: MatDialogRef<AnimationComponentDialog>,private floorService: FloorService) {}
+  ngOnInit(): void {
+      this.loadFloorOptions();
+      console.log(this.data);
+  }
+  
+  loadFloorOptions(): void {
+    this.data.forEach((element: any) => {
+        this.floorService.findFloorByNumber(element).subscribe(
+            async (floor: any) => {
+            await this.floorOptions.push(floor);
+            },
+            (error: any) => {
+            console.error('Error fetching floor', error);
             }
-      );}
+        );
+        }
+  );}
 
-      onClick(floorNumber): void {
-        this.dialogRef.close(floorNumber);
-      }
-      onCancel(): void {
-        this.dialogRef.close();
-      }
-    
+  onClick(floorNumber): void {
+    this.dialogRef.close(floorNumber);
+  }
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+}
 
 
+
+@Component({
+  selector: 'app-animation',
+  templateUrl: './animation-dialog-auto.component.html',
+})
+export class AnimationComponentDialogAuto {
+floorOptions: any[] = []; 
+constructor(@Inject(MAT_DIALOG_DATA) public data: [],public dialogRef: MatDialogRef<AnimationComponentDialogAuto>,private floorService: FloorService) {}
+  stringInput: string = '';
+  ngOnInit(): void {
+      
+
+  }
+
+  onClick(stringInput): void {
+    this.dialogRef.close(stringInput);
+  }
+  onCancel(): void {
+    this.dialogRef.close();
+  }
 }

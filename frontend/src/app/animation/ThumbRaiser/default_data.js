@@ -191,7 +191,7 @@ export const cameraData = {
     initialTarget: new THREE.Vector3(0.0, 0.0, 0.0), // Target position
     initialOrientation: new Orientation(135.0, -45.0), // Horizontal and vertical orientation and associated limits (expressed in degrees)
     orientationMin: new Orientation(-180.0, -90.0),
-    orientationMax: new Orientation(180.0, 90.0),
+    orientationMax: new Orientation(180.0, 0.0),
     orientationStep: new Orientation(1.0, 1.0),
     initialDistance: 8.0, // Distance to the target and associated limits
     distanceMin: 4.0,

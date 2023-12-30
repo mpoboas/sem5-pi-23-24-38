@@ -4,9 +4,9 @@
         <div id="views-panel">
             <table class="views">
                 <tr>
-                    <td>
+                    <td style="padding-top: 0.5vmin;">
                         View:
-                        <select id="view">
+                        <select class="form-select" id="view" class="">
                             <option value="fixed">Fixed</option>
                             <option value="first">First-person</option>
                             <option value="third">Third-person</option>
@@ -15,7 +15,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="padding-top: 0.5vmin;">
                         Projection:
                         <select id="projection">
                             <option value="perspective">Perspective</option>
@@ -32,7 +32,7 @@
                     </td>
                 </tr>
                 <tr>    
-                    <td>
+                    <td style="padding-top: 0.5vmin;">
                         Robot:
                         <select id="select-robot" [(ngModel)]="selectedRobot" (change)="onRobotSelected($event)">
                             <option *ngFor="let robot of robots" [value]="robot.nickname">{{ robot.nickname }}</option>
@@ -49,7 +49,7 @@
 
                 </tr>
                 <tr>    
-                    <td>
+                    <td style="padding-top: 0.5vmin;">
                         Floor:
                         <select id="select-floor" [(ngModel)]="selectedFloor" (change)="onFloorSelected($event)">
                             <option *ngFor="let floor of floors" [value]="floor.floorNumber">{{ floor.floorNumber }}</option>
@@ -58,13 +58,18 @@
                 </tr>
                 
                 <tr>                        
-                    <td>
-                        <input type="button" id="reset" value="Reset view">
+                    <td align="center" style="padding-top: 0.5vmin;">
+                        <input class="btn btn-secondary" type="button" id="reset" value="Reset view" style="align-content: center; font-size: auto; width: 235px; " >
                     </td>
                 </tr>
                 <tr>    
-                    <td>
-                        <input type="button" id="reset-all" value="Reset all views">
+                    <td align="center" style="padding-top: 0.5vmin;">
+                        <input class="btn btn-secondary" type="button" id="reset-all" value="Reset all views"style="width: 235px;">
+                    </td>
+                </tr>
+                <tr>                        
+                    <td align="center" style="padding-top: 0.5vmin;">
+                        <input class="btn btn-secondary" type="button" id="automatic" value="Automate Robot" (click)="automateRobot()" style="width: 235px;">
                     </td>
                 </tr>
             </table>
