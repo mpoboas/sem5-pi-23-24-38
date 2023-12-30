@@ -20,6 +20,7 @@ export class UserProfileComponent implements OnInit {
   userData: UserData;
   editMode: boolean = false;
   form: FormGroup;
+  copyMessage: string | null = null;
 
   constructor(private authService: AuthService, private fb: FormBuilder) {}
 
@@ -70,4 +71,32 @@ export class UserProfileComponent implements OnInit {
         );
       }
   }
+
+  copyProfile(): void {
+    const name = this.authService.getUserData().name ;
+    const email = this.authService.getUserData().email ;
+    const phoneNumber = this.authService.getUserData().phoneNumber ;
+    const nif = this.authService.getUserData().nif ;
+    const role = this.authService.getUserData().role ;
+    const userData = `Name: ${name} \nEmail: ${email} \nPhone Number: ${phoneNumber} \nNIF: ${nif} \nRole: ${role}`;
+
+    const blob = new Blob([userData], { type: 'text/plain' });
+    const anchor = document.createElement('a');
+
+    anchor.download = 'user-profile_'+name+'.txt';
+    anchor.href = window.URL.createObjectURL(blob);
+    anchor.target = '_blank';
+
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    
+    if (document){
+      this.copyMessage = 'User data copied';
+    } else {
+      this.copyMessage = 'Error during copy';
+    }
+  }
+    
 }
+

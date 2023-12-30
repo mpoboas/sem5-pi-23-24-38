@@ -27,8 +27,13 @@
                 <input matInput id="nif" type="text" readonly [(ngModel)]="userData.nif">
             </mat-form-field>
         </div>
-    
-        <button class="btn btn-primary" (click)="toggleEditMode()">Edit Profile</button>
+        <div class="button-gap" style="overflow: auto; white-space: nowrap; padding: 5px;">
+            <button class="btn btn-primary" (click)="toggleEditMode()">Edit Profile</button>
+            <button class="btn btn-secondary" (click)="copyProfile()">Copy Profile</button>
+        </div>
+        <div style="margin-top: 10px;" *ngIf="copyMessage" class="alert alert-secondary">
+            {{ copyMessage }}
+        </div>
     </div>
     
     <div class="container mt-5" style="width: 30%;" *ngIf="editMode">
