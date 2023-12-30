@@ -368,6 +368,8 @@ export default class ThumbRaiser {
         // Set the game state
         this.gameRunning = false;
         this.gamePaused = false;
+        this.autoElevator = false;
+        this.autoElevatorToGo= "";
         // Create the audio listener, the audio sources and load the sound clips
         this.audio = new Audio(this.audioParameters);
         
@@ -397,7 +399,7 @@ export default class ThumbRaiser {
 
         // Create the cube texture
         this.cubeTexture = new CubeTexture(this.cubeTexturesParameters.skyboxes[this.cubeTexturesParameters.selected]);
-
+//Create helper objects
         // Create the maze
         this.maze = new Maze(this.mazeParameters);
 
@@ -976,8 +978,7 @@ export default class ThumbRaiser {
                 this.mouse.currentPosition = new THREE.Vector2(event.clientX, window.innerHeight-120 - event.clientY - 1);
                 if (event.buttons == 0) { // No button down
                     this.getPointedViewport(this.mouse);
-                    //console.log(this.maze.children);
-                    //this.checkIntersection(this.mouse.currentPosition, this.mouse.camera);
+//                    this.checkIntersection(this.mouse.currentPosition, this.mouse.camera.perspective);
                 }
                 else if (this.mouse.actionInProgress) { // Primary or secondary button down and action in progress
                     if (this.mouse.camera != "none") { // Mouse action in progress
@@ -1015,29 +1016,647 @@ export default class ThumbRaiser {
         }
     }
 
+    // checkIntersection(mousePosition, camera) {
+    //     console.log();
+    //     this.raycaster.setFromCamera(mousePosition, camera);
+    //     this.raycaster.helper;
+    //     const intersects = this.raycaster.intersectObjects(this.maze, true);
+    //     if (intersects.length > 0) {
+    //         console.log(intersects[0].object.name);
+    //     }
 
+    // }
 
-
-
-/*
-    checkIntersection(mousePosition, camera) {
-        console.log();
-        this.raycaster.setFromCamera(mousePosition, camera);
-        this.raycaster.helper;
-        const intersects = this.raycaster.intersectObjects(this.maze, true);
-        if (intersects.length > 0) {
-            console.log(intersects[0].object.name);
-        }
-
-    }
-*/
     showTips(tipsbolean) {
-        console.log("what");
         this.maze.changeLabelVisibility(tipsbolean);
     }
 
 
 
+
+    async automaticPath(celValues){
+      
+                            
+            const event1 = new KeyboardEvent("keydown", {
+                code: "KeyO",
+                key: "o",
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                // ... other properties
+            });
+       
+            //cel ele tun
+        for (let i = 0; i < celValues.length; i++) {
+           if (celValues[i].includes('cel')&&i==0) {
+                celValues[i]=celValues[i].replace('cel','');
+                celValues[i] = celValues[i].replace(/[\(\)]/g, '');
+                celValues[i] = celValues[i].split(',');
+                const cords =this.maze.cellToCartesian(celValues[i]);
+                
+                this.player.position.set(cords.x,cords.y,cords.z);
+                this.player.direction=0;///Rever SEMPRE SE ESTA A 0
+                await new Promise(resolve => setTimeout(resolve, 500));
+           }
+           if (celValues[i].includes('cel')&&celValues[i-1].includes('ele')) {
+            celValues[i]=celValues[i].replace('cel','');
+            celValues[i] = celValues[i].replace(/[\(\)]/g, '');
+            celValues[i] = celValues[i].split(',');
+            const cords =this.maze.cellToCartesian(celValues[i]);
+            
+            this.player.position.set(cords.x,cords.y,cords.z);
+            this.player.direction=0;///Rever SEMPRE SE ESTA A 0
+            await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            if (celValues[i].includes('cel')&&celValues[i-1].includes('tun')) {
+                celValues[i]=celValues[i].replace('cel','');
+                celValues[i] = celValues[i].replace(/[\(\)]/g, '');
+                celValues[i] = celValues[i].split(',');
+                const cords =this.maze.cellToCartesian(celValues[i]);
+                
+                this.player.position.set(cords.x,cords.y,cords.z);
+                this.player.direction=0;///Rever SEMPRE SE ESTA A 0
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+
+            if (celValues[i].includes('cel')&&i!=0) {
+                //1350 forward
+                ////1200 right and left
+
+                celValues[i]=celValues[i].replace('cel','');
+                celValues[i] = celValues[i].replace(/[\(\)]/g, '');
+                celValues[i] = celValues[i].split(',');
+
+                const cords =this.maze.cellToCartesian(celValues[i]);
+                
+                const playerMaze=this.maze.cartesianToCell(this.player.position);
+                if(playerMaze[0]+1==celValues[i][0]&&playerMaze[1]==celValues[i][1]){//NORTEEEEEEEEEEEEEE
+                    console.log("NORTE");
+                    if(this.player.direction==0){//A FRENTE
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Direita
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Esquerda
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 180; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+                    
+    
+    
+                }else if(playerMaze[0]-1==celValues[i][0]&&playerMaze[1]==celValues[i][1]){//SUL
+                    console.log("SUL");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 180; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+
+    
+                }else if(playerMaze[0]==celValues[i][0]&&playerMaze[1]+1==celValues[i][1]){//OESTE
+                    console.log("OESTE");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        for (let j = 0; j < 180; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1325));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+
+    
+                }else if(playerMaze[0]==celValues[i][0]&&playerMaze[1]-1==celValues[i][1]){//ESTE
+                    console.log("ESTE");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        for (let j = 0; j < 180; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1350));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 90; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1325));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+
+    
+                }else if(playerMaze[0]+1==celValues[i][0]&&playerMaze[1]+1==celValues[i][1]){//NORTE OESTE
+                    console.log("NORTE OESTE");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }
+
+                }else if(playerMaze[0]+1==celValues[i][0]&&playerMaze[1]-1==celValues[i][1]){//NORTE ESTE
+                    console.log("NORTE ESTE");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }
+
+                }else if(playerMaze[0]-1==celValues[i][0]&&playerMaze[1]+1==celValues[i][1]){//SUL OESTE
+                    console.log("SUL OESTE");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }
+
+                }else if(playerMaze[0]-1==celValues[i][0]&&playerMaze[1]-1==celValues[i][1]){//SUL ESTE
+                    console.log("SUL ESTE");
+                    if(this.player.direction==0){//A FRENTE
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==-90||this.player.direction==270){//A Direita
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==90||this.player.direction==-270){//A Esquerda
+                        for (let j = 0; j < 135; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;         
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }else if(this.player.direction==180||this.player.direction==-180){//Atras
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += 1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                                this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        this.player.keyStates.forward = true;
+                        await new Promise(resolve => setTimeout(resolve, 1875));
+                        this.player.keyStates.forward = false;
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        for (let j = 0; j < 45; j++) {
+                            this.player.direction += -1;
+                            if(this.player.direction==-360||this.player.direction==360){
+                            this.player.direction=0;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        } 
+                    }
+    
+                }
+                await new Promise(resolve => setTimeout(resolve, 100));
+                const playerForDoor=this.maze.cartesianToCell(this.player.position);
+                this.maze.doorOpen(playerForDoor[0]+1,playerForDoor[1]);
+                this.maze.doorOpen(playerForDoor[0],playerForDoor[1]+1);
+                this.maze.doorOpen(playerForDoor[0]+1,playerForDoor[1]+1);
+                this.maze.doorOpen(playerForDoor[0]-1,playerForDoor[1]);
+                this.maze.doorOpen(playerForDoor[0],playerForDoor[1]-1);
+                this.maze.doorOpen(playerForDoor[0]-1,playerForDoor[1]-1);
+                this.maze.doorOpen(playerForDoor[0],playerForDoor[1]);
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+
+            }
+
+            if (celValues[i].includes('ele')) {
+                let elevatorrrr = celValues[i].substring(celValues[i].indexOf("(") + 1, celValues[i].indexOf(")"));
+                
+                this.autoElevatorToGo = elevatorrrr;
+                this.autoElevator = true;
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            if (celValues[i].includes('tun')) {
+                
+                this.maze.tunnelTp = true;
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+        }
+        this.animations.fadeToAction("Jump", 0.2);
+    }
+ 
 
     mouseUp(event) {
         if (event.button == 0 || event.button == 2) { // Primary or secondary button up (do not confuse event.button with event.buttons: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button and https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons)
@@ -1385,6 +2004,7 @@ export default class ThumbRaiser {
                         if (playerMoved) {
                             this.animations.fadeToAction(this.player.shiftKey ? "Running" : "Walking", 0.2);
                             this.player.position.set(position.x, position.y, position.z);
+
                         }
                         else {
                             if (this.animations.idleTimeOut()) {

@@ -34,7 +34,7 @@ export class AnimationComponent implements OnDestroy{
   selectedFloor: string = '';
   floors: any[] = [];
   showTipsChecked: boolean = false;
-
+  autoPath: string = '';
   ngOnInit(): void {
     this.fetchFloors();
     // this.fetchRobots();
@@ -144,6 +144,11 @@ export class AnimationComponent implements OnDestroy{
         this.selectedFloor = this.thumbRaiser.maze.tunnelToGo;
         this.loadFloor(this.selectedFloor);
     }
+    if(this.thumbRaiser.autoElevator){
+      this.selectedFloor = this.thumbRaiser.autoElevatorToGo;
+      this.loadFloor(this.thumbRaiser.autoElevatorToGo);
+      this.thumbRaiser.autoElevator = false;
+    }
     if (this.thumbRaiser.maze.elevatorTp) {
         this.thumbRaiser.gamePaused = true;
         this.thumbRaiser.gameRunning = false;
@@ -172,14 +177,26 @@ export class AnimationComponent implements OnDestroy{
     this.thumbRaiser.showTips(this.showTipsChecked);
   }
 
-  automateRobot(){
-    this.openDialogAuto();
+  async automateRobot(){
+    await this.openDialogAuto();
+    if (this.autoPath.includes('cel(')){
+      const path =this.autoPath.split(';');
+      console.log (path);
+      this.thumbRaiser.automaticPath(path);
+      this.autoPath = '';
+    }
+   
   }
-  openDialogAuto(): void {
+  async openDialogAuto(): Promise<string> {
     const dialogRef = this.dialog.open(AnimationComponentDialogAuto);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      if (result!=null){
+        this.autoPath = result;
+      }
     });
+    await dialogRef.afterClosed().toPromise();
+    return this.autoPath;
   }
 
   private createScene(): void {

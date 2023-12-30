@@ -463,6 +463,17 @@ export default class Maze extends THREE.Group {
         }
         return false;
     }
+    doorOpen(posx,posz){
+        //if(this.map[posx][posz] == "4"){   
+                 
+            let door = this.doorClones[posx+"_"+posz];
+            if(door != undefined){
+                door.actions.open();
+            }
+            
+        //}
+
+    }
 
     doorCollision(indices, offsets,direction, position, delta, radius, name) {
         let doorActionsEnabled = false;

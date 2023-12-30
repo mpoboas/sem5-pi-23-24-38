@@ -75,17 +75,17 @@ table.views {
 table.mouse-help {
     text-align: center;
     width: 50vmin;
-    background-color: #44444450;
+    background-color: #444444CC;
 }
 
 table.keyboard-help {
     width: 50vmin;
-    background-color: #44444450;
+    background-color: #444444CC;
 }
 
 table.credits {
     width: 50vmin;
-    background-color: #44444450;
+    background-color: #444444CC;
 }
 
 table.subwindows {
@@ -96,17 +96,34 @@ table.subwindows {
 th,
 td {
     overflow: hidden;
-
     padding-left: 0.5vmin;
-    //padding-left: 0.5vmin;
     padding-right: 0.5vmin;
     border-collapse:collapse;
-    //border: 1px solid black;
 }
 
 a {
     color: white;
 }
+
+
+select {
+    border-radius: 5px;
+    background-color: white;
+    color: white;
+    font-size: 1.5vmin;
+    
+    border: none;
+    padding: 2px;
+
+}
+
+#select-robot,
+#select-floor,
+#view,
+#projection {
+    color: black;
+}
+
 
 
 #horizontal,
