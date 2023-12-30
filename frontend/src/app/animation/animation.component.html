@@ -6,7 +6,7 @@
                 <tr>
                     <td>
                         View:
-                        <select id="view">
+                        <select class="form-select" id="view" class="">
                             <option value="fixed">Fixed</option>
                             <option value="first">First-person</option>
                             <option value="third">Third-person</option>
@@ -59,12 +59,17 @@
                 
                 <tr>                        
                     <td>
-                        <input type="button" id="reset" value="Reset view">
+                        <input class="btn btn-secondary" type="button" id="reset" value="Reset view" style="align-content: center; font-size: auto; " >
                     </td>
                 </tr>
                 <tr>    
                     <td>
-                        <input type="button" id="reset-all" value="Reset all views">
+                        <input class="btn btn-secondary" type="button" id="reset-all" value="Reset all views"style="width: auto;">
+                    </td>
+                </tr>
+                <tr>                        
+                    <td>
+                        <input class="btn btn-secondary" type="button" id="automatic" value="Automate Robot" (click)="automateRobot()">
                     </td>
                 </tr>
             </table>

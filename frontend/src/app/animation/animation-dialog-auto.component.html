@@ -1,0 +1,15 @@
+<mat-dialog-actions>
+
+<div class="container">
+    <form>
+        <mat-form-field style="width: 1000px;">
+            <input matInput placeholder="Digite uma string" [(ngModel)]="stringInput" name="stringInput">
+        </mat-form-field>
+    </form>
+
+    <button class="btn btn-secondary" mat-button (click)="onClick(stringInput)">Automate</button>
+    <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+</div>
+
+
+</mat-dialog-actions>

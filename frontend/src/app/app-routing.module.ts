@@ -11,7 +11,6 @@ import { RobotComponent } from './robot/robot.component';
 import { TunnelComponent } from './tunnel/tunnel.component';
 import { ElevatorComponent } from './elevator/elevator.component';
 import { ClassroomComponent } from './classroom/classroom.component';
-import { VisualizationComponent } from './visualization/visualization.component';
 import { InfoManagerComponent } from './info-manager/info-manager.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
@@ -43,7 +42,6 @@ const routes: Routes = [
     { path: 'classrooms', component: ClassroomComponent},
     { path: 'tunnels', component: TunnelComponent },
     { path: 'elevators', component: ElevatorComponent },
-    { path: 'visualization', component: VisualizationComponent },
     { path: 'animation', component: AnimationComponent}
   ]},
   { path: '**', redirectTo: '' },

@@ -64,7 +64,6 @@ import { ClassroomComponent } from './classroom/classroom.component';
 import { CreateClassroomComponent } from './create-classroom/create-classroom.component';
 import { GetClassroomComponent } from './get-classroom/get-classroom.component';
 import { EditClassroomComponent } from './edit-classroom/edit-classroom.component';
-import { VisualizationComponent } from './visualization/visualization.component';
 import { InfoManagerComponent } from './info-manager/info-manager.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { TaskManagerComponent } from './task-manager/task-manager.component';
@@ -81,7 +80,7 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
 import { CreateUserDialogComponent } from './create-user-dialog/create-user-dialog.component';
 import { GetUsersComponent } from './get-users/get-users.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
-
+import { AnimationComponentDialogAuto } from './animation/animation.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +118,6 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     CreateClassroomComponent,
     GetClassroomComponent,
     EditClassroomComponent,
-    VisualizationComponent,
     InfoManagerComponent,
     AdminManagerComponent,
     TaskManagerComponent,
@@ -136,6 +134,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     UserProfileComponent,
     UserManagerComponent,
     EditUserComponent,
+    AnimationComponentDialogAuto,
   ],
   imports: [
     BrowserModule,

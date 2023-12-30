@@ -15,7 +15,6 @@ body {
     left: -49.5vw;
     top: -49.0vh;
     margin-top: 120px;
-    
     font-size: 1.5vmin;
     color: white;
 }
@@ -61,7 +60,11 @@ body {
 
 table {
     margin: auto;
-    border: 1px solid black;
+    border: 10px solid transparent;
+    border-radius: 8px;
+    //padding: auto;
+    //border-collapse: collapse ;
+    //border: 10px solid #444444;
 }
 
 table.views {
@@ -93,18 +96,18 @@ table.subwindows {
 th,
 td {
     overflow: hidden;
-    border: 1px solid black;
+
+    padding-left: 0.5vmin;
+    //padding-left: 0.5vmin;
+    padding-right: 0.5vmin;
+    border-collapse:collapse;
+    //border: 1px solid black;
 }
 
 a {
     color: white;
 }
 
-#view,
-#projection {
-    width: 18ch;
-    font-size: 1.5vmin;
-}
 
 #horizontal,
 #vertical,
@@ -114,18 +117,12 @@ a {
     font-size: 1.5vmin;
 }
 
-#reset,
-#reset-all {
-    width: 16ch;
-    font-size: 1.5vmin;
-}
-
 input:invalid {
     background-color: pink;
 }
 
 .checkbox-red {
-    accent-color: red;
+    accent-color: green;
 }
 
 canvas {
