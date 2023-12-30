@@ -78,8 +78,14 @@ export class GetUsersComponent {
   }
 
   deleteUser(userData: any) {
-    console.log('User:', userData);
-    const result = window.confirm('This option is nuclear, are you sure you want to continue?');
+    let result: boolean;
+    if (userData.id === this.authService.getUserId()) {
+      alert('You cannot delete your own account here. \nPlease go to your profile page to delete your account.');
+      result = false;
+      return;
+    } else {
+      result = window.confirm('This option is nuclear, are you sure you want to continue?');
+    }
 
 
     if (result) {
