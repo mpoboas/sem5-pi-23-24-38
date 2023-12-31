@@ -3,7 +3,8 @@ import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 
 import { NgForm } from '@angular/forms';
-
+import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -22,7 +23,7 @@ export class SignupComponent {
 
   errorMessage: string | null = null;
   
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,public dialog:MatDialog) {}
 
   onSubmit(signupForm: NgForm) {
     if (signupForm.valid) {
@@ -48,6 +49,10 @@ export class SignupComponent {
   }
 
   openTermsConditions() {
-    this.router.navigate(['/terms-conditions']);
+    const dialogRef = this.dialog.open(TermsConditionsComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./terms-conditions.component.scss']
 })
 export class TermsConditionsComponent {
+  
 
 }
