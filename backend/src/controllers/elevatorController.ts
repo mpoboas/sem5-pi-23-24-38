@@ -64,9 +64,7 @@ export default class ElevatorController
 
   public async listAllElevators(req: Request, res: Response, next: NextFunction) {
     try {
-      //console.log('listAllElevators');
       const elevators = await this.elevatorServiceInstance.getAllElevators();
-      console.log('listAllElevators', elevators);
       return res.json(elevators).status(200);
     } catch (e) {
       return next(e);

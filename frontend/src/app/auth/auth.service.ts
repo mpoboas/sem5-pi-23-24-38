@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 interface LoginResponse {
   userDTO: any;
@@ -14,7 +16,7 @@ interface LoginResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:3000/api';
+  private readonly apiUrl = environment.apiUrl + '/api';
   private readonly tokenKey = 'authToken';
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());

@@ -12,7 +12,7 @@ import { EditBuildingDialogComponent } from '../edit-building-dialog/edit-buildi
   styleUrls: ['./get-buildings.component.scss']
 })
 export class GetBuildingsComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['letter', 'description', 'code', 'length', 'width', 'actions' ];
+  displayedColumns: string[] = ['letter', 'description', 'code', 'dimensions', 'actions' ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,7 +39,9 @@ export class GetBuildingsComponent implements AfterViewInit, OnInit {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.paginator.pageSize = 10;
+      setTimeout(() => {
+        this.paginator.pageSize = 10;
+      });
     }
   }
 

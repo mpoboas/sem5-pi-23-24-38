@@ -39,7 +39,9 @@ export class GetUsersComponent {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.paginator.pageSize = 10;
+      setTimeout(() => {
+        this.paginator.pageSize = 10;
+      });
     }
   }
 
@@ -92,7 +94,6 @@ export class GetUsersComponent {
       this.authService.getUsers().subscribe(
         (data: any[]) => {
           const user = data.find(user => user.email === userData.email);
-          console.log('Userrrr:', user);
           if (user) {
             const userId = user.id.toString();
             // Call the signup method from your AuthService

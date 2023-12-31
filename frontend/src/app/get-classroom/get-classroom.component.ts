@@ -55,7 +55,9 @@ export class GetClassroomComponent {
       if (this.dataSource) {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.paginator.pageSize = 10;
+        setTimeout(() => {
+          this.paginator.pageSize = 10;
+        });
       }
     }
 

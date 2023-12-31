@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TunnelService {
-  private baseUrl = 'http://localhost:3000/api/tunnels'; // Replace with your API URL
+  private baseUrl = environment.apiUrl + '/api/tunnels';
 
   constructor(private http: HttpClient) { }
 

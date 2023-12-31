@@ -8,5 +8,5 @@ import { AuthService } from './auth/auth.service';
 })
 export class AppComponent {
   constructor(public authService: AuthService) {}
-  title = 'angular-three';
+  title = 'rob-drone-go';
 }

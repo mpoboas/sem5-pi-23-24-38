@@ -123,6 +123,11 @@ $angular-three-theme: mat.define-light-theme((
     height: 20px;
 }
 
+.icon_usersB {
+    content: url('assets/icons/users/users_black.svg');
+    height: 20px;
+}
+
 .icon_signinW {
     content: url('assets/icons/users/sign-in_white.svg');
     height: 20px;
@@ -150,6 +155,31 @@ $angular-three-theme: mat.define-light-theme((
 
 .icon_userAddB {
     content: url('assets/icons/users/user-add_black.svg');
+    height: 20px;
+}
+
+.icon_userEditB {
+    content: url('assets/icons/users/user-edit_black.svg');
+    height: 20px;
+}
+
+.icon_userSettingsB {
+    content: url('assets/icons/users/user-settings_black.svg');
+    height: 20px;
+}
+
+.icon_userPendingB {
+    content: url('assets/icons/users/user-pending_black.svg');
+    height: 20px;
+}
+
+.icon_userLockB {
+    content: url('assets/icons/users/user-lock_black.svg');
+    height: 20px;
+}
+
+.icon_userSecurityB {
+    content: url('assets/icons/users/user-security_black.svg');
     height: 20px;
 }
 

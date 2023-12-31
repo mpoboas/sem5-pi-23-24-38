@@ -39,7 +39,9 @@ export class GetFloorsComponent implements OnInit {
           element.buildingId = building;      
           this.dataSource = new MatTableDataSource(floor);
           this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          setTimeout(() => {
+            this.paginator.pageSize = 10;
+          });
         },
         (error: any) => {
           console.error('Error fetching building', error);
@@ -65,7 +67,9 @@ export class GetFloorsComponent implements OnInit {
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.paginator.pageSize = 10;
+      setTimeout(() => {
+        this.paginator.pageSize = 10;
+      });
     }
   }
 

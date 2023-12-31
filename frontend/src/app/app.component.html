@@ -1,64 +1,68 @@
-<div class="container-fluid" style="padding: 0;">
-  <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" >
-    <div class="container-fluid" >
-      <i class="icon_robdronegoW" style="padding-right: 5px;"></i>
-      <a class="navbar-brand" href="#">RobDroneGo</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav me-auto">
-        </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          
-          <!-- Display when user is not authenticated -->
-          <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="icon_signupW" style="vertical-align: middle;"></i> Sign Up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="icon_signinW" style="vertical-align: middle;"></i> Sign In</a>
-            </li>
-          </ng-container>
+<!DOCTYPE html>
+<html lang="en">
+<meta meta charset=utf-8>
 
-          <!-- Display when user is authenticated -->
-          <ng-container *ngIf="authService.isAuthenticated$ | async as isAuthenticated">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/campus-manager" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Campus Manager</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/fleet-manager" routerLinkActive="active"><i class="icon_fleetW" style="vertical-align: middle; padding-bottom: 2px;"></i> Fleet Manager</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/task-manager" routerLinkActive="active"><i class="icon_task" style="vertical-align: middle; padding-bottom: 2px;"></i> Task Manager</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/admin-manager" routerLinkActive="active"><i class="icon_admin" style="vertical-align: middle; padding-bottom: 2px;"></i> Admin Manager</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/info-manager" routerLinkActive="active"><i class="icon_info" style="vertical-align: middle; padding-bottom: 2px;"></i> </a>
-            </li>
-            <li class="nav-item">
-              &nbsp;
-              &nbsp;
-              &nbsp;
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/user-profile" routerLinkActive="active" *ngIf="authService.isAuthenticated$"><i class="icon_userW" style="vertical-align: middle;"></i> Hello, {{ authService.getUserName() }}</a>
-            </li>
-            <li class="nav-item">
-              <a style="cursor: pointer;" class="nav-link" (click)="authService.signout()" *ngIf="isAuthenticated"><i class="icon_signoutW" style="vertical-align: middle;"></i> Logout</a>
-            </li>
-          </ng-container>
-        </ul>
+<body>
+  <div class="container-fluid" style="padding: 0;">
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" >
+      <div class="container-fluid" >
+        <i class="icon_robdronegoW" style="padding-right: 5px;"></i>
+        <a class="navbar-brand" href="#">RobDroneGo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+          </ul>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            
+            <!-- Display when user is not authenticated -->
+            <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/signup" routerLinkActive="active"><i class="icon_signupW" style="vertical-align: middle;"></i> Sign Up</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/signin" routerLinkActive="active"><i class="icon_signinW" style="vertical-align: middle;"></i> Sign In</a>
+              </li>
+            </ng-container>
+
+            <!-- Display when user is authenticated -->
+            <ng-container *ngIf="authService.isAuthenticated$ | async as isAuthenticated">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/campus-manager" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Campus Manager</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/fleet-manager" routerLinkActive="active"><i class="icon_fleetW" style="vertical-align: middle; padding-bottom: 2px;"></i> Fleet Manager</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/task-manager" routerLinkActive="active"><i class="icon_task" style="vertical-align: middle; padding-bottom: 2px;"></i> Task Manager</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/admin-manager" routerLinkActive="active"><i class="icon_admin" style="vertical-align: middle; padding-bottom: 2px;"></i> Admin Manager</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/info-manager" routerLinkActive="active"><i class="icon_info" style="vertical-align: middle; padding-bottom: 2px;"></i> </a>
+              </li>
+              <li class="nav-item">
+                &nbsp;
+                &nbsp;
+                &nbsp;
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/user-profile" routerLinkActive="active" *ngIf="authService.isAuthenticated$"><i class="icon_userW" style="vertical-align: middle;"></i> Hello, {{ authService.getUserName() }}</a>
+              </li>
+              <li class="nav-item">
+                <a style="cursor: pointer;" class="nav-link" (click)="authService.signout()" *ngIf="isAuthenticated"><i class="icon_signoutW" style="vertical-align: middle;"></i> Logout</a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Main Content -->
-  <main class="app-content" >
-    <!-- Display the content of the selected component using router-outlet -->
-    <router-outlet></router-outlet>
-
-  </main>
-</div>
+    <!-- Main Content -->
+    <main class="app-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</body>
