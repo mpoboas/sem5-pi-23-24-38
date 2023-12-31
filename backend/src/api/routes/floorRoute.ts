@@ -65,8 +65,8 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchFloor(req, res, next),
   );
 
-  route.get('', (req,res,next) => ctrl.listAllFloors(req,res,next));
-  
+  route.get('', (req, res, next) => ctrl.listAllFloors(req, res, next));
+
   route.get('/getFloors/:buildingId', (req, res, next) => ctrl.listAllFloorsInBuilding(req, res, next));
 
   route.get('/byNumber/:floorNumber', (req, res, next) => ctrl.findFloorByNumber(req, res, next));

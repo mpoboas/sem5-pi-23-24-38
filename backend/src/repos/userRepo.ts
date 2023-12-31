@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi';
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Document, FilterQuery, Model } from 'mongoose';
 import { IUserPersistence } from '../dataschema/IUserPersistence';
 
@@ -64,8 +64,6 @@ export default class UserRepo implements IUserRepo {
     } else return null;
   }
 
-  
-
   public async findById(id: UserId | string): Promise<User> {
     const query = { domainId: id.toString() };
     const userRecord = await this.userSchema.findOne(query);
@@ -76,22 +74,22 @@ export default class UserRepo implements IUserRepo {
   }
 
   public async delete(id: UserId | string): Promise<boolean> {
-    if(id == null){
-      console.log("id is null (repo):", id);
+    if (id == null) {
+      console.log('id is null (repo):', id);
     }
     const query = { domainId: id.toString() };
     const userRecord = await this.userSchema.findOne(query);
-    if(userRecord != null) {
+    if (userRecord != null) {
       await userRecord.remove();
       return true;
-    }else return false;
+    } else return false;
   }
-  
+
   public async findAll(): Promise<User[]> {
-    try{
+    try {
       const userDocuments = await this.userSchema.find().exec();
 
-      if(!userDocuments){
+      if (!userDocuments) {
         return [];
       }
 

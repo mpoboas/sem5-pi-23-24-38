@@ -92,6 +92,4 @@ export default class RobotTypeService implements IRobotTypeService {
       throw e;
     }
   }
-
-
 }

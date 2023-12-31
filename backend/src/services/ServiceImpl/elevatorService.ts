@@ -175,10 +175,12 @@ export default class ElevatorService implements IElevatorService {
       } else {
         const floors = elevator.floors;
 
-        const floorsDTO = Promise.all(floors.map(floor => {
-          const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
-          return floorDTOResult;
-        }));
+        const floorsDTO = Promise.all(
+          floors.map(floor => {
+            const floorDTOResult = FloorMap.toDTO(floor) as IFloorDTO;
+            return floorDTOResult;
+          }),
+        );
 
         return floorsDTO;
       }
@@ -188,22 +190,22 @@ export default class ElevatorService implements IElevatorService {
   }
 
   public async getElevatorAlgav(): Promise<Result<any[]>> {
-    try{
+    try {
       const info: any[] = [];
       const elevators = await this.elevatorRepo.getAllElevators();
       for (const elevator of elevators) {
         const x = elevator.cordx;
         const y = elevator.cordy;
         const floors = elevator.floors;
-        for (const floor of floors){
-          const name = "e"+floor.floorNumber;
+        for (const floor of floors) {
+          const name = 'e' + floor.floorNumber;
           const floorId = floor.id.toString();
-          info.push({name, x, y, floorId});
+          info.push({ name, x, y, floorId });
         }
       }
-      if(info.length == 0){
+      if (info.length == 0) {
         return Result.fail('No buildings found');
-      }else{
+      } else {
         return Result.ok(info);
       }
     } catch (error) {

@@ -6,8 +6,7 @@ import IUserController from './IControllers/IUserController';
 import IUserService from '../services/IServices/IUserService';
 
 @Service()
-export default class UserController
-  implements IUserController {
+export default class UserController implements IUserController {
   constructor(@Inject(config.services.user.name) private userServiceInstance: IUserService) {}
 
   public async signUp(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +16,7 @@ export default class UserController
       const userOrError = await this.userServiceInstance.signUp(userDTO);
 
       if (userOrError.isFailure) {
-        return res.status(400).send("Failed to sign up user: " + userOrError.errorValue());
+        return res.status(400).send('Failed to sign up user: ' + userOrError.errorValue());
       }
 
       const createdUserDTO = userOrError.getValue();
@@ -35,7 +34,7 @@ export default class UserController
       const userOrError = await this.userServiceInstance.signIn(userDTO.email, userDTO.password);
 
       if (userOrError.isFailure) {
-        return res.status(404).send("Failed to sign in user: " + userOrError.errorValue());
+        return res.status(404).send('Failed to sign in user: ' + userOrError.errorValue());
       }
 
       const createdUserDTO = userOrError.getValue();
@@ -50,15 +49,15 @@ export default class UserController
     try {
       const userId = req.params.userId;
       const userDTO = req.body;
-      
+
       const existingUser = await this.userServiceInstance.getUser(userId);
       if (existingUser.isFailure) {
-        return res.status(404).send("Failed to edit user: " + existingUser.errorValue());
+        return res.status(404).send('Failed to edit user: ' + existingUser.errorValue());
       }
 
       const userOrError = await this.userServiceInstance.editUser(userId, userDTO);
       if (userOrError.isFailure) {
-        return res.status(404).send("Failed to edit user: " + userOrError.errorValue());
+        return res.status(404).send('Failed to edit user: ' + userOrError.errorValue());
       }
 
       return res.status(201).json(userOrError);
@@ -72,9 +71,9 @@ export default class UserController
       const userId = req.params.userId;
       const trueOrFalse = await this.userServiceInstance.delete(userId);
       if (trueOrFalse === false) {
-        return res.status(404).send("Failed to delete user" );
+        return res.status(404).send('Failed to delete user');
       }
-      return res.status(201).json("User deleted");
+      return res.status(201).json('User deleted');
     } catch (e) {
       return next(e);
     }
@@ -88,5 +87,4 @@ export default class UserController
       return next(e);
     }
   }
-
 }

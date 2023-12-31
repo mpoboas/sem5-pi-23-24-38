@@ -65,5 +65,4 @@ export default class RobotTypeController
       return next(e);
     }
   }
-
 }

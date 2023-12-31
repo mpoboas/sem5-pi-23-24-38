@@ -33,7 +33,6 @@ export class TunnelMap extends Mapper<Tunnel> {
         floor2: floor2Id,
         location1: tunnelDTO.location1,
         location2: tunnelDTO.location2,
-
       },
       new UniqueEntityID(tunnelDTO.domainId),
     );
@@ -57,7 +56,6 @@ export class TunnelMap extends Mapper<Tunnel> {
       floor2Id: tunnel.floor2.id.toValue(),
       location1: tunnel.location1,
       location2: tunnel.location2,
-
     };
   }
 }

@@ -75,20 +75,20 @@ export default class UserService implements IUserService {
   public async signIn(email: string, password: string): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
     try {
       const user = await this.userRepo.findByEmail(email);
-  
+
       if (!user) {
         return Result.fail<{ userDTO: IUserDTO; token: string }>('User not registered');
       }
-  
+
       const validPassword = await bcrypt.compare(password, user.password);
-   
+
       if (validPassword) {
         this.logger.silly('Password is valid!');
         this.logger.silly('Generating JWT');
-  
+
         const token = this.generateToken(user) as string;
         const userDTO = UserMap.toDTO(user) as IUserDTO;
-  
+
         return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO, token });
       } else {
         return Result.fail<{ userDTO: IUserDTO; token: string }>('Invalid password');
@@ -103,14 +103,14 @@ export default class UserService implements IUserService {
     try {
       const info: any[] = [];
       const users = await this.userRepo.findAll();
-      for(const user of users) {
+      for (const user of users) {
         const id = user.id.toString();
         const name = user.name;
         const email = user.email;
         const role = user.role;
         const phoneNumber = user.phoneNumber;
         const nif = user.nif;
-        info.push({id, name, email, role, phoneNumber, nif});
+        info.push({ id, name, email, role, phoneNumber, nif });
       }
       return info;
     } catch (e) {
@@ -131,7 +131,9 @@ export default class UserService implements IUserService {
           if (await this.userRepo.findByEmail(userEdit.email)) {
             return Result.fail<{ userDTO: IUserDTO; token: string }>('User with this email already exists');
           }
-        } else { user.email = UserEmail.create(userEdit.email).getValue().email; }
+        } else {
+          user.email = UserEmail.create(userEdit.email).getValue().email;
+        }
         user.password = await bcrypt.hash(userEdit.password, 10);
         user.role = userEdit.role;
         user.phoneNumber = UserPhoneNumber.create(userEdit.phoneNumber).getValue().phoneNumber;
@@ -141,14 +143,14 @@ export default class UserService implements IUserService {
 
         const token = this.generateToken(user) as string;
         const userDTO = UserMap.toDTO(user) as IUserDTO;
-  
+
         return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO, token });
       }
     } catch (e) {
       return Result.fail<{ userDTO: IUserDTO; token: string }>('Unexpected error editing user: ' + e.message);
     }
   }
-  
+
   public async delete(id: UserId | string): Promise<boolean> {
     const userDeleted = await this.userRepo.delete(id);
     if (userDeleted === false) {
@@ -162,7 +164,7 @@ export default class UserService implements IUserService {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-    
+
     const id = user.id;
     const email = user.email;
     const name = user.name;
@@ -187,7 +189,6 @@ export default class UserService implements IUserService {
   private isValidRole(role: string): boolean {
     return Object.values(Role).includes(role as Role);
   }
-
 
   public async getUser(userId: string): Promise<Result<IUserDTO>> {
     try {

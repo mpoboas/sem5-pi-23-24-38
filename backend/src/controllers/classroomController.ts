@@ -58,8 +58,7 @@ export default class ClassroomController implements IClassroomController {
     try {
       const classrooms = await this.classroomServiceInstance.getClassroomsAlgav();
       return res.json(classrooms.getValue()).status(200);
-    }
-    catch (e) {
+    } catch (e) {
       return next(e);
     }
   }
