@@ -27,7 +27,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
    */
 
   public async comparePassword(plainTextPassword: string): Promise<boolean> {
-    console.log("[UserPassword] comparePassword()");
+    console.log('[UserPassword] comparePassword()');
     let hashed: string;
     if (this.isAlreadyHashed()) {
       hashed = this.props.value;
@@ -66,7 +66,7 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
 
   public static create(props: UserPasswordProps): Result<UserPassword> {
     const propsResult = Guard.againstNullOrUndefined(props.value, 'password');
-  
+
     if (!propsResult.succeeded) {
       return Result.fail<UserPassword>(propsResult.message);
     } else {

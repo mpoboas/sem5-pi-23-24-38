@@ -198,8 +198,6 @@ export default async ({ expressApp }) => {
     path: config.services.user.path,
   };
 
-
-
   await dependencyInjectorLoader({
     mongoConnection,
     schemas: [

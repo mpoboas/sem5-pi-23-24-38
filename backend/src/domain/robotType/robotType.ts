@@ -90,7 +90,7 @@ export class RobotType extends AggregateRoot<RobotTypeProps> {
       { argument: rtTasks, argumentName: 'tasks' },
       { argument: rtModel, argumentName: 'model' },
       { argument: rtBrand, argumentName: 'brand' },
-      { argument: rtDesignation, argumentName: 'designation' },	
+      { argument: rtDesignation, argumentName: 'designation' },
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);

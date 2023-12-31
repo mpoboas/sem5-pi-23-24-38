@@ -10,7 +10,7 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     return this.props.email;
   }
 
-  set email(value: string) { 
+  set email(value: string) {
     this.props.email = value;
   }
 
@@ -18,15 +18,15 @@ export class UserEmail extends ValueObject<UserEmailProps> {
     super(props);
   }
 
-  private static validateEmail(email: string): Result<String> {
+  private static validateEmail(email: string): Result<string> {
     const regex: RegExp = /^[^\s@]+@isep.ipp.pt$/;
     if (email == null) {
-      return Result.fail<String>("Email can't be empty");
+      return Result.fail<string>("Email can't be empty");
     }
     if (!regex.test(email)) {
-      return Result.fail<String>('Invalid Email');
+      return Result.fail<string>('Invalid Email');
     }
-    return Result.ok<String>(email);
+    return Result.ok<string>(email);
   }
 
   public static create(email: string): Result<UserEmail> {

@@ -5,7 +5,6 @@ import IFloorController from './IControllers/IFloorController';
 import IFloorService from '../services/IServices/IFloorService';
 import IFloorDTO from '../dto/IFloorDTO';
 import { Result } from '../core/logic/Result';
-import { forEach } from 'lodash';
 
 @Service()
 export default class FloorController implements IFloorController /* TODO: extends ../core/infra/BaseController */ {

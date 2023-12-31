@@ -68,7 +68,7 @@ export class User extends AggregateRoot<UserProps> {
   set nif(value: string) {
     this.props.nif = value;
   }
-  
+
   private constructor(props: UserProps, id?: UniqueEntityID) {
     super(props, id);
   }
@@ -79,14 +79,14 @@ export class User extends AggregateRoot<UserProps> {
     const userPhoneNumber = UserPhoneNumber.create(userDTO.phoneNumber);
     const userNif = UserNif.create(userDTO.nif);
 
-    if(userEmail.isFailure) { 
-      return Result.fail<User>("Error in user email: " + userEmail.error.toString());
-    } else if(userPassword.isFailure) {
-      return Result.fail<User>("Error in user passowrd: " + userPassword.error.toString());
-    } else if(userPhoneNumber.isFailure) {
-      return Result.fail<User>("Error in user phone number: " + userPhoneNumber.error.toString());
-    } else if(userNif.isFailure) {
-      return Result.fail<User>("Error in user NIF: " + userNif.error.toString());
+    if (userEmail.isFailure) {
+      return Result.fail<User>('Error in user email: ' + userEmail.error.toString());
+    } else if (userPassword.isFailure) {
+      return Result.fail<User>('Error in user passowrd: ' + userPassword.error.toString());
+    } else if (userPhoneNumber.isFailure) {
+      return Result.fail<User>('Error in user phone number: ' + userPhoneNumber.error.toString());
+    } else if (userNif.isFailure) {
+      return Result.fail<User>('Error in user NIF: ' + userNif.error.toString());
     } else {
       const user = new User(
         {
@@ -98,7 +98,7 @@ export class User extends AggregateRoot<UserProps> {
           nif: userNif.getValue().nif,
         },
         id,
-      ); 
+      );
       return Result.ok<User>(user);
     }
   }

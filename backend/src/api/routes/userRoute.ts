@@ -1,14 +1,10 @@
 import { Router } from 'express';
 import { Container } from 'typedi';
 import { celebrate, Joi } from 'celebrate';
-import winston = require('winston');
 
 import IUserController from '../../controllers/IControllers/IUserController';
 
 import config from '../../../config';
-
-import AuthService from '../../services/ServiceImpl/userService';
-import middlewares from '../middlewares';
 
 const route = Router();
 
@@ -43,19 +39,23 @@ export default (app: Router) => {
     (req, res, next) => ctrl.signIn(req, res, next),
   );
 
-  route.put('/user/edit/:userId', celebrate({
-    params: Joi.object({
-      userId: Joi.string().required(),
+  route.put(
+    '/user/edit/:userId',
+    celebrate({
+      params: Joi.object({
+        userId: Joi.string().required(),
+      }),
+      body: Joi.object({
+        name: Joi.string(),
+        email: Joi.string(),
+        password: Joi.string(),
+        role: Joi.string(),
+        phoneNumber: Joi.string(),
+        nif: Joi.string(),
+      }),
     }),
-    body: Joi.object({
-      name: Joi.string(),
-      email: Joi.string(),
-      password: Joi.string(),
-      role: Joi.string(),
-      phoneNumber: Joi.string(),
-      nif: Joi.string(),
-    }),
-  }), (req, res, next) => ctrl.editUser(req, res, next));
+    (req, res, next) => ctrl.editUser(req, res, next),
+  );
 
   route.delete('/user/delete/:userId', (req, res, next) => ctrl.delete(req, res, next));
 
@@ -84,5 +84,5 @@ export default (app: Router) => {
 
   route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);*/
 
-  route.get('/users',(req, res, next) => ctrl.getAllUsers(req, res, next));
+  route.get('/users', (req, res, next) => ctrl.getAllUsers(req, res, next));
 };
