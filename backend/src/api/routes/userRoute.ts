@@ -1,14 +1,11 @@
 import { Router } from 'express';
 import { Container } from 'typedi';
 import { celebrate, Joi } from 'celebrate';
-import winston = require('winston');
 
 import IUserController from '../../controllers/IControllers/IUserController';
 
 import config from '../../../config';
 
-import AuthService from '../../services/ServiceImpl/userService';
-import middlewares from '../middlewares';
 
 const route = Router();
 
