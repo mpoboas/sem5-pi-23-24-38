@@ -238,5 +238,5 @@ $angular-three-theme: mat.define-light-theme((
     height: 20px;
 }
 
-html, body { height: 100%; }
+html, body { height: auto; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
