@@ -13,7 +13,8 @@
     "dev": "lite-server --baseDir=dist/angular-three",
     "pm2:dev": "pm2 start ",
     "pm2:list": "pm2 list",
-    "pm2:start": "pm2 start lite-server --baseDir=dist/angular-three"
+    "pm2:start": "pm2 start lite-server --baseDir=dist/angular-three",
+    "pm2:logs": "pm2 logs"
   },
   "private": true,
   "dependencies": {
