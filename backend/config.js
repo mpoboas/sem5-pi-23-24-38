@@ -81,6 +81,10 @@ export default {
       name: 'PickupDeliveryTaskController',
       path: '../controllers/pickupDeliveryTaskController',
     },
+    surveillanceTask: {
+      name: 'SurveillanceTaskController',
+      path: '../controllers/surveillanceTaskController',
+    },
   },
 
   repos: {
@@ -128,6 +132,10 @@ export default {
       name: 'PickupDeliveryTaskRepo',
       path: '../repos/pickupDeliveryTaskRepo',
     },
+    surveillanceTask: {
+      name: 'SurveillanceTaskRepo',
+      path: '../repos/surveillanceTaskRepo',
+    },
   },
 
   services: {
@@ -170,6 +178,10 @@ export default {
     pickupDeliveryTask: {
       name: 'PickupDeliveryTaskService',
       path: '../services/ServiceImpl/pickupDeliveryTaskService',
+    },
+    surveillanceTask: {
+      name: 'SurveillanceTaskService',
+      path: '../services/ServiceImpl/surveillanceTaskService',
     },
   },
 };

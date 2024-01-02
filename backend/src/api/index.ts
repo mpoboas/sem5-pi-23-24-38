@@ -10,6 +10,7 @@ import robot from './routes/robotRoute';
 import classroom from './routes/classroomRoute';
 import tunnel from './routes/tunnelRoute';
 import pickupDeliveryTask from './routes/pickupDeliveryTaskRoute';
+import surveillanceTask from './routes/surveillanceTaskRoute';
 
 export default () => {
   const app = Router();
@@ -25,6 +26,7 @@ export default () => {
   classroom(app);
   tunnel(app);
   pickupDeliveryTask(app);
+  surveillanceTask(app)
 
   return app;
 };

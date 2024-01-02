@@ -63,6 +63,12 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/pickupDeliveryTaskSchema',
   };
 
+  const surveillanceTaskSchema = {
+    // compare with the approach followed in repos and services
+    name: 'surveillanceTaskSchema',
+    schema: '../persistence/schemas/surveillanceTaskSchema',
+  };
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path,
@@ -148,6 +154,16 @@ export default async ({ expressApp }) => {
     path: config.repos.pickupDeliveryTask.path,
   };
 
+  const surveillanceTaskController = {
+    name: config.controllers.surveillanceTask.name,
+    path: config.controllers.surveillanceTask.path,
+  };
+
+  const surveillanceTaskRepo = {
+    name: config.repos.surveillanceTask.name,
+    path: config.repos.surveillanceTask.path,
+  };
+
   const roleService = {
     name: config.services.role.name,
     path: config.services.role.path,
@@ -186,6 +202,11 @@ export default async ({ expressApp }) => {
   const pickupDeliveryTaskService = {
     name: config.services.pickupDeliveryTask.name,
     path: config.services.pickupDeliveryTask.path,
+  };
+
+  const surveillanceTaskService = {
+    name: config.services.surveillanceTask.name,
+    path: config.services.surveillanceTask.path,
   };
 
   const robotSchema = {
@@ -232,6 +253,7 @@ export default async ({ expressApp }) => {
       classroomSchema,
       tunnelSchema,
       pickupDeliveryTaskSchema,
+      surveillanceTaskSchema,
     ],
     controllers: [
       userController,
@@ -244,6 +266,7 @@ export default async ({ expressApp }) => {
       classroomController,
       tunnelController,
       pickupDeliveryTaskController,
+      surveillanceTaskController,
     ],
     repos: [
       roleRepo,
@@ -256,6 +279,7 @@ export default async ({ expressApp }) => {
       classroomRepo,
       tunnelRepo,
       pickupDeliveryTaskRepo,
+      surveillanceTaskRepo,
     ],
     services: [
       userService,
@@ -268,6 +292,7 @@ export default async ({ expressApp }) => {
       classroomService,
       tunnelService,
       pickupDeliveryTaskService,
+      surveillanceTaskService,
     ],
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');
