@@ -26,8 +26,8 @@
 
     <!-- Dimensions Column -->
     <ng-container matColumnDef="dimensions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dimensions</th>
-      <td mat-cell *matCellDef="let row" matTooltip="Length x Width">{{ row.length }} x {{ row.width }}</td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Length x Width" matTooltipPosition="left">Dimensions</th>
+      <td mat-cell *matCellDef="let row">{{ row.length }} x {{ row.width }}</td>
     </ng-container>
 
     <!-- Actions Column -->

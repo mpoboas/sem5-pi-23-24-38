@@ -82,6 +82,7 @@ import { GetUsersComponent } from './get-users/get-users.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { AnimationComponentDialogAuto } from './animation/animation.component';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -156,6 +157,7 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
     FormsModule,
     MatSlideToggleModule,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService, PlaneamentoService, AuthService] ,
   bootstrap: [AppComponent]

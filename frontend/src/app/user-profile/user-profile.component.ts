@@ -92,9 +92,9 @@ export class UserProfileComponent implements OnInit {
     document.body.removeChild(anchor);
     
     if (document){
-      this.copyMessage = 'User data copied';
+      this.copyMessage = 'User data downloaded successfully';
     } else {
-      this.copyMessage = 'Error during copy';
+      this.copyMessage = 'Error during download';
     }
   }
     

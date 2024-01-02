@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -45,6 +45,11 @@ export class AuthService {
     this.isAuthenticatedSubject.next(isAuthenticated);
   }
 
+  public getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
   signup(userDTO: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/signup`, userDTO);
   }
@@ -61,11 +66,11 @@ export class AuthService {
 
   editUser(userDTO: any): Observable<any> {
     const userId = this.getUserId();
-    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO);
+    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO, { headers: this.getHeaders() });
   }
 
   editUserByAdmin(userDTO: any, userId: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO);
+    return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO, { headers: this.getHeaders() });
   }
   
   
@@ -104,7 +109,7 @@ export class AuthService {
 
   deleteAccount(): Observable<any> {
     const userId = this.getUserId();
-    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`).pipe(
+    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`, { headers: this.getHeaders() }).pipe(
       tap(() => {
         this.removeToken();
         this.updateAuthStatus(false);
@@ -114,14 +119,14 @@ export class AuthService {
   }
 
   deleteAccountByAdmin(userId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`);
+    return this.http.delete(`${this.apiUrl}/auth/user/delete/${userId}`, { headers: this.getHeaders() });
   }
   
   getUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/auth/users`);
+    return this.http.get(`${this.apiUrl}/auth/users`, { headers: this.getHeaders() });
   }
 
   getRoles(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/roles`);
+    return this.http.get(`${this.apiUrl}/roles`, { headers: this.getHeaders() });
   }
 }

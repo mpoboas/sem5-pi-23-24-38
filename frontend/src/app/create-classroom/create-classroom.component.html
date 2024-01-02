@@ -25,19 +25,19 @@
     </div>
     <div style="display: flex; align-items: flex-start;">
       <mat-form-field style="width: 100%; padding-right: 30px;">
-        <mat-label>Porta x</mat-label>
+        <mat-label>Door x</mat-label>
         <input matInput placeholder="Ex: 3" formControlName="cordx">
       </mat-form-field>
       <mat-form-field style="width: 100%;">
-        <mat-label>Porta y</mat-label>
+        <mat-label>Door y</mat-label>
         <input matInput placeholder="Ex: 4" formControlName="cordy">
       </mat-form-field>
     </div>
     <mat-form-field style="width: 100%;">
-      <mat-label>FloorNumber</mat-label>
+      <mat-label>Floor</mat-label>
       <mat-select formControlName="floorNumber">
         <mat-option *ngFor="let floor of floorOptions" [value]="floor.floorNumber">
-          {{ floor.floorNumber }}
+          {{ floor.floorNumber }} - {{ floor.description }}
         </mat-option>
       </mat-select>
     </mat-form-field>

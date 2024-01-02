@@ -10,20 +10,16 @@
       <td mat-cell *matCellDef="let row">{{ row.buildingId }}</td>
     </ng-container>
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>name</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
       <td mat-cell *matCellDef="let row">{{ row.name }}</td>
     </ng-container>
-    <ng-container matColumnDef="cordx">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Porta x</th>
-      <td mat-cell *matCellDef="let row">{{ row.cordx }}</td>
-    </ng-container>
-    <ng-container matColumnDef="cordy">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Porta y</th>
-      <td mat-cell *matCellDef="let row">{{ row.cordy }}</td>
+    <ng-container matColumnDef="coordinates">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="(x,y)" matTooltipPosition="left">Coordinates</th>
+      <td mat-cell *matCellDef="let row">({{ row.cordx }},{{ row.cordy }})</td>
     </ng-container>
     <ng-container matColumnDef="floors">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>floors</th>
-      <td mat-cell *matCellDef="let row">{{ row.floors }}</td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Serviced floors</th>
+      <td mat-cell *matCellDef="let row">[{{ row.floors }}]</td>
     </ng-container>
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>

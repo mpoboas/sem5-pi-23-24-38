@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaneamentoService {
-  private baseUrl = 'http://localhost:5000/caminho_final/'; // Replace with your API URL
+  private baseUrl = 'http://localhost:5000/caminho_final/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getTrajetoria(inicio: any, fim: any): Observable<any> {
     return this.http.post(this.baseUrl, {inicio, fim});

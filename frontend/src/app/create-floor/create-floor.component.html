@@ -10,10 +10,10 @@
       <input matInput placeholder="Ex: Piso 1 do Edifício B" formControlName="description">
     </mat-form-field>
     <mat-form-field style="width: 100%;">
-      <mat-label>Building Code</mat-label>
+      <mat-label>Building</mat-label>
       <mat-select formControlName="buildingCode" (selectionChange)="onBuildingCodeSelect()">
         <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
-          {{ building.code }}
+          {{ building.code }} - {{ building.description }}
         </mat-option>
       </mat-select>
     </mat-form-field>
