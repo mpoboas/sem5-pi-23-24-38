@@ -1,0 +1,40 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_ADDRESS }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_FRONTEND }}
+          port: ${{ secrets.HOST_PORT_FRONTEND }}
+          script: |
+            cd /root/sem5-pi-23-24-38/frontend
+            git pull
+            npm install
+            node --max-old-space-size=4096 $(which ng) build
+            pm2 start "lite-server --baseDir=dist/angular-three"
+            pm2 start "lite-server --baseDir=dist/angular-three"
+
+
