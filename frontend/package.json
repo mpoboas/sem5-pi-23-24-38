@@ -10,7 +10,10 @@
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "dev": "lite-server --baseDir=dist/angular-three"
+    "dev": "lite-server --baseDir=dist/angular-three",
+    "pm2:dev": "pm2 start ",
+    "pm2:list": "pm2 list",
+    "pm2:start": "pm2 start lite-server --baseDir=dist/angular-three"
   },
   "private": true,
   "dependencies": {
