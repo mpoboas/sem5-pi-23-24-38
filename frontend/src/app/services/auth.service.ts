@@ -120,16 +120,10 @@ export class AuthService {
     const userData = this.getUserData();
   
     if (!userData || !userData.role) {
-      console.log('User data or role not available. Access denied.');
       return of(false);
     }
-  
     const userRole = userData.role.toLowerCase();
-    console.log('User role:', userRole);
-  
     const hasRequiredRole = expectedRoles.some(expectedRole => userRole === expectedRole.toLowerCase());
-    console.log('Has required role?', hasRequiredRole);
-  
     return of(hasRequiredRole);
   }
 

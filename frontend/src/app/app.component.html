@@ -28,16 +28,26 @@
 
             <!-- Display when user is authenticated -->
             <ng-container *ngIf="authService.isAuthenticated$ | async as isAuthenticated">
-              <li class="nav-item">
+              <!-- Display different menu depending on role -->
+              <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','campus_manager']) | async) === true">
                 <a class="nav-link" routerLink="/campus-manager" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Campus Manager</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" *ngIf="(authService.hasAnyRole(['teacher','student','user']) | async) === true">
+                <a class="nav-link" routerLink="/campus-manager" routerLinkActive="active"><i class="icon_buildingsW" style="vertical-align: middle;"></i> Campus</a>
+              </li>
+              <!-- -->
+              <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','fleet_manager']) | async) === true">
                 <a class="nav-link" routerLink="/fleet-manager" routerLinkActive="active"><i class="icon_fleetW" style="vertical-align: middle; padding-bottom: 2px;"></i> Fleet Manager</a>
               </li>
-              <li class="nav-item">
+              <!-- Display different menu depending on role -->
+              <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','task-manager']) | async) === true">
                 <a class="nav-link" routerLink="/task-manager" routerLinkActive="active"><i class="icon_task" style="vertical-align: middle; padding-bottom: 2px;"></i> Task Manager</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" *ngIf="(authService.hasAnyRole(['teacher','student','user']) | async) === true">
+                <a class="nav-link" routerLink="/task-manager" routerLinkActive="active"><i class="icon_task" style="vertical-align: middle; padding-bottom: 2px;"></i> Tasks</a>
+              </li>
+              <!-- -->
+              <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin']) | async) === true">
                 <a class="nav-link" routerLink="/admin-manager" routerLinkActive="active"><i class="icon_admin" style="vertical-align: middle; padding-bottom: 2px;"></i> Admin Manager</a>
               </li>
               <li class="nav-item">

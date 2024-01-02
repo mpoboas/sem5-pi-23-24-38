@@ -2,19 +2,19 @@
     <div class="container">
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto">    
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','campus_manager']) | async) === true">
                 <a class="nav-link"  routerLink="/campus-manager/buildings" routerLinkActive="active"><i class="icon_buildingsB" style="vertical-align: middle;"></i> Buildings</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','campus_manager']) | async) === true">
                 <a class="nav-link"  routerLink="/campus-manager/floors" routerLinkActive="active"><i class="icon_floorB" style="padding-right: 5px; height: 15px; vertical-align: middle;"></i>Floors</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','campus_manager']) | async) === true">
                 <a class="nav-link"  routerLink="/campus-manager/classrooms" routerLinkActive="active"><i class="icon_classroomB" style="height: 20px; padding-right: 5px; vertical-align: middle;"></i>Classrooms</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','campus_manager']) | async) === true">
                 <a class="nav-link"  routerLink="/campus-manager/tunnels" routerLinkActive="active"><i class="icon_tunnel" style="vertical-align: middle;"></i> Tunnels</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="(authService.hasAnyRole(['admin','campus_manager']) | async) === true">
                 <a class="nav-link"  routerLink="/campus-manager/elevators" routerLinkActive="active"><i class="icon_elevator" style="vertical-align: middle;"></i> Elevators</a>
             </li>
             <li class="nav-item">

@@ -73,13 +73,13 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchFloor(req, res, next),
   );
 
-  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllFloors(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER, Role.TEACHER, Role.STUDENT, Role.USER]), (req, res, next) => ctrl.listAllFloors(req, res, next));
 
-  route.get('/getFloors/:buildingId', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllFloorsInBuilding(req, res, next));
+  route.get('/getFloors/:buildingId', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER, Role.TEACHER, Role.STUDENT, Role.USER]), (req, res, next) => ctrl.listAllFloorsInBuilding(req, res, next));
 
-  route.get('/byNumber/:floorNumber', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findFloorByNumber(req, res, next));
+  route.get('/byNumber/:floorNumber', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER, Role.TEACHER, Role.STUDENT, Role.USER]), (req, res, next) => ctrl.findFloorByNumber(req, res, next));
 
-  route.get('/getFloorNum/:id', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findFloorNum(req, res, next));
+  route.get('/getFloorNum/:id', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER, Role.TEACHER, Role.STUDENT, Role.USER]), (req, res, next) => ctrl.findFloorNum(req, res, next));
  
   route.get('/getAlgavInfo', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.getAlgavInfo(req, res, next));
 };

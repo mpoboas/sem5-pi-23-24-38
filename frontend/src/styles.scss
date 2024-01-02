@@ -183,6 +183,17 @@ $angular-three-theme: mat.define-light-theme((
     height: 20px;
 }
 
+// Task icons
+.icon_taskDelivery {
+    content: url('assets/icons/tasks/delivery.svg');
+    height: 20px;
+}
+
+.icon_taskSurveillance {
+    content: url('assets/icons/tasks/surveillance.svg');
+    height: 20px;
+}
+
 // Request icons
 .icon_get {
     content: url('assets/icons/requests/get.svg');

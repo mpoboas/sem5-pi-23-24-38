@@ -21,6 +21,8 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { SigninComponent } from './components/auth/signin/signin.component';
 import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
 import { UserManagerComponent } from './components/managers/user-manager/user-manager.component';
+import { PickupAndDeliveryComponent } from './components/task/pickup-and-delivery/pickup-and-delivery.component';
+import { SurveillanceComponent } from './components/task/surveillance/surveillance.component';
 
 const routes: Routes = [
   { path: 'cube', component: CubeComponent },
@@ -28,23 +30,32 @@ const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'info-manager', component: InfoManagerComponent, canActivate: [AuthGuard] },
-  { path: 'task-manager', component: TaskManagerComponent, canActivate: [AuthGuard] },
-  { path: 'admin-manager', component: AdminManagerComponent, canActivate: [AuthGuard], children: [
-    { path: 'user-manager', component: UserManagerComponent }
+  { path: 'task-manager', component: TaskManagerComponent, canActivate: [AuthGuard], canActivateChild: [RoleGuard], children: [
+    { path: 'pickup-and-delivery', component: PickupAndDeliveryComponent, data: { expectedRoles: ['ADMIN', 'TASK_MANAGER', 'TEACHER', 'STUDENT', 'USER'] } },
+    { path: 'surveillance', component: SurveillanceComponent, data: { expectedRoles: ['ADMIN', 'TASK_MANAGER', 'TEACHER', 'STUDENT', 'USER'] } },
   ]},
-  { path: 'fleet-manager', component: FleetManagerComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['ADMIN', 'FLEET_MANAGER'] }, children: [
-    { path: 'robot-type', component: RobotTypeComponent },
-    { path: 'robot', component: RobotComponent },
-    { path: 'planning', component: PlanningComponent }
+  { path: 'admin-manager', component: AdminManagerComponent, canActivate: [AuthGuard], canActivateChild: [RoleGuard], children: [
+    { path: 'user-manager', component: UserManagerComponent, data: { expectedRoles: ['ADMIN'] } },
   ]},
-  { path: 'campus-manager', component: CampusManagerComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] }, children: [
-    { path: 'buildings', component: BuildingComponent },
-    { path: 'floors', component: FloorComponent },
-    { path: 'classrooms', component: ClassroomComponent},
-    { path: 'tunnels', component: TunnelComponent },
-    { path: 'elevators', component: ElevatorComponent },
-    { path: 'animation', component: AnimationComponent}
+  { path: 'fleet-manager', component: FleetManagerComponent, canActivate: [AuthGuard], canActivateChild: [RoleGuard], children: [
+    { path: 'robot-type', component: RobotTypeComponent, data: { expectedRoles: ['ADMIN','FLEET_MANAGER'] } },
+    { path: 'robot', component: RobotComponent, data: { expectedRoles: ['ADMIN','FLEET_MANAGER'] } },
+    { path: 'planning', component: PlanningComponent, data: { expectedRoles: ['ADMIN','FLEET_MANAGER'] } },
   ]},
+  {
+    path: 'campus-manager',
+    component: CampusManagerComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [RoleGuard], 
+    children: [
+      { path: 'buildings', component: BuildingComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
+      { path: 'floors', component: FloorComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
+      { path: 'classrooms', component: ClassroomComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
+      { path: 'tunnels', component: TunnelComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
+      { path: 'elevators', component: ElevatorComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
+      { path: 'animation', component: AnimationComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER', 'TEACHER', 'STUDENT', 'USER'] } },
+    ],
+  },
   { path: '**', redirectTo: '' },
 ];
 

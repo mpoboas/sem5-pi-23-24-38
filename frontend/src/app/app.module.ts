@@ -31,6 +31,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { UploadComponent } from './upload/upload.component';
 import { ConfirmationDialogComponent } from './upload/confirmation-dialog/confirmation-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -83,6 +84,10 @@ import { EditUserComponent } from './components/user/edit-user/edit-user.compone
 import { AnimationComponentDialogAuto } from './animation/animation.component';
 import { TermsConditionsComponent } from './components/auth/terms-conditions/terms-conditions.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PickupAndDeliveryComponent } from './components/task/pickup-and-delivery/pickup-and-delivery.component';
+import { TaskService } from './services/task.service';
+import { SurveillanceComponent } from './components/task/surveillance/surveillance.component';
+import { GetPickupAndDeliveryComponent } from './components/task/pickup-and-delivery/get-pickup-and-delivery/get-pickup-and-delivery.component';
 
 @NgModule({
   declarations: [
@@ -138,6 +143,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     TermsConditionsComponent,
     PlanningComponent,
     GetTrajetoriaComponent,
+    PickupAndDeliveryComponent,
+    SurveillanceComponent,
+    GetPickupAndDeliveryComponent,
   ],
   imports: [
     BrowserModule,
@@ -158,8 +166,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSlideToggleModule,
     MatCheckboxModule,
     MatTooltipModule,
+    MatButtonModule,
   ],
-  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService, PlanningService, AuthService] ,
+  providers: [BuildingService , FloorService, RobotTypeService, RobotService, TunnelService, ElevatorService, PlanningService, TaskService, AuthService] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,12 +1,19 @@
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
-    <div class="container">
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav me-auto">    
-            
-        </ul>
-      </div>
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">  
+          <!-- Task Manager -->
+          <li class="nav-item">
+              <a class="nav-link"  routerLink="/task-manager/pickup-and-delivery" routerLinkActive="active"><i class="icon_taskDelivery" style="vertical-align: middle;"></i> Pickup & Delivery</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link"  routerLink="/task-manager/surveillance" routerLinkActive="active"><i class="icon_taskSurveillance" style="padding-right: 5px; height: 20px; vertical-align: middle;"></i> Surveillance</a>
+          </li>
+          <!-- -->
+      </ul>
     </div>
+  </div>
 </nav>
 <div class="container">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

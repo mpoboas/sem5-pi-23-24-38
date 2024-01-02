@@ -143,9 +143,11 @@ export default class PickupDeliveryTaskService implements IPickupDeliveryTaskSer
             }
             if (pickupDeliveryTaskUpdate.isPending) {
                 task.isPending = pickupDeliveryTaskUpdate.isPending;
+                console.log('The task is pending: ' + task.isPending + " and now will be: "+ pickupDeliveryTaskUpdate.isPending);
             }
             if (pickupDeliveryTaskUpdate.isApproved) {
                 task.isApproved = pickupDeliveryTaskUpdate.isApproved;
+                console.log('The task is approved: ' + task.isApproved + " and now will be: "+ pickupDeliveryTaskUpdate.isApproved);
             }
 
             await this.pickupDeliveryTaskRepo.save(task);
