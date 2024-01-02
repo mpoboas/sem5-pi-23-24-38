@@ -5,7 +5,7 @@ import { celebrate, Joi } from 'celebrate';
 import IUserController from '../../controllers/IControllers/IUserController';
 
 import config from '../../../config';
-import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { isAuth /*, authorizeRole*/ } from '../middlewares/isAuth';
 
 const route = Router();
 

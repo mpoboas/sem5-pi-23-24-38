@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { BuildingService } from '../building/building.service';
+import { BuildingService } from '../services/building.service';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +79,5 @@ export class UploadBuildingService {
         );
       }
     });
-  }  
+  }
 }

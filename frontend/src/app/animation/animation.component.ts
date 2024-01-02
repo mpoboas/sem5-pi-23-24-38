@@ -3,8 +3,8 @@ import ThumbRaiser from './ThumbRaiser/thumb_raiser';
 import Orientation from './ThumbRaiser/orientation';
 import * as THREE from 'three';
 import * as _ from 'lodash';
-import { RobotService } from '../robot/robot.service';
-import { FloorService } from '../floor/floor.service';
+import { RobotService } from '../services/robot.service';
+import { FloorService } from '../services/floor.service';
 import { MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
@@ -15,7 +15,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 const defaultUrl = "../../assets/3d/"
 const robots = ["../../assets/3d/models/gltf/RobotExpressive/RobotExpressive.glb",
-"../../assets/3d/models/gltf/RobotExpressive/Robot.glb",  
+"../../assets/3d/models/gltf/RobotExpressive/Robot.glb",
 "../../assets/3d/models/gltf/RobotExpressive/Alien.glb",];
 
 @Component({
@@ -60,7 +60,7 @@ export class AnimationComponent implements OnDestroy{
             }else {
             console.warn("No robots found.");
             }
-        
+
         },
         (error) => {
             console.error('Error fetching robots:', error);
@@ -85,7 +85,7 @@ export class AnimationComponent implements OnDestroy{
       (floors) => {
         this.floors = floors;
         console.log("the floors are: ", this.floors);
-        
+
         if (this.floors.length > 0) {
           // Load the default floor or the first floor initially
           const defaultFloorNumber = _.get(this.floors, '[12].floorNumber', 'defaultFloorNumber');
@@ -122,9 +122,9 @@ export class AnimationComponent implements OnDestroy{
       console.log("Selected floor:", selectedValue);
       this.loadFloor(selectedValue);
     }
-    
+
   }
-  
+
   private createOrUpdateScene(): void {
     if (!this.thumbRaiser) {
       this.createScene();
@@ -167,12 +167,12 @@ export class AnimationComponent implements OnDestroy{
             if (result!=null){
                 this.selectedFloor = result;
             }
-            
+
         });
         await dialogRef.afterClosed().toPromise();
         return this.selectedFloor;
   }
-  
+
   onShowTipsChange(){
     this.thumbRaiser.showTips(this.showTipsChecked);
   }
@@ -185,7 +185,7 @@ export class AnimationComponent implements OnDestroy{
       this.thumbRaiser.automaticPath(path);
       this.autoPath = '';
     }
-   
+
   }
   async openDialogAuto(): Promise<string> {
     const dialogRef = this.dialog.open(AnimationComponentDialogAuto);
@@ -474,13 +474,13 @@ export class AnimationComponent implements OnDestroy{
     templateUrl: './animation-dialog.component.html',
   })
 export class AnimationComponentDialog {
-  floorOptions: any[] = []; 
+  floorOptions: any[] = [];
   constructor(@Inject(MAT_DIALOG_DATA) public data: [],public dialogRef: MatDialogRef<AnimationComponentDialog>,private floorService: FloorService) {}
   ngOnInit(): void {
       this.loadFloorOptions();
       console.log(this.data);
   }
-  
+
   loadFloorOptions(): void {
     this.data.forEach((element: any) => {
         this.floorService.findFloorByNumber(element).subscribe(
@@ -509,11 +509,11 @@ export class AnimationComponentDialog {
   templateUrl: './animation-dialog-auto.component.html',
 })
 export class AnimationComponentDialogAuto {
-floorOptions: any[] = []; 
+floorOptions: any[] = [];
 constructor(@Inject(MAT_DIALOG_DATA) public data: [],public dialogRef: MatDialogRef<AnimationComponentDialogAuto>,private floorService: FloorService) {}
   stringInput: string = '';
   ngOnInit(): void {
-      
+
 
   }
 
