@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IRobotTypeController from '../../controllers/IControllers/IRobotTypeController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -15,6 +17,8 @@ export default (app: Router) => {
 
   route.post(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]),
     celebrate({
       body: Joi.object({
         brand: Joi.string().required(),
@@ -28,6 +32,8 @@ export default (app: Router) => {
 
   route.put(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]),
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
@@ -40,6 +46,6 @@ export default (app: Router) => {
     (req, res, next) => ctrl.updateRobotType(req, res, next),
   );
 
-  route.get('', (req, res, next) => ctrl.listAllRobotTypes(req, res, next));
-  route.get('/byId/:id', (req, res, next) => ctrl.findRobotTypeById(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]), (req, res, next) => ctrl.listAllRobotTypes(req, res, next));
+  route.get('/byId/:id', isAuth, authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]), (req, res, next) => ctrl.findRobotTypeById(req, res, next));
 };

@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IElevatorController from '../../controllers/IControllers/IElevatorController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -15,6 +17,8 @@ export default (app: Router) => {
 
   route.post(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         name: Joi.string().required(),
@@ -31,6 +35,8 @@ export default (app: Router) => {
 
   route.put(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
@@ -61,7 +67,7 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchElevator(req, res, next),
   );
 */
-  route.get('', (req, res, next) => ctrl.listAllElevators(req, res, next));
-  route.get('/getElevatorFloors/:id', (req, res, next) => ctrl.findFloorsElevator(req, res, next));
-  route.get('/getElevatorAlgav', (req, res, next) => ctrl.getElevatorAlgav(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllElevators(req, res, next));
+  route.get('/getElevatorFloors/:id', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findFloorsElevator(req, res, next));
+  route.get('/getElevatorAlgav', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.getElevatorAlgav(req, res, next));
 };

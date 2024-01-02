@@ -4,6 +4,8 @@ import { Container } from 'typedi';
 import IRoleController from '../../controllers/IControllers/IRoleController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -12,5 +14,5 @@ export default (app: Router) => {
 
   const ctrl = Container.get(config.controllers.role.name) as IRoleController;
 
-  route.get('', (req, res, next) => ctrl.getAllRoles(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN]), (req, res, next) => ctrl.getAllRoles(req, res, next));
 };

@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IRobotController from '../../controllers/IControllers/IRobotController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -15,6 +17,8 @@ export default (app: Router) => {
 
   route.post(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]),
     celebrate({
       body: Joi.object({
         nickname: Joi.string().required(),
@@ -29,6 +33,8 @@ export default (app: Router) => {
 
   route.put(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]),
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
@@ -44,6 +50,8 @@ export default (app: Router) => {
 
   route.patch(
     '/:id',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]),
     celebrate({
       params: Joi.object({
         id: Joi.string().required(),
@@ -59,5 +67,5 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchRobot(req, res, next),
   );
 
-  route.get('', (req, res, next) => ctrl.listAllRobots(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.FLEET_MANAGER]), (req, res, next) => ctrl.listAllRobots(req, res, next));
 };

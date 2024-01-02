@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IClassroomController from '../../controllers/IControllers/IClassroomController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -15,6 +17,8 @@ export default (app: Router) => {
 
   route.post(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         name: Joi.string().required(),
@@ -32,6 +36,8 @@ export default (app: Router) => {
 
   route.put(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
@@ -48,7 +54,7 @@ export default (app: Router) => {
     (req, res, next) => ctrl.updateClassroom(req, res, next),
   );
 
-  route.get('', (req, res, next) => ctrl.listAllClassrooms(req, res, next));
-  route.get('/getClassroomsAlgav', (req, res, next) => ctrl.getClasssroomsAlgav(req, res, next));
-  route.get('/getClassrooms/:floorId', (req, res, next) => ctrl.listAllClassroomsInFloor(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllClassrooms(req, res, next));
+  route.get('/getClassroomsAlgav', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.getClasssroomsAlgav(req, res, next));
+  route.get('/getClassrooms/:floorId', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllClassroomsInFloor(req, res, next));
 };

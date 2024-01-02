@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import IBuildingController from '../../controllers/IControllers/IBuildingController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -15,6 +17,8 @@ export default (app: Router) => {
 
   route.post(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         letter: Joi.string().required(),
@@ -27,18 +31,10 @@ export default (app: Router) => {
     (req, res, next) => ctrl.createBuilding(req, res, next),
   );
 
-  /*route.post('/upload/:id',
-        celebrate({
-            params: Joi.object({
-                id: Joi.string().required(),
-            }),
-            body: Joi.object().required(),
-        }),
-        (req, res, next) => ctrl.loadFloors(req, res, next)
-    );*/
-
   route.put(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
@@ -54,6 +50,8 @@ export default (app: Router) => {
 
   route.patch(
     '/:id',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       params: Joi.object({
         id: Joi.string().required(),
@@ -69,14 +67,13 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchBuilding(req, res, next),
   );
 
-  route.get('/byId/:id', (req, res, next) => ctrl.findBuildingByDomainId(req, res, next));
+  route.get('/byId/:id', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findBuildingByDomainId(req, res, next));
 
-  route.get('/byCode/:code', (req, res, next) => ctrl.findBuildingByCode(req, res, next));
+  route.get('/byCode/:code', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findBuildingByCode(req, res, next));
 
-  route.get('', (req, res, next) => ctrl.listAllBuildings(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllBuildings(req, res, next));
 
-  route.get('/floorRange/:range', (req, res, next) => ctrl.findBuildingByMinMaxFloors(req, res, next));
+  route.get('/floorRange/:range', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findBuildingByMinMaxFloors(req, res, next));
 
-  route.get('/getBuildingCode/:buildingId', (req, res, next) => ctrl.findBuildingCode(req, res, next));
-  //route.get('/:id', (req, res, next) =>  ctrl.listAllFloors(req, res, next));
+  route.get('/getBuildingCode/:buildingId', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.findBuildingCode(req, res, next));
 };

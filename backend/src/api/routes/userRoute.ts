@@ -5,6 +5,7 @@ import { celebrate, Joi } from 'celebrate';
 import IUserController from '../../controllers/IControllers/IUserController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
 
 const route = Router();
 
@@ -41,6 +42,7 @@ export default (app: Router) => {
 
   route.put(
     '/user/edit/:userId',
+    isAuth,
     celebrate({
       params: Joi.object({
         userId: Joi.string().required(),
@@ -57,7 +59,7 @@ export default (app: Router) => {
     (req, res, next) => ctrl.editUser(req, res, next),
   );
 
-  route.delete('/user/delete/:userId', (req, res, next) => ctrl.delete(req, res, next));
+  route.delete('/user/delete/:userId', isAuth, (req, res, next) => ctrl.delete(req, res, next));
 
   /**
    * @TODO Let's leave this as a place holder for now
@@ -84,5 +86,5 @@ export default (app: Router) => {
 
   route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, user_controller.getMe);*/
 
-  route.get('/users', (req, res, next) => ctrl.getAllUsers(req, res, next));
+  route.get('/users', isAuth, (req, res, next) => ctrl.getAllUsers(req, res, next));
 };

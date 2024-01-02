@@ -2,20 +2,7 @@
 const { expressjwt: jwt } = require('express-jwt'); // fix
 import config from '../../../config';
 
-/**
- * We are assuming that the JWT will come in a header with the form
- *
- * Authorization: Bearer ${JWT}
- *
- * But it could come in a query parameter with the name that you want like
- * GET https://my-bulletproof-api.com/stats?apiKey=${JWT}
- * Luckily this API follow _common sense_ ergo a _good design_ and don't allow that ugly stuff
- */
 const getTokenFromHeader = req => {
-  /**
-   * @TODO Edge and Internet Explorer do some weird things with the headers
-   * So I believe that this should handle more 'edge' cases ;)
-   */
   if (
     (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token') ||
     (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
@@ -32,4 +19,19 @@ const isAuth = jwt({
   algorithms: ['HS256'], // Use the HMAC SHA-256 algo to sign the JWT
 });
 
-export default isAuth;
+function parseJwt (token) {
+  return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}
+
+const authorizeRole = (requiredRoles) => (req, res, next) => {
+  const token = parseJwt(getTokenFromHeader(req));
+  const userRole = token.role;
+  
+  if (userRole && requiredRoles.includes(userRole)) {
+    next();
+  } else {
+    res.status(403).send('Permission denied. Your role is ' + userRole + ', you must have one of the following roles: ' + requiredRoles.join(', ') + '.');
+  }
+};
+
+export { isAuth, authorizeRole };

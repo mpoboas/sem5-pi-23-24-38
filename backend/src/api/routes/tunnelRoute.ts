@@ -5,6 +5,8 @@ import { Container } from 'typedi';
 import ITunnelController from '../../controllers/IControllers/ITunnelController';
 
 import config from '../../../config';
+import { isAuth, authorizeRole } from '../middlewares/isAuth';
+import { Role } from '../../domain/role/role.enum';
 
 const route = Router();
 
@@ -15,6 +17,8 @@ export default (app: Router) => {
 
   route.post(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         description: Joi.string().required(),
@@ -29,6 +33,8 @@ export default (app: Router) => {
 
   route.put(
     '',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
@@ -44,6 +50,8 @@ export default (app: Router) => {
 
   route.patch(
     '/:id',
+    isAuth,
+    authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]),
     celebrate({
       params: Joi.object({
         id: Joi.string().required(),
@@ -59,8 +67,8 @@ export default (app: Router) => {
     (req, res, next) => ctrl.patchTunnel(req, res, next),
   );
 
-  route.get('/getFloorsTunnel', (req, res, next) => ctrl.listAllTunnels(req, res, next));
-  route.get('', (req, res, next) => ctrl.listTunnels2B(req, res, next));
-  route.get('/getTunnelsAlgav', (req, res, next) => ctrl.getTunnelsAlgav(req, res, next));
-  route.get('/getTunnelsAlgav2', (req, res, next) => ctrl.getTunnelsAlgav2(req, res, next));
+  route.get('/getFloorsTunnel', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listAllTunnels(req, res, next));
+  route.get('', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.listTunnels2B(req, res, next));
+  route.get('/getTunnelsAlgav', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.getTunnelsAlgav(req, res, next));
+  route.get('/getTunnelsAlgav2', isAuth, authorizeRole([Role.ADMIN, Role.CAMPUS_MANAGER]), (req, res, next) => ctrl.getTunnelsAlgav2(req, res, next));
 };
