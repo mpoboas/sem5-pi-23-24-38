@@ -33,6 +33,7 @@ jobs:
             cd /root/sem5-pi-23-24-38/frontend
             git pull
             npm install
+            pm2 kill
             node --max-old-space-size=4096 $(which ng) build
             pm2 start "lite-server --baseDir=dist/angular-three"
             pm2 start "lite-server --baseDir=dist/angular-three"
