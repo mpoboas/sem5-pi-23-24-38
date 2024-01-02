@@ -57,6 +57,12 @@ export default async ({ expressApp }) => {
     schema: '../persistence/schemas/classroomSchema',
   };
 
+  const pickupDeliveryTaskSchema = {
+    // compare with the approach followed in repos and services
+    name: 'pickupDeliveryTaskSchema',
+    schema: '../persistence/schemas/pickupDeliveryTaskSchema',
+  };
+
   const roleController = {
     name: config.controllers.role.name,
     path: config.controllers.role.path,
@@ -132,6 +138,16 @@ export default async ({ expressApp }) => {
     path: config.repos.classroom.path,
   };
 
+  const pickupDeliveryTaskController = {
+    name: config.controllers.pickupDeliveryTask.name,
+    path: config.controllers.pickupDeliveryTask.path,
+  };
+
+  const pickupDeliveryTaskRepo = {
+    name: config.repos.pickupDeliveryTask.name,
+    path: config.repos.pickupDeliveryTask.path,
+  };
+
   const roleService = {
     name: config.services.role.name,
     path: config.services.role.path,
@@ -165,6 +181,11 @@ export default async ({ expressApp }) => {
   const classroomService = {
     name: config.services.classroom.name,
     path: config.services.classroom.path,
+  };
+
+  const pickupDeliveryTaskService = {
+    name: config.services.pickupDeliveryTask.name,
+    path: config.services.pickupDeliveryTask.path,
   };
 
   const robotSchema = {
@@ -210,6 +231,7 @@ export default async ({ expressApp }) => {
       robotSchema,
       classroomSchema,
       tunnelSchema,
+      pickupDeliveryTaskSchema,
     ],
     controllers: [
       userController,
@@ -221,6 +243,7 @@ export default async ({ expressApp }) => {
       robotController,
       classroomController,
       tunnelController,
+      pickupDeliveryTaskController,
     ],
     repos: [
       roleRepo,
@@ -232,6 +255,7 @@ export default async ({ expressApp }) => {
       robotRepo,
       classroomRepo,
       tunnelRepo,
+      pickupDeliveryTaskRepo,
     ],
     services: [
       userService,
@@ -243,6 +267,7 @@ export default async ({ expressApp }) => {
       robotService,
       classroomService,
       tunnelService,
+      pickupDeliveryTaskService,
     ],
   });
   Logger.info('✌️ Schemas, Controllers, Repositories, Services, etc. loaded');

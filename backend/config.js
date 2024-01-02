@@ -77,6 +77,10 @@ export default {
       name: 'UserController',
       path: '../controllers/userController',
     },
+    pickupDeliveryTask: {
+      name: 'PickupDeliveryTaskController',
+      path: '../controllers/pickupDeliveryTaskController',
+    },
   },
 
   repos: {
@@ -120,6 +124,10 @@ export default {
       name: 'UserRepo',
       path: '../repos/userRepo',
     },
+    pickupDeliveryTask: {
+      name: 'PickupDeliveryTaskRepo',
+      path: '../repos/pickupDeliveryTaskRepo',
+    },
   },
 
   services: {
@@ -158,6 +166,10 @@ export default {
     user: {
       name: 'UserService',
       path: '../services/ServiceImpl/userService',
+    },
+    pickupDeliveryTask: {
+      name: 'PickupDeliveryTaskService',
+      path: '../services/ServiceImpl/pickupDeliveryTaskService',
     },
   },
 };

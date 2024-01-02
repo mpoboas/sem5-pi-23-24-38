@@ -9,6 +9,7 @@ import elevator from './routes/elevatorRoute';
 import robot from './routes/robotRoute';
 import classroom from './routes/classroomRoute';
 import tunnel from './routes/tunnelRoute';
+import pickupDeliveryTask from './routes/pickupDeliveryTaskRoute';
 
 export default () => {
   const app = Router();
@@ -23,6 +24,7 @@ export default () => {
   elevator(app);
   classroom(app);
   tunnel(app);
+  pickupDeliveryTask(app);
 
   return app;
 };
