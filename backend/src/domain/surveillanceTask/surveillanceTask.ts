@@ -2,7 +2,6 @@ import { AggregateRoot } from "../../core/domain/AggregateRoot";
 import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Guard } from "../../core/logic/Guard";
 import { Result } from "../../core/logic/Result";
-import ISurveillanceTaskDTO from "../../dto/ISurveillanceTaskDTO";
 import { Floor } from "../floor/floor";
 
 interface SurveillanceTaskProps {
