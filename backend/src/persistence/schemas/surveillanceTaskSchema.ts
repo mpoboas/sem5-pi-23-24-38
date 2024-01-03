@@ -5,7 +5,7 @@ const SurveillanceTaskSchema = new mongoose.Schema(
     {
         domainId: { type: String, unique: true },
         building: { type: String },
-        floors: { type: String, default: [] },
+        floors: [{ type: String }],
         emergencyContact: { type: String },
         isPending: { type: Boolean },
         isApproved: { type: Boolean },

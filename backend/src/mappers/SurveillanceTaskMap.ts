@@ -5,21 +5,49 @@ import { SurveillanceTask } from "../domain/surveillanceTask/surveillanceTask";
 import { UniqueEntityID } from '../core/domain/UniqueEntityID';
 import ISurveillanceTaskDTO from '../dto/ISurveillanceTaskDTO';
 import { ISurveillanceTaskPersistence } from '../dataschema/ISurveillanceTaskPersistence';
+import { Container } from 'typedi';
+import FloorRepo from '../repos/floorRepo';
 
 export class SurveillanceTaskMap extends Mapper<SurveillanceTask>{
     public static toDTO(task: SurveillanceTask): ISurveillanceTaskDTO {
+        const floors: string[] = [];
+
+        task.floors.forEach(floor => {
+            floors.push(floor.floorNumber);
+        });
         return {
             id: task.id.toString(),
             building: task.building,
-            floors: task.floors,
+            floors: floors,
             emergencyContact: task.emergencyContact,
             isPending: task.isPending,
             isApproved: task.isApproved,
         } as ISurveillanceTaskDTO;
     }
 
-    public static toDomain(task: any | Model<ISurveillanceTaskPersistence & Document>): SurveillanceTask {
-        const taskOrError = SurveillanceTask.create(task, new UniqueEntityID(task.domainId));
+    public static async toDomain(taskDTO: any | Model<ISurveillanceTaskPersistence & Document>): Promise<SurveillanceTask> {
+        const floorRepo = Container.get(FloorRepo);
+        const floorsArray: any[] = [];
+        const floors: string[] = taskDTO.floors;
+
+        for (const floor of floors) {
+            const floorId = await floorRepo.findByDomainId(floor);
+            if (!floorId) {
+                throw new ReferenceError('Floor not found');
+            }
+            floorsArray.push(floorId);
+        }
+        const taskOrError = SurveillanceTask.create(
+        {
+            building: taskDTO.building,
+            floors: floorsArray,
+            emergencyContact: taskDTO.emergencyContact,
+            isPending: taskDTO.isPending,
+            isApproved: taskDTO.isApproved,
+            active: true,
+        },
+        new UniqueEntityID(taskDTO.domainId),
+        );
     
         taskOrError.isFailure ? console.log(taskOrError.error) : '';
     
@@ -27,10 +55,15 @@ export class SurveillanceTaskMap extends Mapper<SurveillanceTask>{
     }
 
     public static toPersistence(task: SurveillanceTask): any {
+        const floors: string[] = [];
+
+        task.floors.forEach(floor => {
+            floors.push(floor.id.toString());
+        });
         return {
             domainId: task.id.toString(),
             building: task.building,
-            floors: task.floors,
+            floors: floors,
             emergencyContact: task.emergencyContact,
             isPending: task.isPending,
             isApproved: task.isApproved,

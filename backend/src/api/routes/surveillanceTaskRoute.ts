@@ -22,6 +22,7 @@ export default (app: Router) => {
         celebrate({
             body: Joi.object({
                 building: Joi.string().required(),
+                floors: Joi.array().items(Joi.string()).required(),
                 emergencyContact: Joi.string().required(),
                 isPending: Joi.boolean().required(),
                 isApproved: Joi.boolean().required(),
@@ -38,6 +39,7 @@ export default (app: Router) => {
             body: Joi.object({
                 id: Joi.string().required(),
                 building: Joi.string().required(),
+                floors: Joi.array().items(Joi.string()).required(),
                 emergencyContact: Joi.string().required(),
                 isPending: Joi.boolean().required(),
                 isApproved: Joi.boolean().required(),
@@ -56,6 +58,7 @@ export default (app: Router) => {
             }),
             body: Joi.object({
                 building: Joi.string(),
+                floors: Joi.array().items(Joi.string()).required(),
                 emergencyContact: Joi.string(),
                 isPending: Joi.boolean(),
                 isApproved: Joi.boolean(),

@@ -43,27 +43,28 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
           if (building == null) {
               throw new Error('Building not found');
           }
-          
-          const floors = this.floorRepo.findFloorsByBuildingId(buildingId);
-          const floorsDTO: any[] = [];
-          for (const floor of (await floors).values()) {
-            floorsDTO.push(floor.id.toString());
-          }
-        
-          taskDTO.floors = floorsDTO;
 
-          const taskrOrError = await SurveillanceTask.create(taskDTO);
-    
-          if (taskrOrError.isFailure) {
-            const errorMessage = taskrOrError.errorValue();
-            return Result.fail<ISurveillanceTaskDTO>(errorMessage);
+          const floorsB = await this.floorRepo.findFloorsByBuildingId(buildingId);
+
+          if (floorsB === null) {
+              return Result.fail<ISurveillanceTaskDTO>('Floors not found');
           }
+
+          const floors: string[] = [];
+
+          taskDTO.floors.forEach(floor => {
+              const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
+              if (!floor2) {
+                throw new ReferenceError('Floor not found');
+              }
+              floors.push(floor2.id.toString());
+          });
+
+          const task = await SurveillanceTaskMap.toDomain(taskDTO);
     
-          const taskResult = taskrOrError.getValue();
+          const taskCreated = await this.surveillanceTaskRepo.save(task);
     
-          await this.surveillanceTaskRepo.save(taskResult);
-    
-          const taskDTOResult = SurveillanceTaskMap.toDTO(taskResult) as ISurveillanceTaskDTO;
+          const taskDTOResult = SurveillanceTaskMap.toDTO(taskCreated) as ISurveillanceTaskDTO;
           return Result.ok<ISurveillanceTaskDTO>(taskDTOResult);
         } catch (error) {
           throw new Error(`Error creating surveillance task: ${error.message}`);
@@ -84,12 +85,23 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
                 } else {
                     task.building = taskDTO.building;
                 }
-                const floors = this.floorRepo.findFloorsByBuildingId(taskDTO.building);
-                const floorsDTO: any[] = [];
-                for (const floor of (await floors).values()) {
-                    floorsDTO.push(floor.id.toString());
+
+                const floorsB = await this.floorRepo.findFloorsByBuildingId(taskDTO.building);
+
+                if (floorsB === null) {
+                    return Result.fail<ISurveillanceTaskDTO>('Floors not found');
                 }
-                task.floors = floorsDTO;
+
+                const floors: any[] = [];
+
+                taskDTO.floors.forEach(floor => {
+                    const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
+                    if (!floor2) {
+                        throw new ReferenceError('Floor not found');
+                    }
+                    floors.push(floor2);
+                });
+                task.floors = floors;
                 task.emergencyContact = taskDTO.emergencyContact;
                 task.isPending = taskDTO.isPending;
                 task.isApproved = taskDTO.isApproved;
@@ -118,13 +130,25 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
                     throw new Error('Pickup Classroom not found');
                 } else {
                     task.building = surveillanceTaskUpdate.building;
-                    const floors = this.floorRepo.findFloorsByBuildingId(surveillanceTaskUpdate.building);
-                    const floorsDTO: any[] = [];
-                    for (const floor of (await floors).values()) {
-                        floorsDTO.push(floor.id.toString());
-                        task.floors = floorsDTO;
-                    }
                 }
+            }
+            if (surveillanceTaskUpdate.floors){
+                const floorsB = await this.floorRepo.findFloorsByBuildingId(surveillanceTaskUpdate.building);
+
+                if (floorsB === null) {
+                    return Result.fail<ISurveillanceTaskDTO>('Floors not found');
+                }
+
+                const floors: any[] = [];
+
+                surveillanceTaskUpdate.floors.forEach(floor => {
+                    const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
+                    if (!floor2) {
+                        throw new ReferenceError('Floor not found');
+                    }
+                    floors.push(floor2.id.toString());
+                });
+                task.floors = floors;
             }
             if (surveillanceTaskUpdate.emergencyContact) {
                 task.emergencyContact = surveillanceTaskUpdate.emergencyContact;

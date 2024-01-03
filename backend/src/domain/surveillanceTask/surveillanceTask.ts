@@ -3,10 +3,11 @@ import { UniqueEntityID } from "../../core/domain/UniqueEntityID";
 import { Guard } from "../../core/logic/Guard";
 import { Result } from "../../core/logic/Result";
 import ISurveillanceTaskDTO from "../../dto/ISurveillanceTaskDTO";
+import { Floor } from "../floor/floor";
 
 interface SurveillanceTaskProps {
     building: string;
-    floors: string[];
+    floors: Floor[];
     emergencyContact: string;
     isPending: boolean;
     isApproved: boolean;
@@ -26,11 +27,11 @@ export class SurveillanceTask extends AggregateRoot<SurveillanceTaskProps> {
         this.props.building = value;
     }
 
-    get floors(): string[] {
+    get floors(): Floor[] {
         return this.props.floors;
     }
 
-    set floors(value: string[]) {
+    set floors(value: Floor[]) {
         this.props.floors = value;
     }
 
@@ -70,12 +71,12 @@ export class SurveillanceTask extends AggregateRoot<SurveillanceTaskProps> {
         super(props, id);
     }
 
-    public static create(surveillanceTaskDTO: ISurveillanceTaskDTO, id?: UniqueEntityID): Result<SurveillanceTask> {
-        const tBuilding = surveillanceTaskDTO.building;
-        const tFloors = surveillanceTaskDTO.floors;
-        const tEmergencyContact = surveillanceTaskDTO.emergencyContact;
-        const tIsPending = surveillanceTaskDTO.isPending;
-        const tIsApproved = surveillanceTaskDTO.isApproved;
+    public static create(props: SurveillanceTaskProps, id?: UniqueEntityID): Result<SurveillanceTask> {
+        const tBuilding = props.building;
+        const tFloors = props.floors;
+        const tEmergencyContact = props.emergencyContact;
+        const tIsPending = props.isPending;
+        const tIsApproved = props.isApproved;
 
         const guardedProps = [
             { argument: tBuilding, argumentName: 'building' },

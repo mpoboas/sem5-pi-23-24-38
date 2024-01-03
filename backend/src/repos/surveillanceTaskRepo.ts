@@ -39,8 +39,12 @@ export default class SurveillanceTaskRepo implements ISurveillanceTaskRepo {
     
             return SurveillanceTaskMap.toDomain(taskCreated);
           } else {
+            const floors: string[] = [];
+            task.floors.forEach(floor => {
+                floors.push(floor.id.toString());
+            });
             taskDocument.building = task.building;
-            taskDocument.floors = task.floors;
+            taskDocument.floors = floors;
             taskDocument.emergencyContact = task.emergencyContact;
             taskDocument.isPending = task.isPending;
             taskDocument.isApproved = task.isApproved;
@@ -65,14 +69,15 @@ export default class SurveillanceTaskRepo implements ISurveillanceTaskRepo {
     public async getAllSurveillanceTasks(): Promise<SurveillanceTask[]> {
         try {
             const taskDocuments = await this.surveillanceTaskSchema.find().exec();
-            console.log(taskDocuments);
+
             if (!taskDocuments) {
             return [];
             }
 
             const tasks = taskDocuments.map(taskDocument => SurveillanceTaskMap.toDomain(taskDocument));
-            console.log(tasks);
-            return tasks;
+            const tasks2 = await Promise.all(tasks);
+            
+            return tasks2;
         } catch (error) {
             throw new Error(`Error fetching surveillance task: ${error.message}`);
         }
