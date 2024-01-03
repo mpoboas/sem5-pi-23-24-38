@@ -5,7 +5,6 @@ import ISurveillanceTaskDTO from '../../dto/ISurveillanceTaskDTO';
 import ISurveillanceTaskRepo from '../IRepos/ISurveillanceTaskRepo';
 import ISurveillanceTaskService from '../IServices/ISurveillanceTaskService';
 import { SurveillanceTaskMap } from '../../mappers/SurveillanceTaskMap';
-import { SurveillanceTask } from '../../domain/surveillanceTask/surveillanceTask';
 import IBuildingRepo from '../IRepos/IBuildingRepo';
 import IFloorRepo from '../IRepos/IFloorRepo';
 
