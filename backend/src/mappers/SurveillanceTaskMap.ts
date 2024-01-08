@@ -30,12 +30,12 @@ export class SurveillanceTaskMap extends Mapper<SurveillanceTask>{
         const floorsArray: any[] = [];
         const floors: string[] = taskDTO.floors;
 
-        for (const floor of floors) {
-            const floorId = await floorRepo.findByDomainId(floor);
-            if (!floorId) {
+        for (const floorId of floors) {
+            const floor = await floorRepo.findByDomainId(floorId);
+            if (!floor) {
                 throw new ReferenceError('Floor not found');
             }
-            floorsArray.push(floorId);
+            floorsArray.push(floor);
         }
         const taskOrError = SurveillanceTask.create(
         {

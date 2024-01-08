@@ -70,13 +70,11 @@ export default class PickupDeliveryTaskRepo implements IPickupDeliveryTaskRepo {
     public async getAllPickupDeliveryTasks(): Promise<PickupDeliveryTask[]> {
         try {
             const taskDocuments = await this.pickupDeliveryTaskSchema.find().exec();
-            console.log(taskDocuments);
             if (!taskDocuments) {
             return [];
             }
 
             const tasks = taskDocuments.map(taskDocument => PickupDeliveryTaskMap.toDomain(taskDocument));
-            console.log(tasks);
             return tasks;
         } catch (error) {
             throw new Error(`Error fetching pickup delivery task: ${error.message}`);

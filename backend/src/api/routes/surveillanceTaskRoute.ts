@@ -58,7 +58,7 @@ export default (app: Router) => {
             }),
             body: Joi.object({
                 building: Joi.string(),
-                floors: Joi.array().items(Joi.string()).required(),
+                floors: Joi.array().items(Joi.string()),
                 emergencyContact: Joi.string(),
                 isPending: Joi.boolean(),
                 isApproved: Joi.boolean(),

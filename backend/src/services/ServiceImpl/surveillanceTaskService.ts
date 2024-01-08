@@ -152,10 +152,10 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
             if (surveillanceTaskUpdate.emergencyContact) {
                 task.emergencyContact = surveillanceTaskUpdate.emergencyContact;
             }
-            if (surveillanceTaskUpdate.isPending) {
+            if (surveillanceTaskUpdate.isPending !== null) {
                 task.isPending = surveillanceTaskUpdate.isPending;
             }
-            if (surveillanceTaskUpdate.isApproved) {
+            if (surveillanceTaskUpdate.isApproved !== null) {
                 task.isApproved = surveillanceTaskUpdate.isApproved;
             }
 
