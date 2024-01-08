@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TaskService } from '../../../../services/task.service';
+import { ClassroomService } from '../../../../services/classroom.service';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -17,14 +18,12 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private taskService: TaskService, private dialog: MatDialog) {}
+  constructor(private taskService: TaskService, private classroomService: ClassroomService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.taskService.getPickupAndDeliveryTasks().subscribe(
       (data: any[]) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.getClassroom(data);
       },
       (error: any) => {
         console.error('Error fetching buildings', error);
@@ -40,6 +39,29 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
         this.paginator.pageSize = 10;
       });
     }
+  }
+
+  getClassroom(task: any) {
+    task.forEach((element: any) => {
+      this.classroomService.getClassrooms().subscribe(
+        (classrooms: any[]) => {
+          console.log(classrooms);
+          const pickup = classrooms.find((classroom: any) => classroom.id === element.pickupClassroom);
+          const delivery = classrooms.find((classroom: any) => classroom.id === element.deliveryClassroom);
+          console.log(pickup);
+          element.pickupClassroom = pickup.name;
+          element.deliveryClassroom = delivery.name;
+          this.dataSource = new MatTableDataSource(task);
+          setTimeout(() => {
+            this.paginator.pageSize = 10;
+          });
+        },
+        (error: any) => {
+          console.error('Error fetching building', error);
+        }
+      );
+    });
+
   }
 
   applyFilter(event: Event) {
@@ -58,9 +80,14 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
       this.displayedColumns = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription'];
       this.taskService.getPickupAndDeliveryTasks().subscribe(
         (data: any[]) => {
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (data.length > 0){
+            this.getClassroom(data);
+          } else {
+            this.dataSource = new MatTableDataSource(data);
+            setTimeout(() => {
+              this.paginator.pageSize = 10;
+            });
+          }
         },
         (error: any) => {
           console.error('Error fetching pickup and delivery tasks', error);
@@ -70,9 +97,14 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
       this.displayedColumns = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription'];
       this.taskService.getApprovedPickupAndDeliveryTasks().subscribe(
         (data: any[]) => {
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (data.length > 0){
+            this.getClassroom(data);
+          } else {
+            this.dataSource = new MatTableDataSource(data);
+            setTimeout(() => {
+              this.paginator.pageSize = 10;
+            });
+          }
         },
         (error: any) => {
           console.error('Error fetching approved pickup and delivery tasks', error);
@@ -82,9 +114,14 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
       this.displayedColumns = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription', 'actions'];
       this.taskService.getPendingPickupAndDeliveryTasks().subscribe(
         (data: any[]) => {
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (data.length > 0){
+            this.getClassroom(data);
+          } else {
+            this.dataSource = new MatTableDataSource(data);
+            setTimeout(() => {
+              this.paginator.pageSize = 10;
+            });
+          }
         },
         (error: any) => {
           console.error('Error fetching pending pickup and delivery tasks', error);

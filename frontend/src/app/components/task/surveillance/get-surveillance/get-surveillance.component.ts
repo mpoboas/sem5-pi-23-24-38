@@ -24,14 +24,12 @@ export class GetSurveillanceComponent {
   ngOnInit() {
     this.taskService.getSurveillanceTasks().subscribe(
       (data: any[]) => {
-        this.getBuildingCode(data);
+        this.getBuilding(data);
       },
       (error: any) => {
         console.error('Error fetching tasks', error);
       }
     );
-    console.log("1");
-    console.log(this.dataSource.data);
   }
 
   ngAfterViewInit() {
@@ -44,14 +42,12 @@ export class GetSurveillanceComponent {
     }
   }
 
-  /* getBuildingCode(task: any) {
-    console.log("2");
-    console.log(task);
+  getBuilding(task: any) {
     task.forEach((element: any) => {
-      this.buildingService.getBuildingCode(element.building).subscribe(
+      this.buildingService.findBuildingById(element.building).subscribe(
         (building: any) => {
-          element.building = building;
-          this.dataSource = new MatTableDataSource(element);
+          element.building = building.code+" - "+building.description;
+          this.dataSource = new MatTableDataSource(task);
           setTimeout(() => {
             this.paginator.pageSize = 10;
           });
@@ -62,39 +58,6 @@ export class GetSurveillanceComponent {
       );
     });
 
-  } */
-
-  getBuildingCode(tasks: any[]) {
-    console.log("2");
-    console.log(tasks);
-  
-    const observables: any[] = [];
-  
-    tasks.forEach((element: any) => {
-      const observable = this.buildingService.getBuildingCode(element.building);
-      observables.push(observable);
-    });
-  
-    forkJoin(observables).subscribe(
-      (buildingCodes: any[]) => {
-        console.log("Building Codes:", buildingCodes);
-  
-        tasks.forEach((element, index) => {
-          element.building = buildingCodes[index];
-        });
-  
-        console.log("Modified Tasks:", tasks);
-  
-        this.dataSource = new MatTableDataSource(tasks);
-  
-        setTimeout(() => {
-          this.paginator.pageSize = 10;
-        });
-      },
-      (error: any) => {
-        console.error('Error fetching building codes', error);
-      }
-    );
   }
 
   applyFilter(event: Event) {
@@ -113,42 +76,51 @@ export class GetSurveillanceComponent {
       this.displayedColumns = ['building', 'floors', 'emergencyContact'];
       this.taskService.getSurveillanceTasks().subscribe(
         (data: any[]) => {
-          this.getBuildingCode(data);
-
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (data.length > 0){
+            this.getBuilding(data);
+          } else {
+            this.dataSource = new MatTableDataSource(data);
+            setTimeout(() => {
+              this.paginator.pageSize = 10;
+            });
+          }
         },
         (error: any) => {
-          console.error('Error fetching pickup and delivery tasks', error);
+          console.error('Error fetching surveillance tasks', error);
         }
       );
     } else if (filter === 'approved') {
       this.displayedColumns = ['building', 'floors', 'emergencyContact'];
       this.taskService.getApprovedSurveillanceTasks().subscribe(
         (data: any[]) => {
-          this.getBuildingCode(data);
-
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (data.length > 0){
+            this.getBuilding(data);
+          } else {
+            this.dataSource = new MatTableDataSource(data);
+            setTimeout(() => {
+              this.paginator.pageSize = 10;
+            });
+          }
         },
         (error: any) => {
-          console.error('Error fetching approved pickup and delivery tasks', error);
+          console.error('Error fetching approved surveillance tasks', error);
         }
       );
     } else if (filter === 'pending') {
       this.displayedColumns = ['building', 'floors', 'emergencyContact', 'actions'];
       this.taskService.getPendingSurveillanceTasks().subscribe(
         (data: any[]) => {
-          this.getBuildingCode(data);
-
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          if (data.length > 0){
+            this.getBuilding(data);
+          } else {
+            this.dataSource = new MatTableDataSource(data);
+            setTimeout(() => {
+              this.paginator.pageSize = 10;
+            });
+          }
         },
         (error: any) => {
-          console.error('Error fetching pending pickup and delivery tasks', error);
+          console.error('Error fetching pending surveillance tasks', error);
         }
       );
     }
