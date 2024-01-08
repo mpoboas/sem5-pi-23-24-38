@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./get-pickup-and-delivery.component.scss'],
 })
 export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription'];
+  displayedColumns: string[] = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription', 'taskState'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -76,8 +76,13 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
   selectedFilter: string = 'all';
 
   setFilter(filter: string): void {
+    this.loadTasks(filter);
+    this.selectedFilter = filter;
+  }
+
+  loadTasks(filter: string): void {
     if (filter === 'all') {
-      this.displayedColumns = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription'];
+      this.displayedColumns = ['pickupClassroom', 'deliveryClassroom', 'pickupContact', 'deliveryContact', 'confirmationCode', 'deliveryDescription', 'taskState'];
       this.taskService.getPickupAndDeliveryTasks().subscribe(
         (data: any[]) => {
           if (data.length > 0){
@@ -128,13 +133,23 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
         }
       );
     }
-    this.selectedFilter = filter;
+  }
+
+  getTaskState(task: any): string {
+    if (task.isPending == false && task.isApproved == true) {
+      return '<span class="badge bg-success">Approved</span>';
+    } else if (task.isPending == true && (task.isApproved == false || task.isApproved == null)) {
+      return '<span class="badge bg-warning">Pending</span>';
+    } else {
+      return '<span class="badge bg-danger">Denied</span>';
+    }
   }
 
   approveTask(task: any): void {
     this.taskService.approvePickupAndDeliveryTask(task).subscribe(
       (data: any) => {
         console.log('Task approved', data);
+        window.location.reload();
       },
       (error: any) => {
         console.error('Error approving task', error);
@@ -146,35 +161,11 @@ export class GetPickupAndDeliveryComponent implements AfterViewInit, OnInit {
     this.taskService.denyPickupAndDeliveryTask(task).subscribe(
       (data: any) => {
         console.log('Task denied', data);
+        window.location.reload();
       },
       (error: any) => {
         console.error('Error denying task', error);
       }
     );
   }
-
-  /*editBuilding(building: any) {
-    const dialogRef = this.dialog.open(EditBuildingComponent, {
-      width: '500px',
-      data: building
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Update the building in the database
-        this.buildingService.updateBuilding(result).subscribe(
-          (data: any) => {
-            // Update the building in the table
-            const index = this.dataSource.data.findIndex(b => b.id === data.id);
-            this.dataSource.data[index] = data;
-            this.dataSource._updateChangeSubscription();
-          },
-          (error: any) => {
-            console.error('Error updating building', error);
-          }
-        );
-      }
-    });
-  }*/
 }
-

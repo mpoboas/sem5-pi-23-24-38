@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Create Pickup-Delivery Task</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Pickup Classroom</mat-label>
+      <mat-select formControlName="pickupClassroom">
+        <mat-option *ngFor="let classroom of classroomOptions" [value]="classroom.id">
+          {{ classroom.name }} - {{ classroom.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Delivery Classroom</mat-label>
+      <mat-select formControlName="deliveryClassroom">
+        <mat-option *ngFor="let classroom of classroomOptions" [value]="classroom.id">
+          {{ classroom.name }} - {{ classroom.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Pickup Contact</mat-label>
+      <input matInput formControlName="pickupContact" placeholder="Enter pickup contact">
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Delivery Contact</mat-label>
+      <input matInput formControlName="deliveryContact" placeholder="Enter delivery contact">
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Confirmation Code</mat-label>
+      <input matInput formControlName="confirmationCode" placeholder="Enter confirmation code">
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Delivery Description</mat-label>
+      <textarea matInput formControlName="deliveryDescription" placeholder="Enter delivery description"></textarea>
+    </mat-form-field>
+
+  </form>
+</div>
+<div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+  <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+</div>

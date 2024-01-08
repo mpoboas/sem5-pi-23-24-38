@@ -131,6 +131,7 @@ export class GetSurveillanceComponent {
     this.taskService.approveSurveillanceTask(task).subscribe(
       (data: any) => {
         console.log('Task approved', data);
+        window.location.reload();
       },
       (error: any) => {
         console.error('Error approving task', error);
@@ -142,6 +143,7 @@ export class GetSurveillanceComponent {
     this.taskService.denySurveillanceTask(task).subscribe(
       (data: any) => {
         console.log('Task denied', data);
+        window.location.reload();
       },
       (error: any) => {
         console.error('Error denying task', error);

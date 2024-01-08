@@ -89,6 +89,7 @@ import { TaskService } from './services/task.service';
 import { SurveillanceComponent } from './components/task/surveillance/surveillance.component';
 import { GetPickupAndDeliveryComponent } from './components/task/pickup-and-delivery/get-pickup-and-delivery/get-pickup-and-delivery.component';
 import { GetSurveillanceComponent } from './components/task/surveillance/get-surveillance/get-surveillance.component';
+import { CreatePickupDeliveryComponent } from './components/task/pickup-and-delivery/create-pickup-and-delivery/create-pickup-and-delivery.component';
 
 @NgModule({
   declarations: [
@@ -148,6 +149,7 @@ import { GetSurveillanceComponent } from './components/task/surveillance/get-sur
     SurveillanceComponent,
     GetPickupAndDeliveryComponent,
     GetSurveillanceComponent,
+    CreatePickupDeliveryComponent,
   ],
   imports: [
     BrowserModule,
