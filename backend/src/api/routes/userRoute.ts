@@ -48,6 +48,25 @@ export default (app: Router) => {
         userId: Joi.string().required(),
       }),
       body: Joi.object({
+        name: Joi.string().required(),
+        email: Joi.string().required(),
+        password: Joi.string().required(),
+        role: Joi.string().required(),
+        phoneNumber: Joi.string().required(),
+        nif: Joi.string().required(),
+      }),
+    }),
+    (req, res, next) => ctrl.editUser(req, res, next),
+  );
+
+  route.patch(
+    '/user/patch/:userId',
+    isAuth,
+    celebrate({
+      params: Joi.object({
+        userId: Joi.string().required(),
+      }),
+      body: Joi.object({
         name: Joi.string(),
         email: Joi.string(),
         password: Joi.string(),
@@ -56,7 +75,7 @@ export default (app: Router) => {
         nif: Joi.string(),
       }),
     }),
-    (req, res, next) => ctrl.editUser(req, res, next),
+    (req, res, next) => ctrl.patchUser(req, res, next),
   );
 
   route.delete('/user/delete/:userId', isAuth, (req, res, next) => ctrl.delete(req, res, next));

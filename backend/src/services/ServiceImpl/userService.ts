@@ -151,6 +151,47 @@ export default class UserService implements IUserService {
     }
   }
 
+  public async patchUser(userId: string, userUpdate: IUserDTO): Promise<Result<{ userDTO: IUserDTO; token: string }>> {
+    try {
+      const user = await this.userRepo.findById(userId);
+
+      if (!user) {
+        return Result.fail<{ userDTO: IUserDTO; token: string }>('User not found');
+      }
+
+      if (userUpdate.name != null) {
+        user.name = userUpdate.name;
+      }
+      if (user.email !== userUpdate.email) {
+        if (await this.userRepo.findByEmail(userUpdate.email)) {
+          return Result.fail<{ userDTO: IUserDTO; token: string }>('User with this email already exists');
+        }
+      } else {
+        user.email = UserEmail.create(userUpdate.email).getValue().email;
+      }
+      if (userUpdate.password != null) {
+        user.password = await bcrypt.hash(userUpdate.password, 10);
+      }
+      if (userUpdate.role != null) {
+        user.role = userUpdate.role;
+      }
+      if (userUpdate.phoneNumber != null) {
+        user.phoneNumber = UserPhoneNumber.create(userUpdate.phoneNumber).getValue().phoneNumber;
+      }
+      if (userUpdate.nif != null) {
+        user.nif = UserNif.create(userUpdate.nif).getValue().nif;
+      }
+
+      await this.userRepo.save(user);
+
+      const token = this.generateToken(user) as string;
+      const userDTO = UserMap.toDTO(user) as IUserDTO;
+      return Result.ok<{ userDTO: IUserDTO; token: string }>({ userDTO, token });
+    } catch (error) {
+      throw new Error(`Error patching user: ${error.message}`);
+    }
+  }
+
   public async delete(id: UserId | string): Promise<boolean> {
     const userDeleted = await this.userRepo.delete(id);
     if (userDeleted === false) {

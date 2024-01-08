@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Modal } from 'bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -80,23 +81,38 @@ export class GetUsersComponent {
   }
 
   deleteUser(userData: any) {
-    let result: boolean;
     if (userData.id === this.authService.getUserId()) {
-      alert('You cannot delete your own account here. \nPlease go to your profile page to delete your account.');
-      result = false;
+      const selfDestructModalElement = document.getElementById('selfDestructModal');
+      const selfDestructModal = new Modal(selfDestructModalElement);
+      selfDestructModal.show();
       return;
-    } else {
-      result = window.confirm('This option is nuclear, are you sure you want to continue?');
     }
-
-
-    if (result) {
+  
+    // Show the custom confirmation modal
+    const confirmationModalElement = document.getElementById('confirmationModal');
+    if (!confirmationModalElement) {
+      console.error('Confirmation modal element not found.');
+      return;
+    }
+  
+    const confirmationModal = new Modal(confirmationModalElement);
+    const confirmButton = document.getElementById('confirmButton');
+  
+    if (!confirmButton) {
+      console.error('Confirm button not found.');
+      return;
+    }
+  
+    confirmButton.addEventListener('click', () => {
+      confirmationModal.hide();
+  
+      // Proceed with the deletion logic
       this.authService.getUsers().subscribe(
         (data: any[]) => {
-          const user = data.find(user => user.email === userData.email);
+          const user = data.find((user) => user.email === userData.email);
           if (user) {
             const userId = user.id.toString();
-            // Call the signup method from your AuthService
+            // Call the deleteAccountByAdmin method from your AuthService
             this.authService.deleteAccountByAdmin(userId).subscribe(
               (response) => {
                 console.log('Delete successful:', response);
@@ -115,6 +131,11 @@ export class GetUsersComponent {
           console.error('Error fetching users', error);
         }
       );
-    }
+    });
+  
+    // Show the confirmation modal
+    confirmationModal.show();
   }
+  
+
 }

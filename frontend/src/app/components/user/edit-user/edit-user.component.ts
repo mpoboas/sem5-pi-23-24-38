@@ -68,8 +68,10 @@ export class EditUserComponent {
           const user = data.find(user => user.email === userData.email);
           if (user) {
             const userId = user.id.toString();
-            // Call the signup method from your AuthService
-            this.authService.editUserByAdmin(userData,userId).subscribe(
+            if (!userData.password) {
+              delete userData.password;
+            }
+            this.authService.patchUser(userData,userId).subscribe(
               (response: any) => {
                 console.log('User edited successfully', response);
                 this.dialogRef.close(userData);
@@ -89,18 +91,6 @@ export class EditUserComponent {
         }
       );
       console.log('User:', userData);
-      // Call the signup method from your AuthService
-      /*this.authService.editUserByAdmin(userData).subscribe(
-        (response: any) => {
-          console.log('User edited successfully', response);
-          this.dialogRef.close(userData);
-          window.location.reload();
-        },
-        (error: any) => {
-          console.error('Error editing user', error);
-          this.errorMessage = error.error;
-        }
-      );*/
     }
   }
 }

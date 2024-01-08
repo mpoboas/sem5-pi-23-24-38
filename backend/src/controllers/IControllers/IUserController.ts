@@ -4,6 +4,7 @@ export default interface IUserController {
   signUp(req: Request, res: Response, next: NextFunction);
   signIn(req: Request, res: Response, next: NextFunction);
   editUser(req: Request, res: Response, next: NextFunction);
+  patchUser(req: Request, res: Response, next: NextFunction);
   delete(req: Request, res: Response, next: NextFunction);
   getAllUsers(req: Request, res: Response, next: NextFunction);
 }

@@ -72,6 +72,10 @@ export class AuthService {
   editUserByAdmin(userDTO: any, userId: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/auth/user/edit/${userId}`, userDTO, { headers: this.getHeaders() });
   }
+
+  patchUser(userDTO: any, userId: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/auth/user/patch/${userId}`, userDTO, { headers: this.getHeaders() });
+  }
   
   
   signout(): void {

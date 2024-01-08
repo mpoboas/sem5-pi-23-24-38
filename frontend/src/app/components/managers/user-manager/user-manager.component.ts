@@ -18,13 +18,12 @@ export class UserManagerComponent {
     console.log('Opening create user dialog...');
     const dialogRef = this.dialog.open(CreateUserComponent, {
       data: { },
-      width: '400px', // Adjust the width as needed
+      width: '400px',
     });
 
     dialogRef.afterClosed().subscribe((result: UserData) => {
       if (result) {
-        // Handle the data returned from the dialog (e.g., save it to your service)
-        console.log('Building created:', result);
+        console.log('User created:', result);
       }
     });
   }

@@ -4,6 +4,7 @@ import config from '../../config';
 
 import IUserController from './IControllers/IUserController';
 import IUserService from '../services/IServices/IUserService';
+import { IUserDTO } from '../dto/IUserDTO';
 
 @Service()
 export default class UserController implements IUserController {
@@ -56,6 +57,27 @@ export default class UserController implements IUserController {
       }
 
       const userOrError = await this.userServiceInstance.editUser(userId, userDTO);
+      if (userOrError.isFailure) {
+        return res.status(404).send('Failed to edit user: ' + userOrError.errorValue());
+      }
+
+      return res.status(201).json(userOrError);
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  public async patchUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.params.userId;
+      const userUpdate: IUserDTO = req.body;
+
+      const existingUser = await this.userServiceInstance.getUser(userId);
+      if (existingUser.isFailure) {
+        return res.status(404).send('Failed to patch user: ' + existingUser.errorValue());
+      }
+
+      const userOrError = await this.userServiceInstance.patchUser(userId, userUpdate);
       if (userOrError.isFailure) {
         return res.status(404).send('Failed to edit user: ' + userOrError.errorValue());
       }

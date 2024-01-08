@@ -9,9 +9,6 @@
     <mat-form-field style="width: 100%;">
       <mat-label>Email</mat-label>
       <input matInput placeholder="Ex: laprosos@isep.ipp.pt" formControlName="email" required pattern=".+@isep\.ipp\.pt">
-      <mat-error *ngIf="form.get('email')?.hasError('required')">
-        You must enter a value
-      </mat-error>
       <mat-error *ngIf="form.get('email')?.hasError('pattern')">
         Not a valid email address ending with '@isep.ipp.pt'.
       </mat-error>
@@ -19,7 +16,7 @@
 
     <mat-form-field style="width: 100%;">
       <mat-label>Password</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Ex: Password1!" formControlName="password" required
+      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Ex: Password1!" formControlName="password"
         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
       <mat-error *ngIf="form.get('password')?.hasError('required')">
         You must enter a value
