@@ -26,6 +26,7 @@ export class EditTunnelComponent {
   form: FormGroup;
   floorOptions: any[] = [];
   selectedFloorId: string | null = null;
+  errorMessage: string | null = null;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TunnelData,
     public dialogRef: MatDialogRef<EditTunnelComponent>,
@@ -96,17 +97,20 @@ export class EditTunnelComponent {
                 },
                 (error: any) => {
                   console.error('Error updating tunnel', error);
+                  this.errorMessage = error.error;
                 }
               );
 
             },
             (error: any) => {
               console.error('Error fetching floor', error);
+              this.errorMessage = error.error;
             }
           );
         },
         (error: any) => {
           console.error('Error fetching floor', error);
+          this.errorMessage = error.error;
         }
       );
 

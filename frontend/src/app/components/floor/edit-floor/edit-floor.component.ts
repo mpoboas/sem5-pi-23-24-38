@@ -25,6 +25,7 @@ export class EditFloorComponent {
   buildingOptions: any[] = [];
   selectedBuildingId: string | null = null;
   jsonFile: File | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FloorData,
@@ -179,6 +180,7 @@ onSave(): void {
               },
               (error: any) => {
                 console.error('Error updating floor', error);
+                this.errorMessage = error.error;
               }
             );
           };
@@ -193,12 +195,14 @@ onSave(): void {
             },
             (error: any) => {
               console.error('Error updating floor', error);
+              this.errorMessage = error.error;
             }
           );
         }
       },
       (error: any) => {
         console.error('Error fetching building', error);
+        this.errorMessage = error.error;
       }
     );
   }

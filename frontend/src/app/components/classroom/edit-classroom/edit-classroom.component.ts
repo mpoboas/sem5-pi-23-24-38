@@ -25,6 +25,7 @@ export interface ClassroomData {
 export class EditClassroomComponent {
   form: FormGroup;
   floorOptions: any[] = [];
+  errorMessage: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ClassroomData,
@@ -83,11 +84,13 @@ export class EditClassroomComponent {
             },
             (error: any) => {
               console.error('Error updating classroom', error);
+              this.errorMessage = error.error;
             }
           );
         },
         (error: any) => {
           console.error('Error finding floor by number', error);
+          this.errorMessage = error.error;
         }
       );
     }

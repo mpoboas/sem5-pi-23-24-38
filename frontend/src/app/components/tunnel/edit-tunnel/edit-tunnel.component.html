@@ -49,7 +49,9 @@
       </div>
 
 
-
+      <div style="margin-top: 10px;" *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
 
   </form>
 </div>

@@ -22,7 +22,7 @@
 
     <mat-form-field style="width: 100%;">
       <mat-label>Building</mat-label>
-      <mat-select formControlName="buildingId" readonly>
+      <mat-select formControlName="buildingId" (selectionChange)="onBuildingChange()">
         <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
           {{ building.code }}
         </mat-option>
@@ -39,6 +39,9 @@
       </div>
     </div>
   </form>
+  <div style="margin-top: 10px;" *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
   <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>

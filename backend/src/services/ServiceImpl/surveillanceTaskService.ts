@@ -118,7 +118,6 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
     public async patchSurveillanceTask(surveillanceTaskId: string, surveillanceTaskUpdate: ISurveillanceTaskDTO): Promise<Result<ISurveillanceTaskDTO>>{
         try {
             const task = await this.surveillanceTaskRepo.findByDomainId(surveillanceTaskId);
-
             if (task === null) {
                 return Result.fail<ISurveillanceTaskDTO>('Surveillance Task not found');
             } 
@@ -132,8 +131,9 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
                 }
             }
             if (surveillanceTaskUpdate.floors){
-                const floorsB = await this.floorRepo.findFloorsByBuildingId(surveillanceTaskUpdate.building);
 
+                const floorsB = await this.floorRepo.findFloorsByBuildingId(task.building);
+                
                 if (floorsB === null) {
                     return Result.fail<ISurveillanceTaskDTO>('Floors not found');
                 }
@@ -142,20 +142,22 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
 
                 surveillanceTaskUpdate.floors.forEach(floor => {
                     const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
+                    
                     if (!floor2) {
-                        throw new ReferenceError('Floor not found');
+                      throw new ReferenceError('Floor not found');
                     }
-                    floors.push(floor2.id.toString());
+                    floors.push(floor2);
+
                 });
                 task.floors = floors;
             }
             if (surveillanceTaskUpdate.emergencyContact) {
                 task.emergencyContact = surveillanceTaskUpdate.emergencyContact;
             }
-            if (surveillanceTaskUpdate.isPending !== null) {
+            if (surveillanceTaskUpdate.isPending !== null && surveillanceTaskUpdate.isPending !== undefined) {
                 task.isPending = surveillanceTaskUpdate.isPending;
             }
-            if (surveillanceTaskUpdate.isApproved !== null) {
+            if (surveillanceTaskUpdate.isApproved !== null && surveillanceTaskUpdate.isApproved !== undefined) {
                 task.isApproved = surveillanceTaskUpdate.isApproved;
             }
 
@@ -171,7 +173,6 @@ export default class SurveillanceTaskService implements ISurveillanceTaskService
     public async getAllSurveillanceTasks(): Promise<ISurveillanceTaskDTO[]> {
         try {
             const tasks = await this.surveillanceTaskRepo.getAllSurveillanceTasks();
-
             return tasks.map(task => {
                 const taskDTOResult = SurveillanceTaskMap.toDTO(task) as ISurveillanceTaskDTO;
                 return taskDTOResult;

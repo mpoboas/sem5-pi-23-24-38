@@ -19,6 +19,8 @@ export interface BuildingData {
 export class CreateBuildingComponent {
   form: FormGroup;
 
+  errorMessage: string | null = null;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: BuildingData,
     public dialogRef: MatDialogRef<CreateBuildingComponent>,
@@ -52,6 +54,7 @@ export class CreateBuildingComponent {
         },
         (error: any) => {
           console.error('Error creating building', error);
+          this.errorMessage = error.error;
         }
       );
     }

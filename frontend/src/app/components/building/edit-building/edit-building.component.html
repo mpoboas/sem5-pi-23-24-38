@@ -26,6 +26,9 @@
       <input matInput placeholder="Ex: B0001" formControlName="code">
     </mat-form-field>
   </form>
+  <div style="margin-top: 10px;" *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
 </div>
 <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
   <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>

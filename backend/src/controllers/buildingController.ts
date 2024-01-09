@@ -16,9 +16,10 @@ export default class BuildingController
       const buildingDTO = req.body as IBuildingDTO;
 
       const buildingOrError = await this.buildingServiceInstance.createBuilding(buildingDTO);
+      console.log(buildingOrError);
 
       if (buildingOrError.isFailure) {
-        return res.status(402).send();
+        return res.status(402).send('Failed to create building: ' + buildingOrError.errorValue());
       }
 
       const createdBuildingDTO = buildingOrError.getValue(); // Rename the variable
@@ -36,7 +37,7 @@ export default class BuildingController
       const buildingOrError = await this.buildingServiceInstance.updateBuilding(buildingDTO);
 
       if (buildingOrError.isFailure) {
-        return res.status(404).send();
+        return res.status(404).send('Failed to update building: ' + buildingOrError.errorValue());
       }
 
       const updatedBuildingDTO = buildingOrError.getValue(); // Rename the variable
@@ -55,9 +56,13 @@ export default class BuildingController
       //check if building exists
       const existingBuilding = await this.buildingServiceInstance.getBuilding(buildingId);
       if (!existingBuilding) {
-        return res.status(404).send();
+        return res.status(404).send('Building not found: ' + existingBuilding.errorValue());
       }
       const updatedBuilding = await this.buildingServiceInstance.patchBuilding(buildingId, buildingUpdate);
+
+      if (updatedBuilding.isFailure) {
+        return res.status(404).send('Failed to patch building: ' + updatedBuilding.errorValue());
+      }
 
       return res.status(200).json(updatedBuilding);
     } catch (e) {
@@ -125,7 +130,7 @@ export default class BuildingController
       const building = await this.buildingServiceInstance.getBuilding(domainId);
 
       if (building.isFailure) {
-        return res.status(500).json(building.error);
+        return res.status(500).json('Building not found: ' + building.error);
       }
 
       return res.json(building.getValue()).status(200);
@@ -141,7 +146,7 @@ export default class BuildingController
       const building = await this.buildingServiceInstance.findByCode(code);
 
       if (building.isFailure) {
-        return res.status(500).json(building.error);
+        return res.status(500).json('Building not found: ' + building.error);
       }
 
       return res.json(building.getValue()).status(200);

@@ -20,6 +20,7 @@ export class CreateTunnelComponent implements OnInit {
   form: FormGroup;
   floorOptions: any[] = [];
   selectedFloorId: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TunnelData,
@@ -90,16 +91,19 @@ export class CreateTunnelComponent implements OnInit {
                 },
                 (error: any) => {
                   console.error('Error creating tunnel', error);
+                  this.errorMessage = error.error;
                 }
               );
             },
             (error: any) => {
               console.error('Error finding floor by number', error);
+              this.errorMessage = error.error;
             }
           );
         },
         (error: any) => {
           console.error('Error finding floor by number', error);
+          this.errorMessage = error.error;
         }
       );
     }

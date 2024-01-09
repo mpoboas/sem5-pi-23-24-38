@@ -93,7 +93,7 @@ export default class ElevatorService implements IElevatorService {
           return Result.fail<IElevatorDTO>('Floors not found');
         }
 
-        const floors: string[] = [];
+        const floors: any[] = [];
 
         elevatorDTO.floors.forEach(floor => {
           const floor2 = floorsB.find(floorB => floorB.id.toString() === floor);
@@ -101,11 +101,11 @@ export default class ElevatorService implements IElevatorService {
           if (!floor2) {
             throw new ReferenceError('Floor not found');
           }
-          floors.push(floor2.id.toString());
+          floors.push(floor2);
         });
 
         elevator.name = elevatorDTO.name;
-
+        elevator.floors = floors;
         elevator.buildingId = elevatorDTO.buildingId;
         elevator.cordx = elevatorDTO.cordx;
         elevator.cordy = elevatorDTO.cordy;

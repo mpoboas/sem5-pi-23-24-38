@@ -25,6 +25,7 @@ export class CreateFloorComponent implements OnInit {
   buildingOptions: any[] = [];
   selectedBuildingId: string | null = null;
   jsonFile: File | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FloorData,
@@ -154,11 +155,13 @@ export class CreateFloorComponent implements OnInit {
             },
             (error: any) => {
               console.error('Error creating floor', error);
+              this.errorMessage = error.error;
             }
           );
         },
         (error: any) => {
           console.error('Error finding building by code', error);
+          this.errorMessage = error.error;
         }
       );
     }

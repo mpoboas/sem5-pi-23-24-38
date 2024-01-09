@@ -22,6 +22,7 @@ export class EditElevatorComponent implements OnInit {
   form: FormGroup;
   buildingOptions: any[] = [];
   floorOptions: any[] = [];
+  errorMessage: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ElevatorData,
@@ -71,6 +72,22 @@ export class EditElevatorComponent implements OnInit {
     );
   }
 
+  onBuildingChange(): void {
+    const building = this.buildingOptions.find((b) => b.code === this.form.value.buildingId);
+    
+    this.floorService.getBuildingFloors(building.id).subscribe(
+      (floors: any[]) => {
+        console.log('Selected building floors:', floors);
+        this.floorOptions = floors;
+        console.log('Floor options:', this.floorOptions);
+        this.setupFloorCheckboxes();
+      },
+      (error: any) => {
+        console.error('Error fetching floors', error);
+      }
+    );
+  }
+
   setupFloorCheckboxes(): void {
     const floorsFormArray = this.form.get('floors') as FormArray;
     floorsFormArray.clear();
@@ -115,6 +132,7 @@ export class EditElevatorComponent implements OnInit {
         },
         (error: any) => {
           console.error('Error updating elevator', error);
+          this.errorMessage = error.error;
         }
       );
     }

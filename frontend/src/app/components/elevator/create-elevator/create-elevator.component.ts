@@ -21,6 +21,7 @@ export class CreateElevatorComponent implements OnInit {
   form: FormGroup;
   buildingOptions: any[] = [];
   floorOptions: any[] = [];
+  errorMessage: string | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ElevatorData,
@@ -103,7 +104,6 @@ export class CreateElevatorComponent implements OnInit {
         floors: selectedFloors,
         buildingId: building.id,
       };
-      console.log('Elevator data:', elevatorData);
       this.elevatorService.createElevator(elevatorData).subscribe(
         (response: any) => {
           console.log('Elevator created successfully', response);
@@ -112,6 +112,7 @@ export class CreateElevatorComponent implements OnInit {
         },
         (error: any) => {
           console.error('Error creating elevator', error);
+          this.errorMessage = error.error;
         }
       );
     }

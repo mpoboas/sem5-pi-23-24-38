@@ -22,6 +22,8 @@ export interface BuildingData {
 export class EditBuildingComponent {
   form: FormGroup;
 
+  errorMessage: string | null = null;
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: BuildingData,
     public dialogRef: MatDialogRef<EditBuildingComponent>,
@@ -56,6 +58,7 @@ export class EditBuildingComponent {
         },
         (error: any) => {
           console.error('Error updating building', error);
+          this.errorMessage = error.error;
         }
       );
     }
