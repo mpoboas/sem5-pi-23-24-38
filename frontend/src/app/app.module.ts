@@ -90,6 +90,7 @@ import { SurveillanceComponent } from './components/task/surveillance/surveillan
 import { GetPickupAndDeliveryComponent } from './components/task/pickup-and-delivery/get-pickup-and-delivery/get-pickup-and-delivery.component';
 import { GetSurveillanceComponent } from './components/task/surveillance/get-surveillance/get-surveillance.component';
 import { CreatePickupDeliveryComponent } from './components/task/pickup-and-delivery/create-pickup-and-delivery/create-pickup-and-delivery.component';
+import { CreateSurveillanceComponent } from './components/task/surveillance/create-surveillance/create-surveillance.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { CreatePickupDeliveryComponent } from './components/task/pickup-and-deli
     GetPickupAndDeliveryComponent,
     GetSurveillanceComponent,
     CreatePickupDeliveryComponent,
+    CreateSurveillanceComponent,
   ],
   imports: [
     BrowserModule,

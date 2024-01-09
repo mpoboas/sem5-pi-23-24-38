@@ -80,7 +80,7 @@ export class CreatePickupDeliveryComponent implements OnInit {
         (response: any) => {
           console.log('Pickup-delivery task created successfully', response);
           this.dialogRef.close(taskData);
-          // Additional logic if needed
+          window.location.reload();
         },
         (error: any) => {
           console.error('Error creating pickup-delivery task', error);

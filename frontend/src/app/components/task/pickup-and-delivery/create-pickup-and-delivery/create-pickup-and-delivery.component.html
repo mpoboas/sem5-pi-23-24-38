@@ -1,24 +1,25 @@
-<h1 mat-dialog-title>Create Pickup-Delivery Task</h1>
+<h1 mat-dialog-title>Create Pickup and Delivery Task</h1>
 <div mat-dialog-content>
   <form [formGroup]="form">
-    <mat-form-field style="width: 100%;">
-      <mat-label>Pickup Classroom</mat-label>
-      <mat-select formControlName="pickupClassroom">
-        <mat-option *ngFor="let classroom of classroomOptions" [value]="classroom.id">
-          {{ classroom.name }} - {{ classroom.description }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div style="display: flex; align-items: flex-start;">
+      <mat-form-field style="width: 100%; padding-right: 30px;">
+        <mat-label>Pickup Classroom</mat-label>
+        <mat-select formControlName="pickupClassroom">
+          <mat-option *ngFor="let classroom of classroomOptions" [value]="classroom.id">
+            {{ classroom.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field style="width: 100%;">
-      <mat-label>Delivery Classroom</mat-label>
-      <mat-select formControlName="deliveryClassroom">
-        <mat-option *ngFor="let classroom of classroomOptions" [value]="classroom.id">
-          {{ classroom.name }} - {{ classroom.description }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
+      <mat-form-field style="width: 100%;">
+        <mat-label>Delivery Classroom</mat-label>
+        <mat-select formControlName="deliveryClassroom">
+          <mat-option *ngFor="let classroom of classroomOptions" [value]="classroom.id">
+            {{ classroom.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <mat-form-field style="width: 100%;">
       <mat-label>Pickup Contact</mat-label>
       <input matInput formControlName="pickupContact" placeholder="Enter pickup contact">

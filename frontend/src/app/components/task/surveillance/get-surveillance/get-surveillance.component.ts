@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./get-surveillance.component.scss']
 })
 export class GetSurveillanceComponent {
-  displayedColumns: string[] = ['building', 'floors', 'emergencyContact'];
+  displayedColumns: string[] = ['building', 'floors', 'emergencyContact','taskState'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -73,7 +73,7 @@ export class GetSurveillanceComponent {
 
   setFilter(filter: string): void {
     if (filter === 'all') {
-      this.displayedColumns = ['building', 'floors', 'emergencyContact'];
+      this.displayedColumns = ['building', 'floors', 'emergencyContact','taskState'];
       this.taskService.getSurveillanceTasks().subscribe(
         (data: any[]) => {
           if (data.length > 0){
@@ -125,6 +125,16 @@ export class GetSurveillanceComponent {
       );
     }
     this.selectedFilter = filter;
+  }
+
+  getTaskState(task: any): string {
+    if (task.isPending == false && task.isApproved == true) {
+      return '<span class="badge bg-success">Approved</span>';
+    } else if (task.isPending == true && (task.isApproved == false || task.isApproved == null)) {
+      return '<span class="badge bg-warning">Pending</span>';
+    } else {
+      return '<span class="badge bg-danger">Denied</span>';
+    }
   }
 
   approveTask(task: any): void {

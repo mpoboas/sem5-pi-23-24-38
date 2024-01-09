@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Create Surveillance Task</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field style="width: 100%;">
+      <mat-label>Emergency Contact</mat-label>
+      <input matInput formControlName="emergencyContact" required>
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Select Building</mat-label>
+      <mat-select formControlName="building" (selectionChange)="onBuildingChange()">
+        <mat-option *ngFor="let building of buildingOptions" [value]="building.code">
+          {{ building.code }} - {{ building.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;">
+      <mat-label>Select Floors</mat-label>
+      <mat-select formControlName="floors" multiple>
+        <mat-option *ngFor="let floor of floorOptions" [value]="floor.id">
+          {{ floor.floorNumber }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="button-gap" style="justify-content: right;" mat-dialog-actions>
+      <button class="btn btn-secondary" mat-button (click)="onCancel()">Cancel</button>
+      <button class="btn btn-primary" mat-button [disabled]="!form.valid" (click)="onSave()">Save</button>
+    </div>
+  </form>
+</div>
