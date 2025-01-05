@@ -88,7 +88,7 @@ export class AnimationComponent implements OnDestroy{
 
         if (this.floors.length > 0) {
           // Load the default floor or the first floor initially
-          const defaultFloorNumber = _.get(this.floors, '[12].floorNumber', 'defaultFloorNumber');
+          const defaultFloorNumber = _.get(this.floors, '[0].floorNumber', 'defaultFloorNumber');
           console.log("the default floor number is: ", defaultFloorNumber);
           this.selectedFloor = defaultFloorNumber;
           this.loadFloor(defaultFloorNumber);

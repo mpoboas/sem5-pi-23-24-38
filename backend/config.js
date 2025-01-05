@@ -17,9 +17,9 @@ export default {
   port: parseInt(process.env.PORT, 10) || 3000,
 
   /**
-   * That long string from mlab
+   * Your mongo database
    */
-  databaseURL: process.env.MONGODB_URI || 'mongodb://mongoadmin:66d1f570f151e991f072406f@vsgate-s1.dei.isep.ipp.pt:10936/admin?authMechanism=DEFAULT',
+  databaseURL: process.env.MONGODB_URI || 'mongodb://localhost:27017/mydatabase',
 
   /**
    * Your secret sauce

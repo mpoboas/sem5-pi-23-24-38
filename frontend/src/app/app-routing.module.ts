@@ -23,8 +23,10 @@ import { UserProfileComponent } from './components/user/user-profile/user-profil
 import { UserManagerComponent } from './components/managers/user-manager/user-manager.component';
 import { PickupAndDeliveryComponent } from './components/task/pickup-and-delivery/pickup-and-delivery.component';
 import { SurveillanceComponent } from './components/task/surveillance/surveillance.component';
+import { HomeComponent } from "./components/home/home.component";
 
 const routes: Routes = [
+  { path: 'home', component: HomeComponent },
   { path: 'cube', component: CubeComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
@@ -46,7 +48,7 @@ const routes: Routes = [
     path: 'campus-manager',
     component: CampusManagerComponent,
     canActivate: [AuthGuard],
-    canActivateChild: [RoleGuard], 
+    canActivateChild: [RoleGuard],
     children: [
       { path: 'buildings', component: BuildingComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
       { path: 'floors', component: FloorComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER'] } },
@@ -56,7 +58,7 @@ const routes: Routes = [
       { path: 'animation', component: AnimationComponent, data: { expectedRoles: ['ADMIN', 'CAMPUS_MANAGER', 'TEACHER', 'STUDENT', 'USER'] } },
     ],
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({
